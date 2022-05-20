@@ -1,0 +1,67 @@
+@import '/styles/globals.scss';
+
+.Navbar {
+  height: 52px;
+  background-color: $white-color;
+  border-bottom: 1px solid $gray-color;
+}
+
+.Navbar-right-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  & span {
+    margin-right: 10px;
+  }
+
+  & a {
+    padding: 0 10px;
+    color: $black-color;
+  }
+  & p {
+    margin: 0;
+    padding: 0 10px;
+    color: $black-color;
+  }
+}
+
+.navbar-avatar {
+  display: none;
+}
+
+.Navbar-left-content {
+  display: flex;
+  align-items: center;
+
+  & a {
+    padding: 0 6px;
+    & i {
+      font-size: 1.6rem;
+    }
+  }
+}
+
+.navbar-avatar {
+  margin-right: 6px;
+  display: none !important;
+}
+
+@media (min-width: 740px) and (max-width: 1023px) {
+}
+
+@media (max-width: 767px) {
+  .Navbar-right-content {
+    & p {
+      display: none !important;
+    }
+  }
+
+  .navbar-user {
+    display: none !important;
+  }
+
+  .navbar-avatar {
+    display: flex !important;
+  }
+}

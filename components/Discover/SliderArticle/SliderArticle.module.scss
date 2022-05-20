@@ -1,0 +1,71 @@
+@import "/styles/globals.scss";
+
+.slider-article {
+  border: 1px solid $gray-color;
+  padding: 8px 8px 2px 15px;
+  padding-right: 8px;
+  margin-top: 15px;
+
+  .slider-article-slider {
+    margin-top: 10px;
+  }
+
+  &-label {
+    display: flex;
+    margin-bottom: 15px;
+    justify-content: space-between;
+    align-items: center;
+
+    & span {
+      position: relative;
+      display: flex;
+
+      & .fa-chevron-right {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-40%);
+        right: -1rem;
+        color: $black-color;
+      }
+    }
+
+    & div {
+      display: flex;
+      margin-right: 15px;
+
+      & span {
+        background-color: $white-color;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        border: 1px solid $gray-color;
+        color: $black-color;
+        cursor: pointer;
+        position: relative;
+      }
+
+      & span:last-child {
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .slider-article {
+    &-label {
+      & span {
+        & h3 {
+          font-size: 1.2rem;
+        }
+
+        & .fa-chevron-right {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
