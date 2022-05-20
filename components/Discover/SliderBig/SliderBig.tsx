@@ -6,28 +6,9 @@ import style from "./SliderBig.module.scss";
 import SliderItem from "./SliderItem";
 import ControllerItem from "./ControllerItem";
 
-const SliderBig: FC = () => {
-  const [data, setData] = useState<any>(false);
+const SliderBig: FC<any> = ({ data }) => {
   const [render, setRender] = useState<boolean>(false);
   const slider = useRef<Slider>(null);
-
-  useEffect(() => {
-    getManga({
-      limit: 6,
-      includes: ["cover_art"],
-      order: {
-        followedCount: "desc",
-        relevance: "desc",
-        latestUploadedChapter: "desc",
-      },
-    })
-      .then((data: any) => {
-        setData(data.data.data);
-      })
-      .catch((err: any) =>
-        console.log("🚀 ~ file: App.tsx ~ line 11 ~ useEffect ~ err", err)
-      );
-  }, []);
 
   useEffect(() => {
     setRender(!render);
@@ -68,15 +49,14 @@ const SliderBig: FC = () => {
           </div>
         </Col>
         <Col span={3} className={style["col-left-controller"]}>
-          {data &&
-            data.map((item: any, index: number) => (
-              <ControllerItem
-                key={index}
-                data={item}
-                index={index}
-                slider={slider.current}
-              />
-            ))}
+          {data.map((item: any, index: number) => (
+            <ControllerItem
+              key={index}
+              data={item}
+              index={index}
+              slider={slider.current}
+            />
+          ))}
         </Col>
       </Row>
 
@@ -84,10 +64,9 @@ const SliderBig: FC = () => {
         <Col span={12} className={style["col-right-controller"]}>
           <div>
             <Slider {...settings}>
-              {data &&
-                data.map((item: any, index: number) => (
-                  <SliderItem key={index} data={item} />
-                ))}
+              {data.map((item: any, index: number) => (
+                <SliderItem key={index} data={item} />
+              ))}
             </Slider>
           </div>
         </Col>

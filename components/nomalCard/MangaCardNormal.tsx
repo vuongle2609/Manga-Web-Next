@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Text, Image } from "@nextui-org/react";
+import { Text } from "@nextui-org/react";
 import { getCover } from "api/index";
 import Link from "next/link";
 import styles from "./MangaCardNomal.module.scss";

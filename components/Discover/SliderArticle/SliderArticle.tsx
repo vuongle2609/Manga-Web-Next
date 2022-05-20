@@ -7,21 +7,16 @@ import { getManga } from "api/index";
 import MangaCardNormal from "components/nomalCard/MangaCardNormal";
 
 interface propsType {
-  apiOption: any;
+  data: any;
   label: string;
 }
 
-const SliderArticle: FC<propsType> = ({ apiOption, label }) => {
-  const [data, setData] = useState<any>(false);
+const SliderArticle: FC<propsType> = ({ data, label }) => {
   const slider = useRef<Slider>(null);
   const nextBtnSlider = useRef<any>(null);
   const prevBtnSlider = useRef<any>(null);
 
   useEffect(() => {
-    getManga(apiOption)
-      .then((data: any) => setData(data.data.data))
-      .catch((err: any) => console.log(err));
-
     const handleClickNext = () => {
       slider.current?.slickNext();
     };
@@ -112,10 +107,9 @@ const SliderArticle: FC<propsType> = ({ apiOption, label }) => {
         ref={slider}
         className={styles["slider-article-slider"]}
       >
-        {data &&
-          data.map((item: any, index: number) => (
-            <MangaCardNormal key={item.id + index} data={item} index={index} />
-          ))}
+        {data.map((item: any, index: number) => (
+          <MangaCardNormal key={item.id + index} data={item} index={index} />
+        ))}
       </Slider>
     </div>
   );
