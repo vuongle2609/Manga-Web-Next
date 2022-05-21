@@ -1,0 +1,28 @@
+@import "/styles/globals.scss";
+
+.footer {
+  background-color: $white-color;
+  width: 100%;
+  border-top: 1px solid $gray-color;
+  margin-top: 40px;
+  padding: 20px 0;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.social-icon {
+  display: flex;
+
+  h2 {
+    display: block;
+    margin-right: 14px;
+  }
+}
+
+.credit {
+  display: flex;
+}
