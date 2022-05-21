@@ -22,6 +22,7 @@ const Discover: FC<any> = (props) => {
   );
 };
 
+// get all data
 export const getServerSideProps: GetServerSideProps = async () => {
   const getSliderBigData = () => {
     return getManga({

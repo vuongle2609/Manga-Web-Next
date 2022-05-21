@@ -4,7 +4,6 @@ import styles from "./SliderBig.module.scss";
 
 const ControllerItem: FC<any> = ({ data, index, slider }) => {
   const title: any = Object.values(data.attributes.title)[0];
-  // console.log(data.attributes.title);
   const subTitleObject: any = data.attributes.altTitles.find(
     (item: any) =>
       (data.attributes.title.en ? item["ja-ro"] : item["en"]) || item["ja"]

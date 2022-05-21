@@ -1,7 +1,6 @@
 import { FC, useEffect, useState, useRef } from "react";
-import { getManga } from "api/index";
 import Slider from "react-slick";
-import { Row, Col, Container } from "@nextui-org/react";
+import { Row, Col } from "@nextui-org/react";
 import style from "./SliderBig.module.scss";
 import SliderItem from "./SliderItem";
 import ControllerItem from "./ControllerItem";

@@ -1,9 +1,8 @@
-import { FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import { Text } from "@nextui-org/react";
 import Link from "next/link";
 import Slider from "react-slick";
 import styles from "./SliderArticle.module.scss";
-import { getManga } from "api/index";
 import MangaCardNormal from "components/nomalCard/MangaCardNormal";
 
 interface propsType {

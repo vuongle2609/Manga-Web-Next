@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { apiUrls, API_URL } from 'configs/api'
+import { apiUrls, API_URL, IMG_URL } from 'configs/api'
 
 axios.defaults.baseURL = API_URL;
 
@@ -77,15 +77,15 @@ interface coverPropsType {
 
 export const getCover: (option: coverPropsType) => any = (option) => {
     if (option.data === undefined)
-        return "https://mangadex.org/cover-placeholder.jpg"
+        return "https://media.discordapp.net/attachments/712591859125321798/977425980211744768/unknown.png?width=545&height=676"
 
     const cover_art = option.data.find(
         (item: any) => item.type === "cover_art"
     );
 
     if (cover_art === undefined)
-        return "https://mangadex.org/cover-placeholder.jpg"
+        return "https://media.discordapp.net/attachments/712591859125321798/977425980211744768/unknown.png?width=545&height=676"
 
 
-    return `https://uploads.mangadex.org/covers/${option.id}/${cover_art?.attributes?.fileName}${option.quality ? ".512.jpg" : ".256.jpg"}`
+    return `https://${IMG_URL}/covers/${option.id}/${cover_art?.attributes?.fileName}${option.quality ? ".512.jpg" : ".256.jpg"}`
 }
