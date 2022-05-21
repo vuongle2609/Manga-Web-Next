@@ -1,0 +1,26 @@
+@import "/styles/globals.scss";
+
+.goto-top {
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid $gray-color;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: $white-color;
+  cursor: pointer;
+  transition: all ease-in-out 0.5s;
+
+  & i {
+    font-size: 1.6rem;
+  }
+
+  &.hide {
+    bottom: -40px;
+    right: -40px;
+  }
+}

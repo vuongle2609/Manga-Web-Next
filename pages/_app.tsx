@@ -5,6 +5,8 @@ import "slick-carousel/slick/slick-theme.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Navbar from "components/Navbar/Navbar";
+import Footer from "components/Footer/Footer";
+import GotoTop from "components/GotoTop/GotoTop";
 import { FC, useEffect } from "react";
 import { NextUIProvider, Container } from "@nextui-org/react";
 
@@ -27,6 +29,8 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
         <Container lg>
           <Component {...pageProps} className="global-class" />
         </Container>
+        <Footer />
+        <GotoTop />
       </div>
     </NextUIProvider>
   );
