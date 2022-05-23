@@ -26,3 +26,16 @@
 .credit {
   display: flex;
 }
+
+@media (max-width: 762px) {
+  .footer-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    & .credit {
+      flex-direction: column;
+    }
+  }
+}

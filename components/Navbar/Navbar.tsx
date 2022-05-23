@@ -19,18 +19,20 @@ const Navbar: FC = () => {
     >
       <Row justify="space-between" align="center">
         <div className={styles["Navbar-right-content"]}>
-          <Avatar
-            src="https://media.discordapp.net/attachments/914572068123721788/924219001180127292/bot.png?width=676&height=676"
-            size="md"
-          />
           <Link href="/home/discover">
-            <p>Home</p>
+            <Avatar
+              src="https://media.discordapp.net/attachments/914572068123721788/924219001180127292/bot.png?width=676&height=676"
+              size="md"
+            />
+          </Link>
+          <Link href="/home/discover">
+            <a>Home</a>
           </Link>
           <Link href="/">
-            <p>Favourite</p>
+            <a>Favourite</a>
           </Link>
           <Link href="/">
-            <p>Trending</p>
+            <a>Trending</a>
           </Link>
         </div>
 

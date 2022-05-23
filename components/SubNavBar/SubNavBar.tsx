@@ -39,10 +39,14 @@ const SubNavBar: FC<any> = (props) => {
           aria-label="search-bar"
         />
         <Link href="/home/discover">
-          <b>Discover</b>
+          <a>
+            <b>Discover</b>
+          </a>
         </Link>
         <Link href="/home/browse">
-          <b>Browse</b>
+          <a>
+            <b>Browse</b>
+          </a>
         </Link>
       </div>
       {props.children}

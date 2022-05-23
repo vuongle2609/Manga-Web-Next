@@ -1,0 +1,103 @@
+@import "/styles/globals.scss";
+
+.manga-content {
+  margin-top: 20px;
+}
+
+.manga-sub-content {
+  margin-top: 15px;
+  border: 1px solid $gray-color;
+  padding: 15px;
+
+  & p {
+    margin-top: 0;
+    text-align: justify;
+  }
+}
+
+.manga-cover {
+  background-size: cover;
+  width: 100%;
+  padding-top: 142.5%;
+  border-radius: 2px;
+  border: 1px solid $gray-color;
+}
+
+.manga-detail {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+
+  & div h1 {
+    overflow: hidden;
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: 3.4rem;
+  }
+
+  & div p {
+    font-size: 1.4rem;
+  }
+
+  & p {
+    margin-left: 0;
+    margin-top: auto;
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 1270px) {
+  .manga-detail {
+    margin-left: 8px;
+
+    & div h1 {
+      font-size: 2.4rem;
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .manga-detail {
+    margin-left: 6px;
+
+    & div h1 {
+      font-size: 2.2rem;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .manga-detail {
+    & div h1 {
+      font-size: 2rem;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .manga-detail {
+    margin-left: 5px;
+
+    & div h1 {
+      font-size: 1.8rem;
+    }
+
+    & div p {
+      font-size: 1rem;
+    }
+
+    & p {
+      font-size: 1rem;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .manga-detail {
+    & h1 {
+      font-size: 1.4rem;
+    }
+  }
+}

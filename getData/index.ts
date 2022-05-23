@@ -8,7 +8,7 @@ type contentRating = "safe" | "suggestive" | "erotica" | "pornographic"
 type includes = "cover_art" | "author" | "artist"
 
 interface mangaPropsType {
-    limit: number
+    limit?: number
     title?: string
     authors?: string[]
     artists?: string[]
@@ -31,7 +31,7 @@ interface mangaPropsType {
 
 // function add params base on option
 const handleAddParams: (url: string, params: any) => string = (url, params) => {
-    let apiReturn = url
+    let apiReturn = url + "?"
 
     // auto add params
     for (let item in params) {
@@ -69,6 +69,12 @@ export const getManga: (option: mangaPropsType) => any = async (option) => {
     return data
 }
 
+export const getMangaDetail: ({ id: string, option: mangaPropsType }) => any = async ({ id, option }) => {
+    const url = handleAddParams(apiUrls.manga() + "/" + id, option)
+    const data = await axios.get(url)
+    return data
+}
+
 interface coverPropsType {
     id: string
     data: any[]
@@ -89,3 +95,83 @@ export const getCover: (option: coverPropsType) => any = (option) => {
 
     return `https://${IMG_URL}/covers/${option.id}/${cover_art?.attributes?.fileName}${option.quality ? ".512.jpg" : ".256.jpg"}`
 }
+
+export const getDetail: (data: any) => any = (data) => {
+    const returnObj = {}
+    if (data.attributes.title) {
+        const title: any = Object.values(data.attributes.title)[0];
+        returnObj["title"] = title
+    }
+
+    if (data.attributes.altTitles) {
+        const subTitleObject: any = data.attributes.altTitles.find(
+            (item: any) =>
+                (data.attributes.title.en ? item["ja-ro"] : item["en"]) || item["ja"]
+        );
+        const subTitle: any = Object.values(subTitleObject)[0];
+        returnObj["subTitle"] = subTitle
+    }
+
+    const cover: string = getCover({
+        id: data.id,
+        data: data.relationships,
+    });
+    returnObj["cover"] = cover
+
+    let credit = "";
+    data.relationships.map((item: any, index: number) => {
+        const { type, attributes } = item;
+        if (type === "artist" || (type === "author" && attributes.name)) {
+            if (!credit.includes(attributes.name)) {
+                credit = credit + (index === 0 ? "" : ", ") + attributes.name;
+            }
+        }
+    });
+    returnObj["credit"] = credit
+
+    return returnObj
+}
+
+export const getDescription: (description: string) => any = (description) => {
+    const returnObj = {}
+    const text = description.split("---")
+    returnObj["description"] = text[0]
+
+    const objString = {}
+
+    let setKey = false
+    let setValue = false
+
+    let key = ""
+    let value = ""
+
+    for (let i = 0; i < description.length; i += 1) {
+        if (setKey && description[i] !== "]") {
+            key += description[i]
+        }
+
+        if (setValue && description[i] !== ")") {
+            value += description[i]
+        }
+
+        if (description[i] === "[")
+            setKey = true
+
+        if (description[i] === "]") {
+            setKey = false
+            objString[key] = null
+        }
+
+        if (description[i] === "(" && !setKey)
+            setValue = true
+
+        if (description[i] === ")" && !setKey) {
+            setValue = false
+            objString[key] = value
+            value = ""
+            key = ""
+        }
+    }
+
+    return objString
+} 

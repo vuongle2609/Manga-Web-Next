@@ -5,7 +5,7 @@ import SliderArticle from "components/Discover/SliderArticle/SliderArticle";
 import ColumnsArticle from "components/Discover/ColumnsArticle/ColumnsArticle";
 import SubNavBar from "components/SubNavBar/SubNavBar";
 import { GetServerSideProps } from "next";
-import { getManga } from "api/index";
+import { getManga } from "getData/index";
 
 const Discover: FC<any> = (props) => {
   const { sliderBigData, sliderArticle1Data, sliderArticle2Data } = props;
@@ -15,7 +15,7 @@ const Discover: FC<any> = (props) => {
       <SliderBig data={sliderBigData} />
       <SliderArticle data={sliderArticle1Data} label="Seasonal" />
 
-      <ColumnsArticle />
+      {/* <ColumnsArticle /> */}
 
       <SliderArticle data={sliderArticle2Data} label="Recently added" />
     </SubNavBar>

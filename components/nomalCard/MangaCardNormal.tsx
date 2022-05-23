@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Text } from "@nextui-org/react";
-import { getCover } from "api/index";
+import { getCover } from "getData/index";
 import Link from "next/link";
 import styles from "./MangaCardNomal.module.scss";
 
@@ -8,8 +8,8 @@ const MangaCardNormal: FC<any> = ({ data }) => {
   const title: any = Object.values(data.attributes.title)[0];
 
   return (
-    <Link href="/">
-      <span className={styles["manga-card-normal"]}>
+    <Link href={`/manga/${data.id}`}>
+      <a className={styles["manga-card-normal"]}>
         <div>
           <img
             src={`${getCover({
@@ -21,7 +21,7 @@ const MangaCardNormal: FC<any> = ({ data }) => {
           />
         </div>
         <Text size={18}>{title}</Text>
-      </span>
+      </a>
     </Link>
   );
 };

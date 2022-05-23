@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap");
+
 $white-color: #fff;
 $black-color: #000;
 $background-color: #121212;
@@ -7,5 +9,6 @@ $dark-gray-color: #2a2a2a;
 .container-global-class {
   :global(.global-class) {
     box-sizing: border-box;
+    // font-family: "Quicksand", sans-serif !important;
   }
 }

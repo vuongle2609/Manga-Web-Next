@@ -9,11 +9,17 @@ const ColumnsDivider: FC = () => {
 const ColumnsArticle: FC = () => {
   return (
     <Row className={styles["columns-article"]}>
-      <Col>sdfsd</Col>
-      <ColumnsDivider />
-      <Col>sfsdf</Col>
-      <ColumnsDivider />
-      <Col>fsdfds</Col>
+      <Col span={4}>
+        sdfsd
+      </Col>
+      {/* <ColumnsDivider /> */}
+      <Col span={4}>
+        sfsdf
+      </Col>
+      {/* <ColumnsDivider /> */}
+      <Col span={4}>
+        fsdfds
+      </Col>
     </Row>
   );
 };

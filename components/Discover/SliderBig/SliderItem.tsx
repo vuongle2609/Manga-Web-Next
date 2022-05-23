@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from "react";
 import { Text } from "@nextui-org/react";
-import { getCover } from "api/index";
+import { getCover } from "getData/index";
 import styles from "./SliderBig.module.scss";
 
 const SliderItem: FC<any> = ({ data }) => {
