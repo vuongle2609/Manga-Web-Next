@@ -11,10 +11,12 @@ const Manga: FC<any> = ({ data }) => {
 
   useEffect(() => {
     if (description.current !== null) {
-      description.current.innerHTML = data.attributes.description?.en;
+      description.current.innerHTML = getDescription(
+        data.attributes.description?.en
+      );
     }
 
-    console.log(getDescription(data.attributes.description?.en));
+    // console.log(getDescription(data.attributes.description?.en));
   }, []);
 
   return (

@@ -133,45 +133,13 @@ export const getDetail: (data: any) => any = (data) => {
 }
 
 export const getDescription: (description: string) => any = (description) => {
-    const returnObj = {}
-    const text = description.split("---")
-    returnObj["description"] = text[0]
+    let index = 0
+    const html =
+        description
+            .replace(/---/gmi, "<hr/>")
+            .replace(/\*\*/g, () => { index += 1; return index % 2 === 1 ? "<b>" : "</b><br>" })
+            .replace(/- \[(.*?)\]\((.*?)\)/g, (_: string, x: string, y: string) => `<a href="${y}" target="_blank" style="" class="link-desc">${x}</a>`)
+            .replace(/ \[(.*?)\]\((.*?)\)/g, (_: string, x: string, y: string) => `&nbsp;<a href="${y}" target="_blank" style="" class="link-desc-1">${x}</a>&nbsp;`)
 
-    const objString = {}
-
-    let setKey = false
-    let setValue = false
-
-    let key = ""
-    let value = ""
-
-    for (let i = 0; i < description.length; i += 1) {
-        if (setKey && description[i] !== "]") {
-            key += description[i]
-        }
-
-        if (setValue && description[i] !== ")") {
-            value += description[i]
-        }
-
-        if (description[i] === "[")
-            setKey = true
-
-        if (description[i] === "]") {
-            setKey = false
-            objString[key] = null
-        }
-
-        if (description[i] === "(" && !setKey)
-            setValue = true
-
-        if (description[i] === ")" && !setKey) {
-            setValue = false
-            objString[key] = value
-            value = ""
-            key = ""
-        }
-    }
-
-    return objString
+    return html
 } 

@@ -1,7 +1,8 @@
 import { FC, useEffect, useRef } from "react";
 import { Text } from "@nextui-org/react";
-import { getCover } from "getData/index";
+import { getCover, getDescription } from "getData/index";
 import styles from "./SliderBig.module.scss";
+import Link from "next/link";
 
 const SliderItem: FC<any> = ({ data }) => {
   const description = useRef<any>(null);
@@ -9,7 +10,9 @@ const SliderItem: FC<any> = ({ data }) => {
 
   useEffect(() => {
     if (description.current !== null) {
-      description.current.innerHTML = data.attributes.description?.en;
+      description.current.innerHTML = getDescription(
+        data.attributes.description?.en
+      );
     }
 
     imageCover.current.src = getCover({
@@ -23,22 +26,24 @@ const SliderItem: FC<any> = ({ data }) => {
 
   return (
     <>
-      <div className={styles["slider-item"]}>
-        <div>
-          <img
-            height={"100%"}
-            width={"auto"}
-            ref={imageCover}
-            alt={"Cover " + title}
-          />
+      <Link href={`/manga/${data.id}`}>
+        <div className={styles["slider-item"]}>
           <div>
-            <Text b h1>
-              {title}
-            </Text>
-            <Text ref={description}></Text>
+            <img
+              height={"100%"}
+              width={"auto"}
+              ref={imageCover}
+              alt={"Cover " + title}
+            />
+            <div>
+              <Text b h1>
+                {title}
+              </Text>
+              <Text ref={description}></Text>
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
     </>
   );
 };

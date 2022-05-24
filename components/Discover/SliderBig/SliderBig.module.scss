@@ -61,6 +61,8 @@
 .slider-item {
   padding-top: 57%;
   position: relative;
+  display: block;
+  cursor: pointer;
 
   & div {
     position: absolute;
