@@ -9,12 +9,13 @@ $dark-gray-color: #2a2a2a;
 .container-global-class {
   :global(.global-class) {
     box-sizing: border-box;
-    // font-family: "Quicksand", sans-serif !important;
   }
 }
 
-.link-desc {
+.link-desc,
+.link-name {
   display: list-item;
+  width: fit-content;
   margin-left: 20px;
   color: orange;
 
@@ -22,6 +23,11 @@ $dark-gray-color: #2a2a2a;
     color: black;
     font-size: 1.2em;
   }
+}
+
+.link-name {
+  color: #000;
+  margin-bottom: 4px;
 }
 
 .link-desc-1 {

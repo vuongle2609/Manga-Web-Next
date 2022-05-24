@@ -39,7 +39,7 @@ const SliderItem: FC<any> = ({ data }) => {
               <Text b h1>
                 {title}
               </Text>
-              <Text ref={description}></Text>
+              <Text ref={description} dangerouslySetInnerHTML={{ __html: "Hello" }}></Text>
             </div>
           </div>
         </div>

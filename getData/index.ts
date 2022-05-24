@@ -133,13 +133,42 @@ export const getDetail: (data: any) => any = (data) => {
 }
 
 export const getDescription: (description: string) => any = (description) => {
-    let index = 0
-    const html =
-        description
-            .replace(/---/gmi, "<hr/>")
-            .replace(/\*\*/g, () => { index += 1; return index % 2 === 1 ? "<b>" : "</b><br>" })
-            .replace(/- \[(.*?)\]\((.*?)\)/g, (_: string, x: string, y: string) => `<a href="${y}" target="_blank" style="" class="link-desc">${x}</a>`)
-            .replace(/ \[(.*?)\]\((.*?)\)/g, (_: string, x: string, y: string) => `&nbsp;<a href="${y}" target="_blank" style="" class="link-desc-1">${x}</a>&nbsp;`)
+    if (description) {
+        let index: number = 0
+        const html: string =
+            description
+                .replace(/---/g, "<hr/>")
+                .replace(/\*\*/g, () => { index += 1; return index % 2 === 1 ? "<b>" : "</b><br>" })
+                .replace(/- \[(.*?)\]\((.*?)\)/g, (_: string, x: string, y: string) => `<a href="${y}" target="_blank" style="" class="link-desc">${x}</a>`)
+                .replace(/ \[(.*?)\]\((.*?)\)/g, (_: string, x: string, y: string) => `&nbsp;<a href="${y}" target="_blank" style="" class="link-desc-1">${x}</a>&nbsp;`)
 
-    return html
-} 
+        return html
+    }
+
+    return "This manga doesn't have description yet"
+}
+
+export const getOtherNames: (nameObj: any[]) => any = (nameObj) => {
+    let liItems: string = ""
+
+    nameObj.forEach((item: any) => {
+        liItems += `<p class="link-name">${Object.values(item)[0]}</p>`
+    })
+
+    return liItems
+}
+
+export const copyToClipboard: (text: string) => any = (text) => {
+    if (!navigator.clipboard) {
+        // use old commandExec() way
+    } else {
+        navigator.clipboard.writeText(text).then(
+            function () {
+                alert("yeah!"); // success 
+            })
+            .catch(
+                function () {
+                    alert("err"); // error
+                });
+    }
+}

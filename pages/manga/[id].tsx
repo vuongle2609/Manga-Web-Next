@@ -1,38 +1,80 @@
-import { FC, useRef, useEffect } from "react";
+import { FC, useRef, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
-import { Grid, Text } from "@nextui-org/react";
+import { Grid, Text, Popover } from "@nextui-org/react";
 import styles from "styles/Manga.module.scss";
-import { getDetail, getMangaDetail, getDescription } from "getData/index";
+import {
+  getDetail,
+  getMangaDetail,
+  getDescription,
+  getOtherNames,
+} from "getData/index";
+import copy from "copy-text-to-clipboard";
+import moment from "moment";
 
 const Manga: FC<any> = ({ data }) => {
-  //   console.log(data);
+  console.log(data);
+  const [isOpen, setIsOpen] = useState(false);
   const description = useRef<any>(null);
+  const otherName = useRef<any>(null);
   const { title, subTitle, cover, credit } = getDetail(data);
 
+  const test = new Date(data.createdAt);
+  console.log("🚀 ~ file: [id].tsx ~ line 22 ~ test", test)
+  console.log(moment(test));
   useEffect(() => {
     if (description.current !== null) {
       description.current.innerHTML = getDescription(
-        data.attributes.description?.en
+        data.attributes.description.en
       );
     }
 
-    // console.log(getDescription(data.attributes.description?.en));
+    if (data.attributes.altTitles.length !== 0 && otherName.current !== null) {
+      otherName.current.innerHTML = getOtherNames(data.attributes.altTitles);
+    }
   }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 800);
+    }
+  }, [isOpen]);
 
   return (
     <>
       <div className={styles["manga-content"]}>
         <Grid.Container>
-          <Grid lg={2} md={4} xs={4}>
+          <Grid xl={2} lg={2} md={3} sm={3} xs={5}>
             <div
               className={styles["manga-cover"]}
               style={{ backgroundImage: `url(${cover})` }}
             ></div>
           </Grid>
-          <Grid lg={10} md={8} xs={8}>
+          <Grid xl={10} lg={10} md={9} sm={9} xs={7}>
             <div className={styles["manga-detail"]}>
               <div>
-                <Text h1>{title}</Text>
+                <Popover
+                  placement={"bottom"}
+                  isOpen={isOpen}
+                  onOpenChange={setIsOpen}
+                >
+                  <Popover.Trigger>
+                    <Text
+                      h1
+                      onClick={() => {
+                        copy(title);
+                      }}
+                    >
+                      {title}
+                    </Text>
+                  </Popover.Trigger>
+                  <Popover.Content>
+                    <Text css={{ p: "$6", color: "$success" }}>
+                      Copied to your clipboard
+                    </Text>
+                  </Popover.Content>
+                </Popover>
                 <Text>{subTitle}</Text>
               </div>
               <Text>{credit}</Text>
@@ -40,7 +82,53 @@ const Manga: FC<any> = ({ data }) => {
           </Grid>
         </Grid.Container>
         <div className={styles["manga-sub-content"]}>
-          <Text ref={description}></Text>
+          <Grid.Container>
+            <Grid
+              xl={2}
+              lg={2}
+              md={3}
+              sm={3}
+              xs={5}
+              css={{
+                display: "flex",
+                flexDirection: "column",
+                paddingRight: "$8",
+              }}
+            >
+              <Text size={20} b>
+                Create date
+              </Text>
+              <Text>{/* {moment(data.createdAt).toDate()} */}</Text>
+            </Grid>
+            <Grid
+              xl={10}
+              lg={10}
+              md={9}
+              sm={9}
+              xs={7}
+              css={{
+                display: "flex",
+                flexDirection: "column",
+                paddingLeft: "$1",
+              }}
+            >
+              <Text size={20} b>
+                Description
+              </Text>
+              <Text ref={description}></Text>
+              <hr />
+              {data.attributes.altTitles.length !== 0 ? (
+                <>
+                  <Text size={20} b>
+                    Other names
+                  </Text>
+                  <div ref={otherName}></div>
+                </>
+              ) : (
+                false
+              )}
+            </Grid>
+          </Grid.Container>
         </div>
       </div>
     </>

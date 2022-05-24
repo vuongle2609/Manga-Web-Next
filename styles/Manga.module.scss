@@ -6,12 +6,16 @@
 
 .manga-sub-content {
   margin-top: 15px;
+  border: none;
   border: 1px solid $gray-color;
   padding: 15px;
 
-  & p {
-    margin-top: 0;
-    text-align: justify;
+  & div {
+
+    & p {
+      margin-top: 0;
+      text-align: justify;
+    }
   }
 }
 
