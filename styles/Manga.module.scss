@@ -4,6 +4,12 @@
   margin-top: 20px;
 }
 
+.manga-tags {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .manga-sub-content {
   margin-top: 15px;
   border: none;
@@ -11,7 +17,6 @@
   padding: 15px;
 
   & div {
-
     & p {
       margin-top: 0;
       text-align: justify;

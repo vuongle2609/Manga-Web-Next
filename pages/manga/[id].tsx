@@ -1,5 +1,6 @@
 import { FC, useRef, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
+import Link from "next/link";
 import { Grid, Text, Popover } from "@nextui-org/react";
 import styles from "styles/Manga.module.scss";
 import {
@@ -7,6 +8,7 @@ import {
   getMangaDetail,
   getDescription,
   getOtherNames,
+  getCreditDetail,
 } from "getData/index";
 import copy from "copy-text-to-clipboard";
 import moment from "moment";
@@ -18,9 +20,8 @@ const Manga: FC<any> = ({ data }) => {
   const otherName = useRef<any>(null);
   const { title, subTitle, cover, credit } = getDetail(data);
 
-  const test = new Date(data.createdAt);
-  console.log("🚀 ~ file: [id].tsx ~ line 22 ~ test", test)
-  console.log(moment(test));
+  const { artistDetail, authorDetail } = getCreditDetail(data.relationships);
+
   useEffect(() => {
     if (description.current !== null) {
       description.current.innerHTML = getDescription(
@@ -81,6 +82,25 @@ const Manga: FC<any> = ({ data }) => {
             </div>
           </Grid>
         </Grid.Container>
+        <div className={styles["manga-tags"]}>
+          {data.attributes.tags.length !== 0
+            ? data.attributes.tags.map((item: any) => (
+                <Link href={`/tag/${item.id}`}>
+                  <a>
+                    <Text
+                      css={{
+                        color: "Orange",
+                        paddingRight: "$8",
+                        fontWeight: "$bold",
+                      }}
+                    >
+                      {item.attributes.name.en}
+                    </Text>
+                  </a>
+                </Link>
+              ))
+            : false}
+        </div>
         <div className={styles["manga-sub-content"]}>
           <Grid.Container>
             <Grid
@@ -96,9 +116,54 @@ const Manga: FC<any> = ({ data }) => {
               }}
             >
               <Text size={20} b>
+                Author
+              </Text>
+              {authorDetail.length !== 0 ? (
+                authorDetail.map((item: any) => (
+                  <Link href={`/author/${item.id}`}>
+                    <a>
+                      <Text css={{ color: "Orange" }}>
+                        {item.attributes.name}
+                      </Text>
+                    </a>
+                  </Link>
+                ))
+              ) : (
+                <Text>Not update yet</Text>
+              )}
+              <hr />
+              <Text size={20} b>
+                Artist
+              </Text>
+              {artistDetail.length !== 0 ? (
+                artistDetail.map((item: any) => (
+                  <Link href={`/author/${item.id}`}>
+                    <a>
+                      <Text css={{ color: "Orange" }}>
+                        {item.attributes.name}
+                      </Text>
+                    </a>
+                  </Link>
+                ))
+              ) : (
+                <Text>Not update yet</Text>
+              )}
+              <hr />
+              <Text size={20} b>
                 Create date
               </Text>
-              <Text>{/* {moment(data.createdAt).toDate()} */}</Text>
+              <Text>{moment(data.attributes.createdAt).fromNow()}</Text>
+              <hr />
+              <Text size={20} b>
+                Last update
+              </Text>
+              <Text>{moment(data.attributes.updatedAt).fromNow()}</Text>
+              <hr />
+              <Text size={20} b>
+                Status
+              </Text>
+              <Text>{data.attributes.status.toUpperCase()}</Text>
+              <hr />
             </Grid>
             <Grid
               xl={10}

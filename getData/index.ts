@@ -106,7 +106,7 @@ export const getDetail: (data: any) => any = (data) => {
     if (data.attributes.altTitles) {
         const subTitleObject: any = data.attributes.altTitles.find(
             (item: any) =>
-                (data.attributes.title.en ? item["ja-ro"] : item["en"]) || item["ja"]
+                (data.attributes.title.en ? item["ja-ro"] : item["en"]) || item["ja"] || true
         );
         const subTitle: any = Object.values(subTitleObject)[0];
         returnObj["subTitle"] = subTitle
@@ -128,6 +128,26 @@ export const getDetail: (data: any) => any = (data) => {
         }
     });
     returnObj["credit"] = credit
+
+    return returnObj
+}
+
+export const getCreditDetail: (relationships: any[]) => { artistDetail: any[], authorDetail: any[] } = (relationships) => {
+    const returnObj = {
+        artistDetail: [],
+        authorDetail: []
+    }
+
+    relationships.map((item: any) => {
+        const { type } = item;
+        if (type === "artist") {
+            returnObj["artistDetail"].push(item)
+        }
+
+        if (type === "author") {
+            returnObj["authorDetail"].push(item)
+        }
+    });
 
     return returnObj
 }
