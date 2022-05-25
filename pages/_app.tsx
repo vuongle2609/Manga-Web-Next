@@ -9,7 +9,7 @@ import Footer from "components/Footer/Footer";
 import GotoTop from "components/GotoTop/GotoTop";
 import { FC, useEffect } from "react";
 import { NextUIProvider, Container } from "@nextui-org/react";
-import { theme } from "theme/theme";
+import { theme, media } from "theme/theme";
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   useEffect(() => {

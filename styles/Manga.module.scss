@@ -57,6 +57,10 @@
   }
 }
 
+.divider {
+  display: none;
+}
+
 @media (max-width: 1270px) {
   .manga-detail {
     margin-left: 8px;
@@ -74,6 +78,27 @@
     & div h1 {
       font-size: 2.2rem;
     }
+  }
+}
+
+@media (max-width: 959px) {
+  .manga-sub-content {
+    & div {
+      & div:first-child {
+        & hr {
+          display: none !important;
+        }
+      }
+    }
+  }
+
+  .content-child {
+    padding-right: 2rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .divider {
+    display: block;
   }
 }
 

@@ -84,8 +84,8 @@ const Manga: FC<any> = ({ data }) => {
         </Grid.Container>
         <div className={styles["manga-tags"]}>
           {data.attributes.tags.length !== 0
-            ? data.attributes.tags.map((item: any) => (
-                <Link href={`/tag/${item.id}`}>
+            ? data.attributes.tags.map((item: any, index: number) => (
+                <Link href={`/tag/${item.id}`} key={index}>
                   <a>
                     <Text
                       css={{
@@ -102,75 +102,116 @@ const Manga: FC<any> = ({ data }) => {
             : false}
         </div>
         <div className={styles["manga-sub-content"]}>
-          <Grid.Container>
+          <Grid.Container
+            css={{
+              flexDirection: "row",
+              "@xsMax": {
+                flexDirection: "column",
+              },
+              "@smMax": {
+                flexDirection: "row",
+              },
+              "@mdMax": {
+                flexDirection: "row",
+              },
+              "@lgMax": {
+                flexDirection: "row",
+              },
+            }}
+          >
             <Grid
               xl={2}
               lg={2}
               md={3}
               sm={3}
-              xs={5}
+              xs={12}
               css={{
                 display: "flex",
                 flexDirection: "column",
-                paddingRight: "$8",
+
+                "@xsMax": {
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                },
+                "@smMax": {
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                },
+                "@mdMax": {
+                  paddingRight: "$8",
+                },
+                "@lgMax": {
+                  paddingRight: "$8",
+                },
               }}
             >
-              <Text size={20} b>
-                Author
-              </Text>
-              {authorDetail.length !== 0 ? (
-                authorDetail.map((item: any) => (
-                  <Link href={`/author/${item.id}`}>
-                    <a>
-                      <Text css={{ color: "Orange" }}>
-                        {item.attributes.name}
-                      </Text>
-                    </a>
-                  </Link>
-                ))
-              ) : (
-                <Text>Not update yet</Text>
-              )}
+              <div className={styles["content-child"]}>
+                <Text size={20} b>
+                  Author
+                </Text>
+                {authorDetail.length !== 0 ? (
+                  authorDetail.map((item: any, index: number) => (
+                    <Link href={`/author/${item.id}`} key={index}>
+                      <a>
+                        <Text css={{ color: "Orange" }}>
+                          {item.attributes.name}
+                        </Text>
+                      </a>
+                    </Link>
+                  ))
+                ) : (
+                  <Text>Not update yet</Text>
+                )}
+              </div>
               <hr />
-              <Text size={20} b>
-                Artist
-              </Text>
-              {artistDetail.length !== 0 ? (
-                artistDetail.map((item: any) => (
-                  <Link href={`/author/${item.id}`}>
-                    <a>
-                      <Text css={{ color: "Orange" }}>
-                        {item.attributes.name}
-                      </Text>
-                    </a>
-                  </Link>
-                ))
-              ) : (
-                <Text>Not update yet</Text>
-              )}
+              <div className={styles["content-child"]}>
+                <Text size={20} b>
+                  Artist
+                </Text>
+                {artistDetail.length !== 0 ? (
+                  artistDetail.map((item: any, index: number) => (
+                    <Link href={`/author/${item.id}`} key={index}>
+                      <a>
+                        <Text css={{ color: "Orange" }}>
+                          {item.attributes.name}
+                        </Text>
+                      </a>
+                    </Link>
+                  ))
+                ) : (
+                  <Text>Not update yet</Text>
+                )}
+              </div>
               <hr />
-              <Text size={20} b>
-                Create date
-              </Text>
-              <Text>{moment(data.attributes.createdAt).fromNow()}</Text>
+              <div className={styles["content-child"]}>
+                <Text size={20} b>
+                  Create date
+                </Text>
+                <Text>{moment(data.attributes.createdAt).fromNow()}</Text>
+              </div>
               <hr />
-              <Text size={20} b>
-                Last update
-              </Text>
-              <Text>{moment(data.attributes.updatedAt).fromNow()}</Text>
+              <div className={styles["content-child"]}>
+                <Text size={20} b>
+                  Last update
+                </Text>
+                <Text>{moment(data.attributes.updatedAt).fromNow()}</Text>
+              </div>
               <hr />
-              <Text size={20} b>
-                Status
-              </Text>
-              <Text>{data.attributes.status.toUpperCase()}</Text>
+              <div className={styles["content-child"]}>
+                <Text size={20} b>
+                  Status
+                </Text>
+                <Text>{data.attributes.status.toUpperCase()}</Text>
+              </div>
               <hr />
             </Grid>
+            <hr className={styles["divider"]} />
             <Grid
               xl={10}
               lg={10}
               md={9}
               sm={9}
-              xs={7}
+              xs={12}
               css={{
                 display: "flex",
                 flexDirection: "column",
