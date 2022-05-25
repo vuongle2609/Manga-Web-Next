@@ -59,6 +59,28 @@
 
 .divider {
   display: none;
+  width: 100%;
+  border-top: 1px solid $gray-color;
+  margin: 6px 0;
+}
+
+.link-others {
+  display: flex;
+  flex-wrap: wrap;
+
+  & a {
+    margin-right: 0.6rem;
+    margin-bottom: 0.6rem;
+    padding: 3px 8px;
+    display: flex;
+    border: 1px solid $gray-color;
+    align-items: center;
+    justify-self: center;
+
+    & b {
+      margin: 0;
+    }
+  }
 }
 
 @media (max-width: 1270px) {
@@ -94,7 +116,7 @@
 
   .content-child {
     padding-right: 2rem;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.1rem;
   }
 
   .divider {

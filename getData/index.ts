@@ -129,6 +129,72 @@ export const getDetail: (data: any) => any = (data) => {
     });
     returnObj["credit"] = credit
 
+    if (data.attributes.links) {
+        const links = []
+        for (let key in data.attributes.links) {
+            let name
+            let link
+            switch (key) {
+                case "al":
+                    name = "AniList"
+                    link = "https://anilist.co/manga/" + data.attributes.links[key]
+                    break;
+                case "ap":
+                    name = "Anime-Planet"
+                    link = "https://www.anime-planet.com/manga/" + data.attributes.links[key]
+                    break;
+                case "bw":
+                    name = "Book Walker"
+                    link = "https://bookwalker.jp/" + data.attributes.links[key]
+                    break;
+                case "mu":
+                    name = "Manga Updates"
+                    link = "https://www.mangaupdates.com/series.html?id=" + data.attributes.links[key]
+                    break;
+                case "nu":
+                    name = "Novel Updates"
+                    link = "https://www.novelupdates.com/series/" + data.attributes.links[key]
+                    break;
+                case "kt":
+                    name = "Kitsu"
+                    link = "https://kitsu.io/api/edge/manga/" + data.attributes.links[key]
+                    break;
+                case "amz":
+                    name = "Amazon"
+                    link = data.attributes.links[key]
+                    break;
+                case "ebj":
+                    name = "eBook Japan"
+                    link = data.attributes.links[key]
+                    break;
+                case "mal":
+                    name = "My Anime List"
+                    link = "https://myanimelist.net/manga/" + data.attributes.links[key]
+                    break;
+                case "cdj":
+                    name = "CD Japan"
+                    link = data.attributes.links[key]
+                    break;
+                case "raw":
+                    name = "Offical Raw"
+                    link = data.attributes.links[key]
+                    break;
+                case "engtl":
+                    name = "Offical English"
+                    link = data.attributes.links[key]
+                    break;
+                default:
+                    name = key
+                    link = data.attributes.links[key]
+            }
+            links.push({
+                name,
+                link
+            })
+        }
+        returnObj["links"] = links
+    }
+
     return returnObj
 }
 
