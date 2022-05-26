@@ -30,7 +30,7 @@ interface mangaPropsType {
 }
 
 // function add params base on option
-const handleAddParams: (url: string, params: any) => string = (url, params) => {
+export const handleAddParams: (url: string, params: any) => string = (url, params) => {
     let apiReturn = url + "?"
 
     // auto add params
@@ -72,6 +72,14 @@ export const getManga: (option: mangaPropsType) => any = async (option) => {
 export const getMangaDetail: ({ id: string, option: mangaPropsType }) => any = async ({ id, option }) => {
     const url = handleAddParams(apiUrls.manga() + "/" + id, option)
     const data = await axios.get(url)
+    return data
+}
+
+export const getCovers: ({ id: string, option: any }) => any = async ({ id, option }) => {
+    const url = handleAddParams(apiUrls.manga() + "/" + id, option)
+    const res = await fetch(url)
+    const data = await res.json()
+
     return data
 }
 

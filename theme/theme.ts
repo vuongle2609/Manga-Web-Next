@@ -5,6 +5,12 @@ export const theme = createTheme({
     theme: {
         fonts: {
             sans: "Quicksand, sans"
-        }
+        },
+        colors: {
+            // brand colors
+            primary: '#fca815',
+            grayColor: '#8a8a8a'
+        },
     }
+
 });
