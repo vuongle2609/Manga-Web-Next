@@ -7,9 +7,18 @@ const nextConfig = {
         source: '/',
         destination: '/home/discover',
         permanent: true,
-      },
+      }
     ]
   },
+
+  async rewrites() {
+    return [
+      {
+        source: '/mangaapi',
+        destination: "https://api.mangadex.org/manga",
+      },
+    ];
+  }
 }
 
 module.exports = nextConfig

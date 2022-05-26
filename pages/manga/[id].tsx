@@ -19,10 +19,7 @@ const fetcher: (any) => any = (...config) =>
 
 const Manga: FC<any> = ({ data }) => {
   // console.log(data);
-  const res = useSWR(
-    "https://api.mangadex.org/manga/6670ee28-f26d-4b61-b49c-d71149cd5a6e/feed?limit=100&contentRating%5B%5D=safe&contentRating%5B%5D=suggestive&contentRating%5B%5D=erotica&includeFutureUpdates=1&order%5BcreatedAt%5D=asc&order%5BupdatedAt%5D=asc&order%5BpublishAt%5D=asc&order%5BreadableAt%5D=asc&order%5Bvolume%5D=asc&order%5Bchapter%5D=asc",
-    fetcher
-  );
+  const res = useSWR("/mangaapi", fetcher);
   console.log("🚀 ~ file: [id].tsx ~ line 23 ~ data", res.data);
   console.log("🚀 ~ file: [id].tsx ~ line 23 ~ data", res.error);
 
