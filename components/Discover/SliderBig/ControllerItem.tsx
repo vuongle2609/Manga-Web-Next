@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { getCover } from "getData/index";
+import { getCover } from "data/handleData";
 import styles from "./SliderBig.module.scss";
 
 const ControllerItem: FC<any> = ({ data, index, slider }) => {

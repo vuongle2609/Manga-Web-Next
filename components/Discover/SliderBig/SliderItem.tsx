@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from "react";
 import { Text } from "@nextui-org/react";
-import { getCover, getDescription } from "getData/index";
+import { getCover, getDescription } from "data/handleData";
 import styles from "./SliderBig.module.scss";
 import Link from "next/link";
 

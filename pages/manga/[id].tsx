@@ -3,23 +3,33 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { Grid, Text, Popover } from "@nextui-org/react";
 import styles from "styles/Manga.module.scss";
+import { getMangaDetail } from "data/getData";
 import {
   getDetail,
-  getMangaDetail,
   getDescription,
   getOtherNames,
   getCreditDetail,
-} from "getData/index";
+} from "data/handleData";
 import copy from "copy-text-to-clipboard";
 import moment from "moment";
+import useSWR from "swr";
+
+const fetcher: (any) => any = (...config) =>
+  fetch(...config).then((res) => res.json());
 
 const Manga: FC<any> = ({ data }) => {
-  console.log(data);
+  // console.log(data);
+  const res = useSWR(
+    "https://api.mangadex.org/manga/6670ee28-f26d-4b61-b49c-d71149cd5a6e/feed?limit=100&contentRating%5B%5D=safe&contentRating%5B%5D=suggestive&contentRating%5B%5D=erotica&includeFutureUpdates=1&order%5BcreatedAt%5D=asc&order%5BupdatedAt%5D=asc&order%5BpublishAt%5D=asc&order%5BreadableAt%5D=asc&order%5Bvolume%5D=asc&order%5Bchapter%5D=asc",
+    fetcher
+  );
+  console.log("🚀 ~ file: [id].tsx ~ line 23 ~ data", res.data);
+  console.log("🚀 ~ file: [id].tsx ~ line 23 ~ data", res.error);
+
   const [isOpen, setIsOpen] = useState(false);
   const description = useRef<any>(null);
   const otherName = useRef<any>(null);
   const { title, subTitle, cover, credit, links } = getDetail(data);
-  console.log("🚀 ~ file: [id].tsx ~ line 22 ~ links", links);
 
   const { artistDetail, authorDetail } = getCreditDetail(data.relationships);
 
@@ -282,13 +292,22 @@ const Manga: FC<any> = ({ data }) => {
               }}
             >
               <div className={styles["content-child"]}>
-                <Text size={20} b css={{ marginBottom: "$2", display: "block" }}>
+                <Text
+                  size={20}
+                  b
+                  css={{ marginBottom: "$2", display: "block" }}
+                >
                   Links
                 </Text>
                 <div className={styles["link-others"]}>
                   {links.length !== 0 ? (
                     links.map((item: any, index: number) => (
-                      <a href={item.link} key={index} target="_blank">
+                      <a
+                        href={item.link}
+                        key={index}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
                         <Text css={{ color: "Orange" }} b>
                           {item.name}
                         </Text>
