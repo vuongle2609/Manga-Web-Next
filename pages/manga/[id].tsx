@@ -12,16 +12,16 @@ import {
 } from "data/handleData";
 import copy from "copy-text-to-clipboard";
 import moment from "moment";
-import useSWR from "swr";
+// import useSWR from "swr";
 
-const fetcher: (any) => any = (...config) =>
-  fetch(...config).then((res) => res.json());
+// const fetcher: (any) => any = (...config) =>
+//   fetch(...config).then((res) => res.json());
 
 const Manga: FC<any> = ({ data }) => {
-  // console.log(data);
-  const res = useSWR("/mangaapi", fetcher);
-  console.log("🚀 ~ file: [id].tsx ~ line 23 ~ data", res.data);
-  console.log("🚀 ~ file: [id].tsx ~ line 23 ~ data", res.error);
+  // // console.log(data);
+  // const res = useSWR("/mangaapi", fetcher);
+  // console.log("🚀 ~ file: [id].tsx ~ line 23 ~ data", res.data);
+  // console.log("🚀 ~ file: [id].tsx ~ line 23 ~ data", res.error);
 
   const [isOpen, setIsOpen] = useState(false);
   const description = useRef<any>(null);
