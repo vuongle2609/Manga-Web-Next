@@ -44,20 +44,19 @@ const handleAddParams: (url: string, params: any) => string = (url, params) => {
                 // handle generate queries are array
                 let stringArray = ''
                 params[item].forEach((itemArray: string) => {
-                    stringArray = stringArray + item + "%5B%5D=" + itemArray + "&"
+                    stringArray = stringArray + item + "[]=" + itemArray + "&"
                 })
                 apiReturn = apiReturn + stringArray
             } else if (params[item] !== null) {
                 // handle generate queries are object
                 let stringObj = ''
                 for (let oItem in params[item]) {
-                    stringObj = stringObj + item + "%5B" + oItem + "%5D=" + params[item][oItem] + "&"
+                    stringObj = stringObj + item + "[" + oItem + "]=" + params[item][oItem] + "&"
                 }
                 apiReturn = apiReturn + stringObj
             }
         }
     }
-
 
     return apiReturn
 }
