@@ -74,14 +74,6 @@ export const getMangaDetail: ({ id: string, option: mangaPropsType }) => any = a
     return data
 }
 
-export const getCovers: ({ id: string, option: any }) => any = async ({ id, option }) => {
-    const url = handleAddParams(apiUrls.manga() + "/" + id, option)
-    const res = await fetch(url)
-    const data = await res.json()
-
-    return data
-}
-
 export const copyToClipboard: (text: string) => any = (text) => {
     if (!navigator.clipboard) {
         // use old commandExec() way
