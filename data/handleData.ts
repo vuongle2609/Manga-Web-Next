@@ -21,6 +21,16 @@ export const getCover: (option: coverPropsType) => any = (option) => {
     return `https://${IMG_URL}/covers/${option.id}/${cover_art?.attributes?.fileName}${option.quality ? ".512.jpg" : ".256.jpg"}`
 }
 
+interface singleCoverPropsType {
+    id: string
+    fileName: string
+    quality?: boolean
+}
+
+export const getSingleCover: (option: singleCoverPropsType) => any = (option) => {
+    return `https://${IMG_URL}/covers/${option.id}/${option.fileName}${option.quality ? ".512.jpg" : ".256.jpg"}`
+}
+
 export const getDetail: (data: any) => any = (data) => {
     const returnObj = {}
     if (data.attributes.title) {

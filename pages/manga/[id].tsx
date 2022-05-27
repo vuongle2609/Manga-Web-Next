@@ -14,6 +14,7 @@ import copy from "copy-text-to-clipboard";
 import MangaInfo from "components/Manga/MangaInfo/MangaInfo";
 import MangaArt from "components/Manga/MangaArt/MangaArt";
 import MangaRelated from "components/Manga/MangaRelated/MangaRelated";
+import Cover from "components/Manga/Cover/Cover";
 
 const Manga: FC<any> = ({ data }) => {
   console.log(data);
@@ -49,10 +50,7 @@ const Manga: FC<any> = ({ data }) => {
       <div className={styles["manga-content"]}>
         <Grid.Container>
           <Grid xl={2} lg={2} md={3} sm={3} xs={5}>
-            <div
-              className={styles["manga-cover"]}
-              style={{ backgroundImage: `url(${cover})` }}
-            ></div>
+            <Cover coverUrl={cover} />
           </Grid>
           <Grid xl={10} lg={10} md={9} sm={9} xs={7}>
             <div className={styles["manga-detail"]}>
@@ -126,12 +124,7 @@ const Manga: FC<any> = ({ data }) => {
           />
         )}
         {displayContent === 1 && <MangaRelated styles={styles} data={data} />}
-        {displayContent === 2 && (
-          <MangaArt
-            styles={styles}
-            mangaData={data}
-          />
-        )}
+        {displayContent === 2 && <MangaArt styles={styles} mangaData={data} />}
       </div>
     </>
   );

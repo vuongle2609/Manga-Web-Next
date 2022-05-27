@@ -1,0 +1,9 @@
+@import "/styles/globals.scss";
+
+.manga-cover {
+  background-size: cover;
+  width: 100%;
+  padding-top: 142.5%;
+  border-radius: 2px;
+  border: 1px solid $gray-color;
+}
