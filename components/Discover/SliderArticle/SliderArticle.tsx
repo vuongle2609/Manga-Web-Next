@@ -107,7 +107,9 @@ const SliderArticle: FC<propsType> = ({ data, label }) => {
         className={styles["slider-article-slider"]}
       >
         {data.map((item: any, index: number) => (
-          <MangaCardNormal key={item.id + index} data={item} index={index} />
+          <div className={styles["manga-card-slider"]}>
+            <MangaCardNormal key={item.id + index} data={item} />
+          </div>
         ))}
       </Slider>
     </div>
