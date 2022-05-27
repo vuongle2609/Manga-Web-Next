@@ -17,6 +17,10 @@ const nextConfig = {
         source: '/mangaapi',
         destination: "https://api.mangadex.org/manga",
       },
+      {
+        source: '/mangacover',
+        destination: "https://api.mangadex.org/cover",
+      },
     ];
   }
 }

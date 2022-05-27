@@ -3,4 +3,5 @@ export const IMG_URL = "mangadex.dvkn.link"
 
 export const apiUrls = {
     manga: () => '/manga',
+    covers: () => '/cover'
 }
