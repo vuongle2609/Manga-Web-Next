@@ -1,4 +1,5 @@
 import { IMG_URL } from 'configs/api'
+import _ from "lodash"
 
 interface coverPropsType {
     id: string
@@ -177,4 +178,103 @@ export const getOtherNames: (nameObj: any[]) => any = (nameObj) => {
     })
 
     return liItems
+}
+
+export const getRelated: (relationships: any[]) => any = (relationships) => {
+    const enumRelated: string[] = [
+        "monochrome",
+        "colored",
+        "preserialization",
+        "serialization",
+        "prequel",
+        "sequel",
+        "main_story",
+        "side_story",
+        "adapted_from",
+        "spin_off",
+        "based_on",
+        "doujinshi",
+        "same_franchise",
+        "shared_universe",
+        "alternate_story",
+        "alternate_version"
+    ]
+
+    const filtedArr: any[] = relationships.filter((item: any) => enumRelated.includes(item.related))
+
+    // const groupbyObject = _.groupBy(filtedArr, (item: any) => item.related)
+
+    const groupbyObject: any[] = []
+
+    filtedArr.forEach((item: any) => {
+        const findItem = groupbyObject.find((findItem: any) => findItem.listName === item.related)
+        console.log("🚀 ~ file: handleData.ts ~ line 211 ~ filtedArr.forEach ~ findItem", findItem)
+
+        if (!findItem) {
+            let relatedTitle: string
+
+            switch (item.related) {
+                case "monochrome":
+                    relatedTitle = "MonoChrome"
+                    break;
+                case "colored":
+                    relatedTitle = "Colored"
+                    break;
+                case "preserialization":
+                    relatedTitle = "Preserialization"
+                    break;
+                case "serialization":
+                    relatedTitle = "Serialization"
+                    break;
+                case "prequel":
+                    relatedTitle = "Prequel"
+                    break;
+                case "sequel":
+                    relatedTitle = "Sequel"
+                    break;
+                case "main_story":
+                    relatedTitle = "Main story"
+                    break;
+                case "side_story":
+                    relatedTitle = "Side story"
+                    break;
+                case "adapted_from":
+                    relatedTitle = "Adapted from"
+                    break;
+                case "spin_off":
+                    relatedTitle = "spin-off"
+                    break;
+                case "based_on":
+                    relatedTitle = "Based on"
+                    break;
+                case "doujinshi":
+                    relatedTitle = "Doujinshi"
+                    break;
+                case "same_franchise":
+                    relatedTitle = "Same Franchise"
+                    break;
+                case "shared_universe":
+                    relatedTitle = "Shared universe"
+                    break;
+                case "alternate_story":
+                    relatedTitle = "Alternate story"
+                    break;
+                case "alternate_version":
+                    relatedTitle = "Alternate version"
+                    break;
+                default:
+                    relatedTitle = "Unknown"
+            }
+
+            groupbyObject.push({
+                listName: relatedTitle,
+                listItems: [item]
+            })
+        }
+        else {
+            findItem.listItems.push(item)
+        }
+    })
+
+    return groupbyObject
 }

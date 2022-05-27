@@ -17,7 +17,7 @@ import MangaRelated from "components/Manga/MangaRelated/MangaRelated";
 import Cover from "components/Manga/Cover/Cover";
 
 const Manga: FC<any> = ({ data }) => {
-  console.log(data);
+  // console.log(data);
   const [isOpen, setIsOpen] = useState(false);
   const [displayContent, setDisplayContent] = useState<number>(0);
   const description = useRef<any>(null);
@@ -123,7 +123,7 @@ const Manga: FC<any> = ({ data }) => {
             otherName={otherName}
           />
         )}
-        {displayContent === 1 && <MangaRelated styles={styles} data={data} />}
+        {displayContent === 1 && <MangaRelated styles={styles} mangaData={data} />}
         {displayContent === 2 && <MangaArt styles={styles} mangaData={data} />}
       </div>
     </>

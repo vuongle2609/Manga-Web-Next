@@ -34,29 +34,15 @@ const MangaArt: FC<PropsType> = ({ styles, mangaData }) => {
     return Number(a.attributes.volume) - Number(b.attributes.volume);
   });
 
-  console.log(Math.ceil(data?.total / 12));
-
   return (
     <div className={styles["manga-sub-content"]}>
       <Grid.Container
         css={{
           flexDirection: "row",
-          "@xsMax": {
-            flexDirection: "column",
-          },
-          "@smMax": {
-            flexDirection: "row",
-          },
-          "@mdMax": {
-            flexDirection: "row",
-          },
-          "@lgMax": {
-            flexDirection: "row",
-          },
         }}
       >
         {data &&
-          dataArr.map((item: any) => (
+          dataArr.map((item: any, index: number) => (
             <Grid
               xl={2}
               lg={2}
@@ -68,6 +54,7 @@ const MangaArt: FC<PropsType> = ({ styles, mangaData }) => {
                 flexDirection: "column",
                 padding: "$3 $3",
               }}
+              key={index}
             >
               <Cover
                 coverUrl={getSingleCover({

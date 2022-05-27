@@ -4,7 +4,15 @@ import { getCover } from "data/handleData";
 import Link from "next/link";
 import styles from "./MangaCardNomal.module.scss";
 
-const MangaCardNormal: FC<any> = ({ data }) => {
+interface propTypes {
+  data: {
+    id: string;
+    relationships: any[];
+    attributes: any;
+  };
+}
+
+const MangaCardNormal: FC<propTypes> = ({ data }) => {
   const title: any = Object.values(data.attributes.title)[0];
 
   return (
