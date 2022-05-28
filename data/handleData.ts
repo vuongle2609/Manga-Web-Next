@@ -1,5 +1,4 @@
 import { IMG_URL } from 'configs/api'
-import _ from "lodash"
 
 interface coverPropsType {
     id: string

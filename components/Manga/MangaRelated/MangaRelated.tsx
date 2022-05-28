@@ -39,6 +39,8 @@ const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
 
   const { data, error } = res;
 
+  console.log(data);
+
   return (
     <div className={styles["manga-sub-content"]}>
       <Grid.Container
@@ -64,14 +66,13 @@ const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
               <MangaCardNormal data={item} />
             </Grid>
           ))
+        ) : relatedLink.length === 0 ? (
+          <div className={styles["manga-fullwidth"]}>
+            <Text>There&apos;s no related</Text>
+          </div>
         ) : (
           <div className={styles["manga-fullwidth"]}>
             <Loading color="warning" type="points" />
-          </div>
-        )}
-        {data?.data?.length === 0 && (
-          <div className={styles["manga-fullwidth"]}>
-            <Text>There&apos;s no art</Text>
           </div>
         )}
         {error && (

@@ -45,6 +45,10 @@ const Manga: FC<any> = ({ data }) => {
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    setDisplayContent(0);
+  }, [data]);
+
   return (
     <>
       <div className={styles["manga-content"]}>
@@ -123,7 +127,9 @@ const Manga: FC<any> = ({ data }) => {
             otherName={otherName}
           />
         )}
-        {displayContent === 1 && <MangaRelated styles={styles} mangaData={data} />}
+        {displayContent === 1 && (
+          <MangaRelated styles={styles} mangaData={data} />
+        )}
         {displayContent === 2 && <MangaArt styles={styles} mangaData={data} />}
       </div>
     </>
