@@ -67,17 +67,29 @@ const MangaArt: FC<PropsType> = ({ styles, mangaData }) => {
             </Grid>
           ))
         ) : dataArr?.length === 0 ? (
-          <div className={styles["manga-fullwidth"]}>
+          <div
+            className={
+              styles["manga-fullwidth"] + " " + styles["manga-plusheight"]
+            }
+          >
             <Text>There&apos;s no art</Text>
           </div>
         ) : (
-          <div className={styles["manga-fullwidth"]}>
+          <div
+            className={
+              styles["manga-fullwidth"] + " " + styles["manga-plusheight"]
+            }
+          >
             <Loading color="warning" type="points" />
           </div>
         )}
 
         {error && (
-          <div className={styles["manga-fullwidth"]}>
+          <div
+            className={
+              styles["manga-fullwidth"] + " " + styles["manga-plusheight"]
+            }
+          >
             <Text>Couldn&apos;t load</Text>
           </div>
         )}

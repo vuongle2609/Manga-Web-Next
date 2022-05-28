@@ -67,17 +67,29 @@ const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
             </Grid>
           ))
         ) : relatedLink.length === 0 ? (
-          <div className={styles["manga-fullwidth"]}>
+          <div
+            className={
+              styles["manga-fullwidth"] + " " + styles["manga-plusheight"]
+            }
+          >
             <Text>There&apos;s no related</Text>
           </div>
         ) : (
-          <div className={styles["manga-fullwidth"]}>
+          <div
+            className={
+              styles["manga-fullwidth"] + " " + styles["manga-plusheight"]
+            }
+          >
             <Loading color="warning" type="points" />
           </div>
         )}
         {error && (
-          <div className={styles["manga-fullwidth"]}>
-            <Text>Couldn&apos;t load</Text>
+          <div
+            className={
+              styles["manga-fullwidth"] + " " + styles["manga-plusheight"]
+            }
+          >
+            <Text>Couldn&apos;t load your content</Text>
           </div>
         )}
       </Grid.Container>
