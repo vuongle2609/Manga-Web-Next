@@ -73,7 +73,7 @@ const MangaArt: FC<PropsType> = ({ styles, mangaData }) => {
         )}
         {dataArr?.length === 0 && (
           <div className={styles["manga-fullwidth"]}>
-            <Text>There's no art</Text>
+            <Text>There&apos;s no art</Text>
           </div>
         )}
         {error && (
