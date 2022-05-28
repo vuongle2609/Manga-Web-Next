@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Grid, Pagination } from "@nextui-org/react";
+import { Grid, Loading, Pagination, Text } from "@nextui-org/react";
 import { getRelatedArr } from "data/handleData";
 import { handleAddParams } from "data/getData";
 import MangaCardNormal from "components/nomalCard/MangaCardNormal";
@@ -10,7 +10,7 @@ interface PropsType {
   mangaData: any;
 }
 
-const fetcher: (any) => any = (...config) =>
+const fetcher: (any: any) => any = (...config) =>
   fetch(...config).then((res) => res.json());
 
 const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
@@ -19,17 +19,18 @@ const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
   const relatedLink = relatedArr.map((item: any) => item.id);
 
   let res: any;
+  const dataFetched: any = useSWR(
+    handleAddParams("/mangaapi", {
+      ids: relatedLink,
+      limit: 12,
+      contentRating: ["safe", "suggestive", "erotica", "pornographic"],
+      includes: ["cover_art", "author", "artist"],
+      offset: offset,
+    }),
+    fetcher
+  );
   if (relatedLink.length !== 0) {
-    res = useSWR(
-      handleAddParams("/mangaapi", {
-        ids: relatedLink,
-        limit: 12,
-        contentRating: ["safe", "suggestive", "erotica", "pornographic"],
-        includes: ["cover_art", "author", "artist"],
-        offset: offset,
-      }),
-      fetcher
-    );
+    res = dataFetched;
   } else {
     res = {
       data: false,
@@ -45,28 +46,37 @@ const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
           flexDirection: "row",
         }}
       >
-        {data
-          ? data.data?.map((item: any, index: number) => (
-              <Grid
-                xl={2}
-                lg={2}
-                md={2.4}
-                sm={3}
-                xs={6}
-                css={{
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: "$3 $3",
-                }}
-                key={index}
-              >
-                <MangaCardNormal data={item} />
-              </Grid>
-            ))
-          : "No related"}
+        {data ? (
+          data?.data?.map((item: any, index: number) => (
+            <Grid
+              xl={2}
+              lg={2}
+              md={2.4}
+              sm={3}
+              xs={6}
+              css={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "$3 $3",
+              }}
+              key={index}
+            >
+              <MangaCardNormal data={item} />
+            </Grid>
+          ))
+        ) : (
+          <div className={styles["manga-fullwidth"]}>
+            <Loading color="warning" type="points" />
+          </div>
+        )}
+        {data?.data?.length === 0 && (
+          <div className={styles["manga-fullwidth"]}>
+            <Text>There's no art</Text>
+          </div>
+        )}
         {error && "Couldn't load"}
       </Grid.Container>
-      <div className={styles["manga-pagination"]}>
+      <div className={styles["manga-fullwidth"]}>
         {data && (
           <Pagination
             page={offset / 12 + 1}

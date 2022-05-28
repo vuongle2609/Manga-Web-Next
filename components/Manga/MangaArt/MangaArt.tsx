@@ -1,4 +1,4 @@
-import { Grid, Pagination, Text } from "@nextui-org/react";
+import { Grid, Pagination, Text, Loading } from "@nextui-org/react";
 import { FC, useState } from "react";
 import useSWR from "swr";
 import { handleAddParams } from "data/getData";
@@ -10,7 +10,7 @@ interface PropsType {
   mangaData: any;
 }
 
-const fetcher: (any) => any = (...config) =>
+const fetcher: (any: any) => any = (...config) =>
   fetch(...config).then((res) => res.json());
 
 const MangaArt: FC<PropsType> = ({ styles, mangaData }) => {
@@ -19,8 +19,6 @@ const MangaArt: FC<PropsType> = ({ styles, mangaData }) => {
   const { data, error } = useSWR(
     handleAddParams("/mangacover", {
       order: {
-        createdAt: "asc",
-        updatedAt: "asc",
         volume: "asc",
       },
       manga: [mangaData.id],
@@ -33,7 +31,7 @@ const MangaArt: FC<PropsType> = ({ styles, mangaData }) => {
   const dataArr = data?.data?.sort((a: any, b: any) => {
     return Number(a.attributes.volume) - Number(b.attributes.volume);
   });
-  
+
   return (
     <div className={styles["manga-sub-content"]}>
       <Grid.Container
@@ -41,37 +39,46 @@ const MangaArt: FC<PropsType> = ({ styles, mangaData }) => {
           flexDirection: "row",
         }}
       >
-        {data
-          ? dataArr.map((item: any, index: number) => (
-              <Grid
-                xl={2}
-                lg={2}
-                md={2.4}
-                sm={3}
-                xs={6}
-                css={{
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: "$3 $3",
-                }}
-                key={index}
-              >
-                <Cover
-                  coverUrl={getSingleCover({
-                    id: mangaData.id,
-                    quality: true,
-                    fileName: item.attributes.fileName,
-                  })}
-                />
-                <Text size={16} css={{ marginTop: "$1" }} b>
-                  Volume {item.attributes.volume}
-                </Text>
-              </Grid>
-            ))
-          : "There's no art"}
+        {data ? (
+          dataArr?.map((item: any, index: number) => (
+            <Grid
+              xl={2}
+              lg={2}
+              md={2.4}
+              sm={3}
+              xs={6}
+              css={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "$3 $3",
+              }}
+              key={index}
+            >
+              <Cover
+                coverUrl={getSingleCover({
+                  id: mangaData.id,
+                  quality: true,
+                  fileName: item.attributes.fileName,
+                })}
+              />
+              <Text size={16} css={{ marginTop: "$1" }} b>
+                Volume {item.attributes.volume}
+              </Text>
+            </Grid>
+          ))
+        ) : (
+          <div className={styles["manga-fullwidth"]}>
+            <Loading color="warning" type="points" />
+          </div>
+        )}
+        {dataArr?.length === 0 && (
+          <div className={styles["manga-fullwidth"]}>
+            <Text>There's no art</Text>
+          </div>
+        )}
         {error && "Couldn't load"}
       </Grid.Container>
-      <div className={styles["manga-pagination"]}>
+      <div className={styles["manga-fullwidth"]}>
         {data ? (
           <Pagination
             page={offset / 12 + 1}
