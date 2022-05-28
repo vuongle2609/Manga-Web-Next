@@ -76,7 +76,11 @@ const MangaArt: FC<PropsType> = ({ styles, mangaData }) => {
             <Text>There's no art</Text>
           </div>
         )}
-        {error && "Couldn't load"}
+        {error && (
+          <div className={styles["manga-fullwidth"]}>
+            <Text>Couldn't load</Text>
+          </div>
+        )}
       </Grid.Container>
       <div className={styles["manga-fullwidth"]}>
         {data ? (
