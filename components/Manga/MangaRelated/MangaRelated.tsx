@@ -76,7 +76,7 @@ const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
         )}
         {error && (
           <div className={styles["manga-fullwidth"]}>
-            <Text>Couldn't load</Text>
+            <Text>Couldn&apos;t load</Text>
           </div>
         )}
       </Grid.Container>
