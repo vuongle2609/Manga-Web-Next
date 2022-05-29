@@ -60,6 +60,11 @@ const MangaArt: FC<PropsType> = ({ styles, mangaData }) => {
                   quality: true,
                   fileName: item.attributes.fileName,
                 })}
+                maxCoverUrl={getSingleCover({
+                  id: mangaData.id,
+                  max: true,
+                  fileName: item.attributes.fileName,
+                })}
               />
               <Text size={16} css={{ marginTop: "$1" }} b>
                 Volume {item.attributes.volume}

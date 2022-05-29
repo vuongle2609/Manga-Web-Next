@@ -17,12 +17,12 @@ import MangaRelated from "components/Manga/MangaRelated/MangaRelated";
 import Cover from "components/Manga/Cover/Cover";
 
 const Manga: FC<any> = ({ data }) => {
-  // console.log(data);
+  console.log(data);
   const [isOpen, setIsOpen] = useState(false);
   const [displayContent, setDisplayContent] = useState<number>(0);
   const description = useRef<any>(null);
   const otherName = useRef<any>(null);
-  const { title, subTitle, cover, credit, links } = getDetail(data);
+  const { title, subTitle, cover, credit, links, maxCover } = getDetail(data);
   const creditDetail = getCreditDetail(data.relationships);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const Manga: FC<any> = ({ data }) => {
       <div className={styles["manga-content"]}>
         <Grid.Container>
           <Grid xl={2} lg={2} md={3} sm={3} xs={5}>
-            <Cover coverUrl={cover} />
+            <Cover coverUrl={cover} maxCoverUrl={maxCover}/>
           </Grid>
           <Grid xl={10} lg={10} md={9} sm={9} xs={7}>
             <div className={styles["manga-detail"]}>

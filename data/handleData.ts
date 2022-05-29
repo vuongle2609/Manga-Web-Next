@@ -4,6 +4,7 @@ interface coverPropsType {
     id: string
     data: any[]
     quality?: boolean
+    max?: boolean
 }
 
 export const getCover: (option: coverPropsType) => any = (option) => {
@@ -18,17 +19,18 @@ export const getCover: (option: coverPropsType) => any = (option) => {
         return "https://media.discordapp.net/attachments/712591859125321798/977425980211744768/unknown.png?width=545&height=676"
 
 
-    return `https://${IMG_URL}/covers/${option.id}/${cover_art?.attributes?.fileName}${option.quality ? ".512.jpg" : ".256.jpg"}`
+    return `https://${IMG_URL}/covers/${option.id}/${cover_art?.attributes?.fileName}${option.max ? "" : (option.quality ? ".512.jpg" : ".256.jpg")}`
 }
 
 interface singleCoverPropsType {
     id: string
     fileName: string
     quality?: boolean
+    max?: boolean
 }
 
 export const getSingleCover: (option: singleCoverPropsType) => any = (option) => {
-    return `https://${IMG_URL}/covers/${option.id}/${option.fileName}${option.quality ? ".512.jpg" : ".256.jpg"}`
+    return `https://${IMG_URL}/covers/${option.id}/${option.fileName}${option.max ? "" : (option.quality ? ".512.jpg" : ".256.jpg")}`
 }
 
 export const getDetail: (data: any) => any = (data) => {
@@ -56,6 +58,13 @@ export const getDetail: (data: any) => any = (data) => {
         data: data.relationships,
     });
     returnObj["cover"] = cover
+
+    const maxCover: string = getCover({
+        id: data.id,
+        data: data.relationships,
+        max: true,
+    });
+    returnObj["maxCover"] = maxCover
 
     let credit = "";
     data.relationships.map((item: any, index: number) => {

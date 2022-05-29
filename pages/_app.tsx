@@ -10,6 +10,7 @@ import GotoTop from "components/GotoTop/GotoTop";
 import { FC, useEffect } from "react";
 import { NextUIProvider, Container } from "@nextui-org/react";
 import { theme } from "theme/theme";
+import CoverModal from "components/Modal/CoverModal/CoverModal";
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   useEffect(() => {
@@ -36,6 +37,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
         <Footer />
         <GotoTop />
       </div>
+      <CoverModal />
     </NextUIProvider>
   );
 };
