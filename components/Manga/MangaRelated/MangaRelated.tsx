@@ -39,8 +39,6 @@ const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
 
   const { data, error } = res;
 
-  console.log(data);
-
   return (
     <div className={styles["manga-sub-content"]}>
       <Grid.Container

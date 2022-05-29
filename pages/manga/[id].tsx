@@ -69,6 +69,7 @@ const Manga: FC<any> = ({ data, chapterData }) => {
                       onClick={() => {
                         copy(title);
                       }}
+                      css={{ cursor: "pointer" }}
                     >
                       {title}
                     </Text>
@@ -138,7 +139,7 @@ const Manga: FC<any> = ({ data, chapterData }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id: any = context.params.id;
-  const page: number = Number(context.query.page) || 0;
+  const page: number = Number(context.query.page) || 1;
   const option = {
     includes: ["cover_art", "author", "artist"],
   };
@@ -150,15 +151,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const getChaptersData = () => {
     const data = getMangaChapterList({
-      offset: page === 0 ? page : page * 60 - 1,
+      offset: page === 1 ? 0 : (page - 1) * 50,
       id: id,
       order: {
         volume: "desc",
         chapter: "desc",
       },
-      translatedLanguage: ["en"],
+      translatedLanguage: [],
       includes: ["user", "scanlation_group"],
-      limit: 60,
+      limit: 50,
       contentRating: ["safe", "suggestive", "erotica", "pornographic"],
     });
 
@@ -173,7 +174,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       data: data.data.data,
-      chapterData: chapterData.data.data,
+      chapterData: chapterData.data,
     },
   };
 };

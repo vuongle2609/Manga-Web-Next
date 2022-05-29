@@ -2,9 +2,7 @@
 
 function RedirectPage() {
   // const router = useRouter()
-  // if (typeof window !== 'undefined') {
-  //   router.push('/home/discover')
-  // }
+  // console.log(router)
 }
 
 export default RedirectPage

@@ -2,21 +2,25 @@ import { FC, useEffect } from "react";
 import ChapterItem from "./ChapterItem";
 import { Text, Pagination } from "@nextui-org/react";
 import styles from "./ChapterList.module.scss";
+import { useRouter } from "next/router";
 
 interface propsType {
   chapterData: any;
+  translatedLang: string[];
 }
 
-const MangaChapterList: FC<propsType> = ({ chapterData }) => {
+const MangaChapterList: FC<propsType> = ({ chapterData, translatedLang }) => {
+  const router = useRouter();
+
   let prevVol: string;
 
   return (
     <>
-      {chapterData.map((item: any) => {
+      {chapterData.data.map((item: any, index: number) => {
         if (prevVol !== item.attributes.volume) {
           prevVol = item.attributes.volume;
           return (
-            <>
+            <div key={index}>
               <Text
                 b
                 size={20}
@@ -31,19 +35,22 @@ const MangaChapterList: FC<propsType> = ({ chapterData }) => {
               </Text>
               <div className={styles["volume-divider"]}></div>
               <ChapterItem data={item} />
-            </>
+            </div>
           );
         } else {
           prevVol = item.attributes.volume;
-          return <ChapterItem data={item} />;
+          return <ChapterItem data={item} key={index} />;
         }
       })}
-      // push to history
-      {/* <Pagination
-        page={offset / 12 + 1}
-        total={Math.ceil(data?.total / 12)}
-        onChange={(num: number) => setOffset(12 * (num - 1))}
-      ></Pagination> */}
+      <div className={styles["volume-fullwidth"]}>
+        <Pagination
+          page={router.query.page ? Number(router.query.page) : 1}
+          total={Math.ceil(chapterData.total / 50)}
+          onChange={(num: number) =>
+            router.replace(`/manga/${router.query.id}?page=${num}`)
+          }
+        ></Pagination>
+      </div>
     </>
   );
 };

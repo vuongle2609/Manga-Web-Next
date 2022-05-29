@@ -81,8 +81,8 @@ export const getDetail: (data: any) => any = (data) => {
     if (data.attributes.links) {
         const links = []
         for (let key in data.attributes.links) {
-            let name
-            let link
+            let name: string
+            let link: string
             switch (key) {
                 case "al":
                     name = "AniList"
@@ -174,8 +174,8 @@ export const getDescription: (description: string) => any = (description) => {
             description
                 .replace(/---/g, "<hr/>")
                 .replace(/\*\*/g, () => { index += 1; return index % 2 === 1 ? "<b>" : "</b><br>" })
-                .replace(/- \[(.*?)\]\((.*?)\)/g, (_: string, x: string, y: string) => `<a href="${y}" target="_blank" style="" class="link-desc">${x}</a>`)
-                .replace(/ \[(.*?)\]\((.*?)\)/g, (_: string, x: string, y: string) => `&nbsp;<a href="${y}" target="_blank" style="" class="link-desc-1">${x}</a>&nbsp;`)
+                .replace(/- \[(.*?)\]\((.*?)\)/g, (_: string, x: string, y: string) => `<a href="${y}" target="_blank" style="" class="link-desc" rel=”noopener noreferrer” >${x}</a>`)
+                .replace(/ \[(.*?)\]\((.*?)\)/g, (_: string, x: string, y: string) => `&nbsp;<a href="${y}" target="_blank" style="" class="link-desc-1" rel=”noopener noreferrer” >${x}</a>&nbsp;`)
 
         return html
     }
@@ -216,4 +216,27 @@ export const getRelatedArr: (relationships: any[]) => any = (relationships) => {
     const filtedArr: any[] = relationships.filter((item: any) => enumRelated.includes(item.related))
 
     return filtedArr
+}
+
+export const getChapterCredit: (relationships: any[]) => any = (relationships) => {
+    const enumRelation: string[] = ["scanlation_group", "user"]
+
+    const filtedArr: any[] = relationships.filter((item: any) => enumRelation.includes(item.type))
+
+    const modifiedArr: any[] = []
+
+    filtedArr.map((item: any) => {
+        const condition: any = modifiedArr.find((e: any) => {
+            const eString = e.attributes.username || e.attributes.name
+            const eStringModified = eString.replaceAll(' ', '').toLowerCase()
+            const itemString = item.attributes.username || item.attributes.name
+            const itemStringModified = itemString.replaceAll(' ', '').toLowerCase()
+            return eStringModified === itemStringModified
+        })
+        if (!condition) {
+            modifiedArr.push(item)
+        }
+    })
+
+    return modifiedArr
 }

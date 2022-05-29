@@ -21,7 +21,7 @@ const MangaInfo: FC<PropsType> = ({
   description,
   otherName,
   links,
-  chapterData
+  chapterData,
 }) => {
   const { artistDetail, authorDetail } = creditDetail;
   return (
@@ -242,7 +242,10 @@ const MangaInfo: FC<PropsType> = ({
               paddingLeft: "$1",
             }}
           >
-            <MangaChapterList chapterData={chapterData} />
+            <MangaChapterList
+              chapterData={chapterData}
+              translatedLang={data.attributes.availableTranslatedLanguages}
+            />
           </Grid>
         </Grid.Container>
       </div>
