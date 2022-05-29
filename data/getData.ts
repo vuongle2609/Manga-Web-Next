@@ -74,17 +74,25 @@ export const getMangaDetail: ({ id: string, option: mangaPropsType }) => any = a
     return data
 }
 
-export const copyToClipboard: (text: string) => any = (text) => {
-    if (!navigator.clipboard) {
-        // use old commandExec() way
-    } else {
-        navigator.clipboard.writeText(text).then(
-            function () {
-                alert("yeah!"); // success 
-            })
-            .catch(
-                function () {
-                    alert("err"); // error
-                });
+interface mangaChapterListProps {
+    limit: number
+    offset: number
+    translatedLanguage: string[]
+    order: {
+        volume: string
+        chapter: string
+    }
+    id: string
+    includes: string[]
+    contentRating: string[]
+}
+
+export const getMangaChapterList: (option: mangaChapterListProps) => any = async ({ id, ...option }) => {
+    try {
+        const url = handleAddParams(apiUrls.manga() + "/" + id + "/feed", option)
+        const data = await axios.get(url)
+        return data
+    } catch (error) {
+        error.response.request._response
     }
 }

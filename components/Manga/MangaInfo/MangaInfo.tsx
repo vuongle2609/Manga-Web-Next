@@ -2,6 +2,7 @@ import { FC } from "react";
 import Link from "next/link";
 import { Grid, Text } from "@nextui-org/react";
 import moment from "moment";
+import MangaChapterList from "./ChapterList/MangaChapterList";
 
 interface PropsType {
   styles: any;
@@ -10,6 +11,7 @@ interface PropsType {
   description: any;
   otherName: any;
   links: any;
+  chapterData: any;
 }
 
 const MangaInfo: FC<PropsType> = ({
@@ -19,6 +21,7 @@ const MangaInfo: FC<PropsType> = ({
   description,
   otherName,
   links,
+  chapterData
 }) => {
   const { artistDetail, authorDetail } = creditDetail;
   return (
@@ -239,7 +242,7 @@ const MangaInfo: FC<PropsType> = ({
               paddingLeft: "$1",
             }}
           >
-            kladsj
+            <MangaChapterList chapterData={chapterData} />
           </Grid>
         </Grid.Container>
       </div>

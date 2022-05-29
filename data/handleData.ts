@@ -1,4 +1,5 @@
 import { IMG_URL } from 'configs/api'
+import _ from "lodash"
 
 interface coverPropsType {
     id: string
@@ -213,82 +214,6 @@ export const getRelatedArr: (relationships: any[]) => any = (relationships) => {
     ]
 
     const filtedArr: any[] = relationships.filter((item: any) => enumRelated.includes(item.related))
-
-    // const filterID: string[] = filtedArr.map((item: any) => )
-
-    // const groupbyObject = _.groupBy(filtedArr, (item: any) => item.related)
-
-    // const groupbyObject: any[] = []
-
-    // filtedArr.forEach((item: any) => {
-    //     const findItem = groupbyObject.find((findItem: any) => findItem.listName === item.related)
-    //     console.log("🚀 ~ file: handleData.ts ~ line 211 ~ filtedArr.forEach ~ findItem", findItem)
-
-    //     if (!findItem) {
-    //         let relatedTitle: string
-
-    //         switch (item.related) {
-    //             case "monochrome":
-    //                 relatedTitle = "MonoChrome"
-    //                 break;
-    //             case "colored":
-    //                 relatedTitle = "Colored"
-    //                 break;
-    //             case "preserialization":
-    //                 relatedTitle = "Preserialization"
-    //                 break;
-    //             case "serialization":
-    //                 relatedTitle = "Serialization"
-    //                 break;
-    //             case "prequel":
-    //                 relatedTitle = "Prequel"
-    //                 break;
-    //             case "sequel":
-    //                 relatedTitle = "Sequel"
-    //                 break;
-    //             case "main_story":
-    //                 relatedTitle = "Main story"
-    //                 break;
-    //             case "side_story":
-    //                 relatedTitle = "Side story"
-    //                 break;
-    //             case "adapted_from":
-    //                 relatedTitle = "Adapted from"
-    //                 break;
-    //             case "spin_off":
-    //                 relatedTitle = "spin-off"
-    //                 break;
-    //             case "based_on":
-    //                 relatedTitle = "Based on"
-    //                 break;
-    //             case "doujinshi":
-    //                 relatedTitle = "Doujinshi"
-    //                 break;
-    //             case "same_franchise":
-    //                 relatedTitle = "Same Franchise"
-    //                 break;
-    //             case "shared_universe":
-    //                 relatedTitle = "Shared universe"
-    //                 break;
-    //             case "alternate_story":
-    //                 relatedTitle = "Alternate story"
-    //                 break;
-    //             case "alternate_version":
-    //                 relatedTitle = "Alternate version"
-    //                 break;
-    //             default:
-    //                 relatedTitle = "Unknown"
-    //         }
-
-    //         groupbyObject.push({
-    //             listName: relatedTitle,
-    //             listItems: [item]
-    //         })
-    //     }
-    //     else {
-    //         findItem.listItems.push(item)
-    //     }
-    // })
 
     return filtedArr
 }

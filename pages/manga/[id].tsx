@@ -3,7 +3,7 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { Grid, Text, Popover, Button } from "@nextui-org/react";
 import styles from "styles/Manga.module.scss";
-import { getMangaDetail } from "data/getData";
+import { getMangaChapterList, getMangaDetail } from "data/getData";
 import {
   getDetail,
   getDescription,
@@ -16,8 +16,7 @@ import MangaArt from "components/Manga/MangaArt/MangaArt";
 import MangaRelated from "components/Manga/MangaRelated/MangaRelated";
 import Cover from "components/Manga/Cover/Cover";
 
-const Manga: FC<any> = ({ data }) => {
-  console.log(data);
+const Manga: FC<any> = ({ data, chapterData }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [displayContent, setDisplayContent] = useState<number>(0);
   const description = useRef<any>(null);
@@ -54,7 +53,7 @@ const Manga: FC<any> = ({ data }) => {
       <div className={styles["manga-content"]}>
         <Grid.Container>
           <Grid xl={2} lg={2} md={3} sm={3} xs={5}>
-            <Cover coverUrl={cover} maxCoverUrl={maxCover}/>
+            <Cover coverUrl={cover} maxCoverUrl={maxCover} />
           </Grid>
           <Grid xl={10} lg={10} md={9} sm={9} xs={7}>
             <div className={styles["manga-detail"]}>
@@ -125,6 +124,7 @@ const Manga: FC<any> = ({ data }) => {
             description={description}
             links={links}
             otherName={otherName}
+            chapterData={chapterData}
           />
         )}
         {displayContent === 1 && (
@@ -138,14 +138,47 @@ const Manga: FC<any> = ({ data }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id: any = context.params.id;
+  const page: number = Number(context.query.page) || 0;
   const option = {
     includes: ["cover_art", "author", "artist"],
   };
-  const data = await getMangaDetail({ id, option });
+
+  const getPageData = async () => {
+    const data = getMangaDetail({ id, option });
+    console.log(await data);
+    return await data;
+  };
+
+  const getChaptersData = async () => {
+    const data = getMangaChapterList({
+      offset: page * 60 - 1,
+      id: id,
+      order: {
+        volume: "desc",
+        chapter: "desc",
+      },
+      translatedLanguage: ["en"],
+      includes: ["user", "scanlation_group"],
+      limit: 60,
+      contentRating: ["safe", "suggestive", "erotica", "pornographic"],
+    });
+    console.log(
+      "🚀 ~ file: [id].tsx ~ line 165 ~ getChaptersData ~ data",
+      await data
+    );
+
+    return await data;
+  };
+
+  let [data, chapterData] = await Promise.all([
+    getPageData(),
+    getChaptersData(),
+  ]);
 
   return {
     props: {
       data: data.data.data,
+      chapterData: chapterData.data.data
     },
   };
 };

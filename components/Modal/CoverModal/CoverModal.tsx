@@ -26,23 +26,25 @@ const CoverModal: FC = () => {
     >
       <div>
         <div className={styles["modal-background"]}></div>
-        <div className={styles["cover-container"]}>
-          <div>
-            <a
-              href={coverLink.current}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                src={coverLink.current}
-                alt="bigcover"
-                width={320}
-                showSkeleton
-                height={180}
-              />
-            </a>
-          </div>
-        </div>
+
+        <a
+          className={styles["cover-container"]}
+          href={coverLink.current}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            maxDelay={10000}
+            src={coverLink.current}
+            alt="bigcover"
+            width={320}
+            showSkeleton
+            height={180}
+            css={{
+              borderRadius: 0,
+            }}
+          />
+        </a>
       </div>
     </div>
   );

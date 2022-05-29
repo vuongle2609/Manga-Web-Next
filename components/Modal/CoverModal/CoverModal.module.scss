@@ -1,3 +1,5 @@
+@import "/styles/globals.scss";
+
 .modal {
   position: fixed;
   top: 0;
@@ -25,26 +27,12 @@
     }
 
     .cover-container {
-      width: 55vw;
-      padding-top: 142.5%;
-      position: relative;
+      height: 90vh !important;
+      width: fit-content;
 
       & div {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-
-        & div {
-          width: 100%;
-          height: 100%;
-
-          & img {
-            width: 100%;
-            height: 100%;
-          }
-        }
+        height: 100%;
+        width: auto;
       }
     }
   }
@@ -60,23 +48,25 @@
 }
 
 @media (max-width: 821px) {
-  .modal {
+  .cover-container {
+    width: 80vw !important;
+    height: fit-content;
+
     & div {
-      & .cover-container {
-        width: 80vw;
-        padding-top: 142.5%;
-      }
+      height: auto;
+      width: 100%;
     }
   }
 }
 
 @media (max-width: 760px) {
-  .modal {
+  .cover-container {
+    width: 90vw !important;
+    height: fit-content;
+
     & div {
-      & .cover-container {
-        width: 90vw;
-        padding-top: 142.5%;
-      }
+      height: auto;
+      width: 100%;
     }
   }
 }
