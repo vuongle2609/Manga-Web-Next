@@ -143,15 +143,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     includes: ["cover_art", "author", "artist"],
   };
 
-  const getPageData = async () => {
+  const getPageData = () => {
     const data = getMangaDetail({ id, option });
-    console.log(await data);
-    return await data;
+    return data;
   };
 
-  const getChaptersData = async () => {
+  const getChaptersData = () => {
     const data = getMangaChapterList({
-      offset: page * 60 - 1,
+      offset: page === 0 ? page : page * 60 - 1,
       id: id,
       order: {
         volume: "desc",
@@ -162,12 +161,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       limit: 60,
       contentRating: ["safe", "suggestive", "erotica", "pornographic"],
     });
-    console.log(
-      "🚀 ~ file: [id].tsx ~ line 165 ~ getChaptersData ~ data",
-      await data
-    );
 
-    return await data;
+    return data;
   };
 
   let [data, chapterData] = await Promise.all([
@@ -178,7 +173,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       data: data.data.data,
-      chapterData: chapterData.data.data
+      chapterData: chapterData.data.data,
     },
   };
 };
