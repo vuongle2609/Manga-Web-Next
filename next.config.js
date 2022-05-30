@@ -18,6 +18,14 @@ const nextConfig = {
         destination: "https://api.mangadex.org/manga",
       },
       {
+        source: '/auth/login',
+        destination: "https://api.mangadex.org/auth/login",
+      },
+      {
+        source: '/user/me',
+        destination: "https://api.mangadex.org/user/me",
+      },
+      {
         source: '/mangacover',
         destination: "https://api.mangadex.org/cover",
       },

@@ -3,6 +3,10 @@ import { apiUrls, API_URL } from 'configs/api'
 
 axios.defaults.baseURL = API_URL;
 
+const proxy = axios.create({
+    baseURL: '/'
+});
+
 type order = "asc" | "desc"
 type contentRating = "safe" | "suggestive" | "erotica" | "pornographic"
 type includes = "cover_art" | "author" | "artist"
@@ -59,6 +63,29 @@ export const handleAddParams: (url: string, params: any) => string = (url, param
     }
 
     return apiReturn
+}
+
+interface loginType {
+    username?: string,
+    email?: string,
+    password: string
+}
+
+export const loginUser: (userInfo: loginType) => any = async ({ username, email, password }) => {
+    return await proxy.post("/auth/login", { username, email, password }, { headers: { 'Content-Type': 'application/json' } })
+}
+
+export const getUser: (token: string) => any = async (token) => {
+    console.log({
+        headers: {
+            'authorization': `Bearer ${token}`
+        }
+    })
+    return await proxy.get("/user/me", {
+        headers: {
+            'authorization': `Bearer ${token}`
+        }
+    })
 }
 
 // get a list of manga

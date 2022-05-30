@@ -11,6 +11,18 @@ const useStore: any = create((set: any) => ({
         set(() => ({
             coverModal: false
         }))
+    },
+    loginModal: false,
+    setLoginModal: (open: boolean) => {
+        set(() => ({
+            loginModal: open
+        }))
+    },
+    userData: null,
+    setUserData: (data: any) => {
+        set(() => ({
+            userData: data
+        }))
     }
 }))
 

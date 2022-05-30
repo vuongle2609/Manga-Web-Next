@@ -1,5 +1,5 @@
 import { FC, useRef } from "react";
-import useStore from "store";
+import useStore from "store/store";
 import { Image } from "@nextui-org/react";
 import styles from "./CoverModal.module.scss";
 

@@ -57,10 +57,6 @@ const Dropdown: FC<propsType> = ({
     };
   }, []);
 
-  // useEffect(() => {
-  //   setLabel(value);
-  // }, [value]);
-
   console.log(label);
 
   return (

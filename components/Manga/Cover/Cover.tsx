@@ -1,6 +1,6 @@
 import { FC } from "react";
 import styles from "./Cover.module.scss";
-import useStore from "store";
+import useStore from "store/store";
 
 interface propsType {
   coverUrl: string;

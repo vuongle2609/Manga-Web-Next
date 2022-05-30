@@ -11,6 +11,7 @@ import { FC, useEffect } from "react";
 import { NextUIProvider, Container } from "@nextui-org/react";
 import { theme } from "theme/theme";
 import CoverModal from "components/Modal/CoverModal/CoverModal";
+import LoginModal from "components/Modal/LoginModal/LoginModal";
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   useEffect(() => {
@@ -27,7 +28,6 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
           content="A website for reading manga free without ADS"
         />
         <link rel="icon" href="/favicon.ico" />
-        
       </Head>
 
       <div className="container-global-class light-mode">
@@ -38,6 +38,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
         <Footer />
         <GotoTop />
       </div>
+      <LoginModal />
       <CoverModal />
     </NextUIProvider>
   );
