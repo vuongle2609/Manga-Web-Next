@@ -212,8 +212,8 @@ const MangaInfo: FC<PropsType> = ({
                 Links
               </Text>
               <div className={styles["link-others"]}>
-                {links.length !== 0 ? (
-                  links.map((item: any, index: number) => (
+                {links?.length !== 0 ? (
+                  links?.map((item: any, index: number) => (
                     <a
                       href={item.link}
                       key={index}

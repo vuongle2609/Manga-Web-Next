@@ -140,17 +140,24 @@ const MangaChapterList: FC<propsType> = ({
         <Pagination
           page={router.query.page ? Number(router.query.page) : 1}
           total={Math.ceil(chapterData.total / 50)}
-          onChange={(num: number) =>
-            router.replace(`/manga/${router.query.id}?page=${num}`)
-          }
+          onChange={(num: number) => {
+            const newQuery = getQueryUrl(
+              router.query,
+              {
+                key: "page",
+                value: num,
+              },
+              "page"
+            );
+
+            return router.replace(`/manga/${router.query.id}${newQuery}`);
+          }}
         ></Pagination>
       </div>
     </>
   ) : (
     <div
-      className={
-        styles["volume-fullwidth"] + " " + styles["volume-plusheight"]
-      }
+      className={styles["volume-fullwidth"] + " " + styles["volume-plusheight"]}
     >
       <Text size={20}>No chapters</Text>
     </div>
