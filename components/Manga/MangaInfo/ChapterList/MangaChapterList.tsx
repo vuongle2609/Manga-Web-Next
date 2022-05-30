@@ -1,21 +1,115 @@
 import { FC, useEffect } from "react";
 import ChapterItem from "./ChapterItem";
-import { Text, Pagination } from "@nextui-org/react";
+import { Text, Pagination, Spacer } from "@nextui-org/react";
 import styles from "./ChapterList.module.scss";
 import { useRouter } from "next/router";
+import Dropdown from "components/Dropdown/Dropdown";
+import language from "configs/language";
+import { getQueryUrl } from "data/handleData";
 
 interface propsType {
   chapterData: any;
   translatedLang: string[];
+  langSelected: string[];
 }
 
-const MangaChapterList: FC<propsType> = ({ chapterData, translatedLang }) => {
+const MangaChapterList: FC<propsType> = ({
+  chapterData,
+  translatedLang,
+  langSelected,
+}) => {
   const router = useRouter();
 
   let prevVol: string;
 
+  const translatedLangModified: any[] = translatedLang.map((textLang) => {
+    const langObj = language.find((item: any) => item.md === textLang);
+    return {
+      text: langObj.english,
+      value: langObj.md,
+    };
+  });
+
+  const handleChangeLangQuery: (dataArr: any[]) => void = (dataArr) => {
+    const newQuery = getQueryUrl(
+      router.query,
+      {
+        key: "language",
+        value: dataArr,
+      },
+      "language"
+    );
+
+    router.replace(`/manga/${router.query.id}${newQuery}`);
+  };
+
+  const handleChangeSortChapterQuery: (dataValue: string) => void = (
+    dataValue
+  ) => {
+    const newQuery = getQueryUrl(
+      router.query,
+      {
+        key: "sortChapter",
+        value: dataValue,
+      },
+      "sortChapter"
+    );
+
+    router.replace(`/manga/${router.query.id}${newQuery}`);
+  };
+
+  const handleChangeSortVolumeQuery: (dataValue: string) => void = (
+    dataValue
+  ) => {
+    const newQuery = getQueryUrl(
+      router.query,
+      {
+        key: "sortVolume",
+        value: dataValue,
+      },
+      "sortVolume"
+    );
+
+    router.replace(`/manga/${router.query.id}${newQuery}`);
+  };
+
+  const sortList = [
+    {
+      text: "Descending",
+      value: "desc",
+    },
+    {
+      text: "Ascending",
+      value: "asc",
+    },
+  ];
+
   return (
     <>
+      <div className={styles["dropdown-container"]}>
+        <Dropdown
+          onChange={handleChangeLangQuery}
+          listValue={translatedLangModified}
+          value={langSelected}
+          LabelDisplay={"Select language"}
+          checkbox
+          id={"lang"}
+        />
+        <Spacer />
+        <Dropdown
+          onChange={handleChangeSortChapterQuery}
+          listValue={sortList}
+          LabelDisplay={"Sort chapter by"}
+          id={"chap"}
+        />
+        <Spacer />
+        <Dropdown
+          onChange={handleChangeSortVolumeQuery}
+          listValue={sortList}
+          LabelDisplay={"Sort volume by"}
+          id={"vol"}
+        />
+      </div>
       {chapterData.data.map((item: any, index: number) => {
         if (prevVol !== item.attributes.volume) {
           prevVol = item.attributes.volume;

@@ -11,7 +11,6 @@ interface propsType {
 }
 
 const ChapterItem: FC<propsType> = ({ data }) => {
-  // console.log(data);
   const { chapter, title, publishAt, translatedLanguage } = data.attributes;
 
   const lang = language.find((item: any) => item.md === translatedLanguage);

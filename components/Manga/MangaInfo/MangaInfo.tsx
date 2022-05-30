@@ -12,6 +12,7 @@ interface PropsType {
   otherName: any;
   links: any;
   chapterData: any;
+  langSelected?: string[]
 }
 
 const MangaInfo: FC<PropsType> = ({
@@ -21,6 +22,7 @@ const MangaInfo: FC<PropsType> = ({
   description,
   otherName,
   links,
+  langSelected,
   chapterData,
 }) => {
   const { artistDetail, authorDetail } = creditDetail;
@@ -245,6 +247,7 @@ const MangaInfo: FC<PropsType> = ({
             <MangaChapterList
               chapterData={chapterData}
               translatedLang={data.attributes.availableTranslatedLanguages}
+              langSelected={langSelected}
             />
           </Grid>
         </Grid.Container>

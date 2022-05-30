@@ -240,3 +240,25 @@ export const getChapterCredit: (relationships: any[]) => any = (relationships) =
 
     return modifiedArr
 }
+
+export const getQueryUrl: (queryObj: any, newQuery: any, diffValue: string) => string = ({ page, id, ...queryObj }, newQuery, diffValue) => {
+    let query = "?"
+    for (let item in queryObj) {
+        if (item !== diffValue) {
+            query = query + `${item}=${queryObj[item]}&`
+        }
+    }
+
+    let newQueryString = ""
+
+    if (Array.isArray(newQuery.value)) {
+        if (newQuery.value.length !== 0) {
+            const newQueryArrString = newQuery.value.join(",")
+            newQueryString = newQuery.key + "=" + newQueryArrString
+        }
+    } else {
+        newQueryString = newQuery.key + "=" + newQuery.value
+    }
+
+    return query + newQueryString
+}

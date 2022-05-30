@@ -16,7 +16,7 @@ import MangaArt from "components/Manga/MangaArt/MangaArt";
 import MangaRelated from "components/Manga/MangaRelated/MangaRelated";
 import Cover from "components/Manga/Cover/Cover";
 
-const Manga: FC<any> = ({ data, chapterData }) => {
+const Manga: FC<any> = ({ data, chapterData, langSelected }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [displayContent, setDisplayContent] = useState<number>(0);
   const description = useRef<any>(null);
@@ -126,6 +126,7 @@ const Manga: FC<any> = ({ data, chapterData }) => {
             links={links}
             otherName={otherName}
             chapterData={chapterData}
+            langSelected={langSelected}
           />
         )}
         {displayContent === 1 && (
@@ -139,6 +140,14 @@ const Manga: FC<any> = ({ data, chapterData }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id: any = context.params.id;
+
+  const langString: any = context.query.language;
+  const langSelected =
+    langString?.split(",") !== undefined ? langString.split(",") : [];
+
+  const sortChapterBy: any = context.query.sortChapter || "desc";
+  const sortVolumeBy: any = context.query.sortVolume || "desc";
+
   const page: number = Number(context.query.page) || 1;
   const option = {
     includes: ["cover_art", "author", "artist"],
@@ -148,16 +157,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const data = getMangaDetail({ id, option });
     return data;
   };
-
   const getChaptersData = () => {
     const data = getMangaChapterList({
       offset: page === 1 ? 0 : (page - 1) * 50,
       id: id,
       order: {
-        volume: "desc",
-        chapter: "desc",
+        volume: sortVolumeBy,
+        chapter: sortChapterBy,
       },
-      translatedLanguage: [],
+      translatedLanguage: langSelected,
       includes: ["user", "scanlation_group"],
       limit: 50,
       contentRating: ["safe", "suggestive", "erotica", "pornographic"],
@@ -175,6 +183,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     props: {
       data: data.data.data,
       chapterData: chapterData.data,
+      langSelected: langSelected,
     },
   };
 };

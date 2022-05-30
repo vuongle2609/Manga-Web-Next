@@ -18,7 +18,7 @@
   flex-direction: column;
   margin: 2px 0;
   padding: 6px;
-  transition: all ease-in-out 0.2s;
+  transition: all ease-in-out 0.1s;
   cursor: pointer;
 
   & div {
@@ -43,6 +43,19 @@
 
   &:hover {
     background: #fef0d6;
+  }
+}
+
+.dropdown-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 568px) {
+  .dropdown-container {
+    flex-direction: column;
+    align-items: flex-end;
   }
 }
 
