@@ -84,7 +84,7 @@ const MangaChapterList: FC<propsType> = ({
     },
   ];
 
-  return (
+  return chapterData.data.length !== 0 ? (
     <>
       <div className={styles["dropdown-container"]}>
         <Dropdown
@@ -146,6 +146,14 @@ const MangaChapterList: FC<propsType> = ({
         ></Pagination>
       </div>
     </>
+  ) : (
+    <div
+      className={
+        styles["volume-fullwidth"] + " " + styles["volume-plusheight"]
+      }
+    >
+      <Text size={20}>No chapters</Text>
+    </div>
   );
 };
 
