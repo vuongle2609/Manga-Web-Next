@@ -53,11 +53,15 @@ const Manga: FC<any> = ({ data, chapterData, langSelected }) => {
     <>
       <Head>
         <title>{title}</title>
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={cover} />
         <meta name="description" content={subTitle} />
         <link rel="icon" href="/favicon.ico" />
         <meta property="og:image" content={cover} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={subTitle} />
+        <meta property="og:image:width" content="256px" />
       </Head>
       <div className={styles["manga-content"]}>
         <Grid.Container>
