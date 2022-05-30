@@ -15,6 +15,7 @@ import MangaInfo from "components/Manga/MangaInfo/MangaInfo";
 import MangaArt from "components/Manga/MangaArt/MangaArt";
 import MangaRelated from "components/Manga/MangaRelated/MangaRelated";
 import Cover from "components/Manga/Cover/Cover";
+import Head from "next/head";
 
 const Manga: FC<any> = ({ data, chapterData, langSelected }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,6 +51,14 @@ const Manga: FC<any> = ({ data, chapterData, langSelected }) => {
 
   return (
     <>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={subTitle} />
+        <link rel="icon" href="/favicon.ico" />
+        <meta property="og:image" content={cover} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={subTitle} />
+      </Head>
       <div className={styles["manga-content"]}>
         <Grid.Container>
           <Grid xl={2} lg={2} md={3} sm={3} xs={5}>

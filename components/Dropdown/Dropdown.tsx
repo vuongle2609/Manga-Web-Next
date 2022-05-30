@@ -46,6 +46,7 @@ const Dropdown: FC<propsType> = ({
   useEffect(() => {
     const closeList = (e: any) => {
       if (!e.target.closest("#dropdown-selector-" + id)) {
+        e?.target?.preventDefault?.();
         setShowList(false);
       }
     };
@@ -56,9 +57,11 @@ const Dropdown: FC<propsType> = ({
     };
   }, []);
 
-  useEffect(() => {
-    setLabel(value);
-  }, [value]);
+  // useEffect(() => {
+  //   setLabel(value);
+  // }, [value]);
+
+  console.log(label);
 
   return (
     <>
@@ -133,6 +136,7 @@ const Dropdown: FC<propsType> = ({
                 onClick={() => {
                   handleClickItem(item.value);
                 }}
+                style={{ backgroundColor: label === item.value && "#fef0d6" }}
               >
                 <Text>{item.text}</Text>
               </li>

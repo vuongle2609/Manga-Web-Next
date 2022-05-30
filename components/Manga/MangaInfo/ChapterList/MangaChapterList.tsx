@@ -100,6 +100,7 @@ const MangaChapterList: FC<propsType> = ({
           onChange={handleChangeSortChapterQuery}
           listValue={sortList}
           LabelDisplay={"Sort chapter by"}
+          selectDefault="desc"
           id={"chap"}
         />
         <Spacer />
@@ -107,6 +108,7 @@ const MangaChapterList: FC<propsType> = ({
           onChange={handleChangeSortVolumeQuery}
           listValue={sortList}
           LabelDisplay={"Sort volume by"}
+          selectDefault="desc"
           id={"vol"}
         />
       </div>

@@ -13,6 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 .dropdown-list {
@@ -28,7 +29,7 @@
   z-index: 50;
 
   & li {
-    padding: 5px 10px;
+    padding: 10px 20px;
     margin: 0;
     cursor: pointer;
     transition: all ease-in-out 0.1s;
@@ -50,9 +51,12 @@
 
 .dropdown-checkbox,
 .dropdown-list {
-  padding: 10px 20px;
   border-radius: 5px;
   animation: modal 0.1s ease-in-out;
+}
+
+.dropdown-checkbox {
+  padding: 10px 20px;
 }
 
 @keyframes modal {

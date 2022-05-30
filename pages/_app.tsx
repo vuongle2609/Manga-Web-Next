@@ -27,6 +27,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
           content="A website for reading manga free without ADS"
         />
         <link rel="icon" href="/favicon.ico" />
+        
       </Head>
 
       <div className="container-global-class light-mode">
