@@ -75,12 +75,37 @@ export const loginUser: (userInfo: loginType) => any = async ({ username, email,
     return await proxy.post("/auth/login", { username, email, password }, { headers: { 'Content-Type': 'application/json' } })
 }
 
-export const getUser: (token: string) => any = async (token) => {
-    console.log({
+export const checkToken: (token: string) => any = async (token) => {
+    const res = await proxy.get("/auth/check", {
         headers: {
             'authorization': `Bearer ${token}`
         }
     })
+
+    return !res.data.isAuthenticated
+}
+
+export const rereshToken: (refreshToken: string, oldToken: string) => any = async (refreshToken, oldToken) => {
+    const res = await proxy.post("/auth/refresh", {
+        "token": refreshToken
+    }, {
+        headers: {
+            'authorization': `Bearer ${oldToken}`
+        }
+    })
+
+    return res.data.token
+}
+
+export const logoutUser: (token: string) => any = async (token) => {
+    return proxy.post("/auth/logout", {}, {
+        headers: {
+            'authorization': `Bearer ${token}`
+        }
+    })
+}
+
+export const getUser: (token: string) => any = async (token) => {
     return await proxy.get("/user/me", {
         headers: {
             'authorization': `Bearer ${token}`

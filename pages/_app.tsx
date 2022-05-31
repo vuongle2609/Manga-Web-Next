@@ -12,11 +12,43 @@ import { NextUIProvider, Container } from "@nextui-org/react";
 import { theme } from "theme/theme";
 import CoverModal from "components/Modal/CoverModal/CoverModal";
 import LoginModal from "components/Modal/LoginModal/LoginModal";
+import useLocalStorage from "store/persist";
+import { getUser, checkToken, rereshToken } from "data/getData";
+import useStore from "store/store";
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
+  const [token, addToken] = useLocalStorage((state: any) => [
+    state.token,
+    state.addToken,
+  ]);
+
+  const [setUserData] = useStore((state: any) => [state.setUserData]);
+
   useEffect(() => {
     document.querySelector("body").style.backgroundImage =
       "url('/images/bg.png')";
+
+    const getUserData = async () => {
+      try {
+        const isTokenEx = await checkToken(token.session);
+        if (!isTokenEx) {
+          const resUser = await getUser(token.session);
+          setUserData(resUser.data.data);
+        } else if (isTokenEx) {
+          const newToken = await rereshToken(token.refresh, token.session);
+          addToken({
+            refresh: newToken.refresh,
+            session: newToken.session,
+          });
+          const resUser = await getUser(newToken.session);
+          setUserData(resUser.data.data);
+        }
+      } catch (err) {
+        setUserData(false);
+      }
+    };
+
+    getUserData();
   }, []);
 
   return (

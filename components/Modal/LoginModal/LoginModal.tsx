@@ -30,9 +30,9 @@ const LoginModal: FC = () => {
       };
 
       if (validateEmail(user)) {
-        fromData["email"] = user;
+        fromData["email"] = user.toLowerCase();
       } else {
-        fromData["username"] = user;
+        fromData["username"] = user.toLowerCase();
       }
 
       const res = await loginUser(fromData);

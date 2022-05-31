@@ -26,6 +26,18 @@ const nextConfig = {
         destination: "https://api.mangadex.org/user/me",
       },
       {
+        source: '/auth/refresh',
+        destination: "https://api.mangadex.org/auth/refresh",
+      },
+      {
+        source: '/auth/check',
+        destination: "https://api.mangadex.org/auth/check",
+      },
+      {
+        source: '/auth/logout',
+        destination: "https://api.mangadex.org/auth/logout",
+      },
+      {
         source: '/mangacover',
         destination: "https://api.mangadex.org/cover",
       },
