@@ -148,3 +148,9 @@ export const getMangaChapterList: (option: mangaChapterListProps) => any = async
         error.response.request._response
     }
 }
+
+export const getTagsList: () => any = async () => {
+    const res = await axios.get("/manga/tag")
+
+    return res.data
+}

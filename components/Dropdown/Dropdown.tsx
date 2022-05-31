@@ -57,8 +57,6 @@ const Dropdown: FC<propsType> = ({
     };
   }, []);
 
-  console.log(label);
-
   return (
     <>
       <div

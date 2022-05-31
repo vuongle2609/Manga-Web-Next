@@ -1,0 +1,36 @@
+@import "/styles/globals.scss";
+
+.browse-content {
+  border-bottom: $gray-color solid 1px;
+  padding: 1rem 0;
+  user-select: none;
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.browse-sort {
+  user-select: none;
+  margin-bottom: 4px;
+}
+
+.browse-manga {
+  border: $gray-color solid 1px;
+  padding-left: 1rem !important;
+  padding-top: 1rem !important;
+}
+
+.browse-list {
+  margin: 0;
+}
+
+.browse-content-drop {
+  & div:first-child {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+}

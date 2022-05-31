@@ -38,6 +38,10 @@ const nextConfig = {
         destination: "https://api.mangadex.org/auth/logout",
       },
       {
+        source: '/manga/tag',
+        destination: "https://api.mangadex.org/auth/logout",
+      },
+      {
         source: '/mangacover',
         destination: "https://api.mangadex.org/cover",
       },

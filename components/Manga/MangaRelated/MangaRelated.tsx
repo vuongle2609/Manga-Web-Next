@@ -57,7 +57,6 @@ const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
               css={{
                 display: "flex",
                 flexDirection: "column",
-                padding: "$3 $3",
               }}
               key={index}
             >

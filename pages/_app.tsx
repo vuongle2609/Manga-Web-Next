@@ -70,6 +70,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
         <Footer />
         <GotoTop />
       </div>
+
       <LoginModal />
       <CoverModal />
     </NextUIProvider>
