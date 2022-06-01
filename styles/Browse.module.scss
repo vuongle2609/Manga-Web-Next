@@ -13,6 +13,7 @@
 .browse-sort {
   user-select: none;
   margin-bottom: 4px;
+  cursor: pointer;
 }
 
 .browse-manga {
@@ -22,6 +23,7 @@
 }
 
 .browse-list {
+  overflow: hidden;
   margin: 0;
 }
 
@@ -33,4 +35,11 @@
     align-items: center;
     cursor: pointer;
   }
+}
+
+.browse-pagination {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
 }

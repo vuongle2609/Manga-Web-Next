@@ -1,9 +1,10 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Grid, Loading, Pagination, Text } from "@nextui-org/react";
 import { getRelatedArr } from "data/handleData";
 import { handleAddParams } from "data/getData";
 import MangaCardNormal from "components/nomalCard/MangaCardNormal";
 import useSWR from "swr";
+import LoadingTopBar from "components/LoadingBar/LoadingBar";
 
 interface PropsType {
   styles: any;
@@ -14,6 +15,7 @@ const fetcher: (any: any) => any = (...config) =>
   fetch(...config).then((res) => res.json());
 
 const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
+  const load = useRef(null);
   const [offset, setOffset] = useState<number>(0);
   const relatedArr = getRelatedArr(mangaData.relationships);
   const relatedLink = relatedArr.map((item: any) => item.id);
@@ -37,6 +39,10 @@ const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
     };
   }
 
+  useEffect(() => {
+    load.current.complete();
+  }, [res.data]);
+
   const { data, error } = res;
 
   return (
@@ -46,6 +52,7 @@ const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
           flexDirection: "row",
         }}
       >
+        <LoadingTopBar ref={load} />
         {data ? (
           data?.data?.map((item: any, index: number) => (
             <Grid
@@ -95,7 +102,10 @@ const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
           <Pagination
             page={offset / 12 + 1}
             total={Math.ceil(data?.total / 12)}
-            onChange={(num: number) => setOffset(12 * (num - 1))}
+            onChange={(num: number) => {
+              load.current.continuousStart();
+              setOffset(12 * (num - 1));
+            }}
           ></Pagination>
         )}
       </div>

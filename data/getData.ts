@@ -115,9 +115,13 @@ export const getUser: (token: string) => any = async (token) => {
 
 // get a list of manga
 export const getManga: (option: mangaPropsType) => any = async (option) => {
-    const url = handleAddParams(apiUrls.manga(), option)
-    const data = await axios.get(url)
-    return data
+    try {
+        const url = handleAddParams(apiUrls.manga(), option)
+        const data = await axios.get(url)
+        return data
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 export const getMangaDetail: ({ id: string, option: mangaPropsType }) => any = async ({ id, option }) => {

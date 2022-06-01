@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { Text } from "@nextui-org/react";
 import { getCover } from "data/handleData";
 import Link from "next/link";
@@ -16,21 +16,25 @@ const MangaCardNormal: FC<propTypes> = ({ data }) => {
   const title: any = Object.values(data.attributes.title)[0];
 
   return (
-    <Link href={`/manga/${data.id}`}>
-      <a className={styles["manga-card-normal"]}>
-        <div>
-          <img
-            src={`${getCover({
-              id: data.id,
-              data: data.relationships,
-            })}`}
-            alt={title + " cover"}
-            className={styles["image-cover-default"]}
-          />
-        </div>
-        <Text size={18}>{title}</Text>
-      </a>
-    </Link>
+    <>
+      <Link href={`/manga/${data.id}`}>
+        <a
+          className={styles["manga-card-normal"]}
+        >
+          <div>
+            <img
+              src={`${getCover({
+                id: data.id,
+                data: data.relationships,
+              })}`}
+              alt={title + " cover"}
+              className={styles["image-cover-default"]}
+            />
+          </div>
+          <Text size={18}>{title}</Text>
+        </a>
+      </Link>
+    </>
   );
 };
 

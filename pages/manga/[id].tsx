@@ -16,8 +16,10 @@ import MangaArt from "components/Manga/MangaArt/MangaArt";
 import MangaRelated from "components/Manga/MangaRelated/MangaRelated";
 import Cover from "components/Manga/Cover/Cover";
 import Head from "next/head";
+import LoadingTopBar from "components/LoadingBar/LoadingBar";
 
 const Manga: FC<any> = ({ data, chapterData, langSelected }) => {
+  const load = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [displayContent, setDisplayContent] = useState<number>(0);
   const description = useRef<any>(null);
@@ -26,6 +28,7 @@ const Manga: FC<any> = ({ data, chapterData, langSelected }) => {
   const creditDetail = getCreditDetail(data.relationships);
 
   useEffect(() => {
+    load.current.complete();
     if (description.current !== null) {
       description.current.innerHTML = getDescription(
         data.attributes.description.en
@@ -63,6 +66,7 @@ const Manga: FC<any> = ({ data, chapterData, langSelected }) => {
         <meta property="og:description" content={subTitle} />
         <meta property="og:image:width" content="256px" />
       </Head>
+      <LoadingTopBar ref={load} />
       <div className={styles["manga-content"]}>
         <Grid.Container>
           <Grid xl={2} lg={2} md={3} sm={3} xs={5}>

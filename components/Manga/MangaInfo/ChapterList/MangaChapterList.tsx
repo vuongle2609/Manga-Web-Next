@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useRef } from "react";
 import ChapterItem from "./ChapterItem";
 import { Text, Pagination, Spacer } from "@nextui-org/react";
 import styles from "./ChapterList.module.scss";
@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Dropdown from "components/Dropdown/Dropdown";
 import language from "configs/language";
 import { getQueryUrl } from "data/handleData";
+import LoadingBar from "react-top-loading-bar";
 
 interface propsType {
   chapterData: any;
@@ -18,16 +19,23 @@ const MangaChapterList: FC<propsType> = ({
   translatedLang,
   langSelected,
 }) => {
+  const load = useRef(null);
   const router = useRouter();
 
   let prevVol: string;
 
+  useEffect(() => {
+    load.current.complete();
+  }, [chapterData]);
+
   const translatedLangModified: any[] = translatedLang.map((textLang) => {
     const langObj = language.find((item: any) => item.md === textLang);
-    return {
-      text: langObj.english,
-      value: langObj.md,
-    };
+    if (langObj?.english && langObj?.md) {
+      return {
+        text: langObj.english,
+        value: langObj.md,
+      };
+    }
   });
 
   const handleChangeLangQuery: (dataArr: any[]) => void = (dataArr) => {
@@ -86,6 +94,7 @@ const MangaChapterList: FC<propsType> = ({
 
   return chapterData.data.length !== 0 ? (
     <>
+      <LoadingBar color="#fca815" ref={load} />
       <div className={styles["dropdown-container"]}>
         <Dropdown
           onChange={handleChangeLangQuery}
@@ -143,6 +152,7 @@ const MangaChapterList: FC<propsType> = ({
           page={router.query.page ? Number(router.query.page) : 1}
           total={Math.ceil(chapterData.total / 50)}
           onChange={(num: number) => {
+            load.current.continuousStart();
             const newQuery = getQueryUrl(
               router.query,
               {

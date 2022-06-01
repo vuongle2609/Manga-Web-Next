@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useRef } from "react";
 import "styles/Discover.module.scss";
 import SliderBig from "components/Discover/SliderBig/SliderBig";
 import SliderArticle from "components/Discover/SliderArticle/SliderArticle";
@@ -6,12 +6,19 @@ import ColumnsArticle from "components/Discover/ColumnsArticle/ColumnsArticle";
 import SubNavBar from "components/SubNavBar/SubNavBar";
 import { GetServerSideProps } from "next";
 import { getManga } from "data/getData";
+import LoadingTopBar from "components/LoadingBar/LoadingBar";
 
 const Discover: FC<any> = (props) => {
+  const load = useRef(null);
   const { sliderBigData, sliderArticle1Data, sliderArticle2Data } = props;
+
+  useEffect(() => {
+    load.current.complete();
+  }, []);
 
   return (
     <SubNavBar>
+      <LoadingTopBar ref={load} />
       <SliderBig data={sliderBigData} />
       <SliderArticle data={sliderArticle1Data} label="Seasonal" />
 

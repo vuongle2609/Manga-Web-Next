@@ -2,8 +2,10 @@ import { FC, useState, useEffect, useRef } from "react";
 import { Input } from "@nextui-org/react";
 import Link from "next/link";
 import styles from "./SubNavBar.module.scss";
+import LoadingTopBar from "components/LoadingBar/LoadingBar";
 
 const SubNavBar: FC<any> = (props) => {
+  const load = useRef(null);
   const [isSticky, setIsSticky] = useState(false);
   const navBar = useRef<any>(null);
 
@@ -25,6 +27,7 @@ const SubNavBar: FC<any> = (props) => {
 
   return (
     <>
+      <LoadingTopBar ref={load} />
       <div
         className={
           styles["sub-navbar"] + " " + (isSticky ? styles["isSticky"] : "")
@@ -39,12 +42,12 @@ const SubNavBar: FC<any> = (props) => {
           aria-label="search-bar"
         />
         <Link href="/home/discover">
-          <a>
+          <a onClick={() => load.current.continuousStart()}>
             <b>Discover</b>
           </a>
         </Link>
         <Link href="/home/browse">
-          <a>
+          <a onClick={() => load.current.continuousStart()}>
             <b>Browse</b>
           </a>
         </Link>

@@ -98,11 +98,15 @@ const Dropdown: FC<propsType> = ({
               defaultValue={value}
               onChange={setCheckboxValue}
             >
-              {listValue.map((item: any, index: number) => (
-                <Checkbox value={item.value} key={index}>
-                  <Text>{item.text}</Text>
-                </Checkbox>
-              ))}
+              {listValue.map((item: any, index: number) =>
+                !!item?.value ? (
+                  <Checkbox value={item.value} key={index}>
+                    <Text>{item.text}</Text>
+                  </Checkbox>
+                ) : (
+                  false
+                )
+              )}
             </Checkbox.Group>
             <Spacer y={0.2} />
             <Button

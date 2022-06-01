@@ -30,18 +30,22 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
 
     const getUserData = async () => {
       try {
-        const isTokenEx = await checkToken(token.session);
-        if (!isTokenEx) {
-          const resUser = await getUser(token.session);
-          setUserData(resUser.data.data);
-        } else if (isTokenEx) {
-          const newToken = await rereshToken(token.refresh, token.session);
-          addToken({
-            refresh: newToken.refresh,
-            session: newToken.session,
-          });
-          const resUser = await getUser(newToken.session);
-          setUserData(resUser.data.data);
+        if (token.access && token.refresh) {
+          const isTokenEx = await checkToken(token.session);
+          if (!isTokenEx) {
+            const resUser = await getUser(token.session);
+            setUserData(resUser.data.data);
+          } else if (isTokenEx) {
+            const newToken = await rereshToken(token.refresh, token.session);
+            addToken({
+              refresh: newToken.refresh,
+              session: newToken.session,
+            });
+            const resUser = await getUser(newToken.session);
+            setUserData(resUser.data.data);
+          }
+        } else {
+          setUserData(false);
         }
       } catch (err) {
         setUserData(false);
