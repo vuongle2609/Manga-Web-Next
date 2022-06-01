@@ -256,8 +256,10 @@ export const getQueryUrl: (queryObj: any, newQuery: any, diffValue?: string) => 
             const newQueryArrString = newQuery.value.join(",")
             newQueryString = newQuery.key + "=" + newQueryArrString
         }
-    } else {
+    } else if (typeof newQuery.value === "string") {
         newQueryString = newQuery.key + "=" + newQuery.value
+    } else {
+        newQueryString = `${newQuery.key}=%7B%22${newQuery.value.type}%22%3A%22${newQuery.value.order}%22%7D`
     }
 
     return query + newQueryString

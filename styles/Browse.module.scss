@@ -1,7 +1,7 @@
 @import "/styles/globals.scss";
 
 .browse-content {
-  border-bottom: $gray-color solid 1px;
+  // border-bottom: $gray-color solid 1px;
   padding: 1rem 0;
   user-select: none;
 
@@ -14,6 +14,7 @@
   user-select: none;
   margin-bottom: 4px;
   cursor: pointer;
+  width: fit-content;
 }
 
 .browse-manga {
@@ -42,4 +43,18 @@
   display: flex;
   justify-content: center;
   margin-top: 1rem;
+}
+
+.browse-sort-list {
+  margin: 0;
+  
+  & li {
+    margin: 0;
+    padding: 6px 14px;
+    cursor: pointer;
+  }
+
+  & li:hover {
+    background-color: #fef0d6;
+  }
 }

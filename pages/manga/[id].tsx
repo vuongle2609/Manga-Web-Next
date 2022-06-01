@@ -16,7 +16,7 @@ import MangaArt from "components/Manga/MangaArt/MangaArt";
 import MangaRelated from "components/Manga/MangaRelated/MangaRelated";
 import Cover from "components/Manga/Cover/Cover";
 import Head from "next/head";
-import LoadingTopBar from "components/LoadingBar/LoadingBar";
+import LoadingBar from "react-top-loading-bar";
 
 const Manga: FC<any> = ({ data, chapterData, langSelected }) => {
   const load = useRef(null);
@@ -66,7 +66,7 @@ const Manga: FC<any> = ({ data, chapterData, langSelected }) => {
         <meta property="og:description" content={subTitle} />
         <meta property="og:image:width" content="256px" />
       </Head>
-      <LoadingTopBar ref={load} />
+      <LoadingBar ref={load} color="#fca815" />
       <div className={styles["manga-content"]}>
         <Grid.Container>
           <Grid xl={2} lg={2} md={3} sm={3} xs={5}>

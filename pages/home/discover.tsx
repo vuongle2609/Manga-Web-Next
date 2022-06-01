@@ -6,7 +6,7 @@ import ColumnsArticle from "components/Discover/ColumnsArticle/ColumnsArticle";
 import SubNavBar from "components/SubNavBar/SubNavBar";
 import { GetServerSideProps } from "next";
 import { getManga } from "data/getData";
-import LoadingTopBar from "components/LoadingBar/LoadingBar";
+import LoadingBar from "react-top-loading-bar";
 
 const Discover: FC<any> = (props) => {
   const load = useRef(null);
@@ -18,7 +18,7 @@ const Discover: FC<any> = (props) => {
 
   return (
     <SubNavBar>
-      <LoadingTopBar ref={load} />
+      <LoadingBar ref={load} color="#fca815" />
       <SliderBig data={sliderBigData} />
       <SliderArticle data={sliderArticle1Data} label="Seasonal" />
 

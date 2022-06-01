@@ -4,7 +4,7 @@ import { getRelatedArr } from "data/handleData";
 import { handleAddParams } from "data/getData";
 import MangaCardNormal from "components/nomalCard/MangaCardNormal";
 import useSWR from "swr";
-import LoadingTopBar from "components/LoadingBar/LoadingBar";
+import LoadingBar from "react-top-loading-bar";
 
 interface PropsType {
   styles: any;
@@ -52,7 +52,7 @@ const MangaRelated: FC<PropsType> = ({ styles, mangaData }) => {
           flexDirection: "row",
         }}
       >
-        <LoadingTopBar ref={load} />
+        <LoadingBar ref={load} color="#fca815" />
         {data ? (
           data?.data?.map((item: any, index: number) => (
             <Grid

@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { handleAddParams } from "data/getData";
 import Cover from "../Cover/Cover";
 import { getSingleCover } from "data/handleData";
-import LoadingTopBar from "components/LoadingBar/LoadingBar";
+import LoadingBar from "react-top-loading-bar";
 
 interface PropsType {
   styles: any;
@@ -45,7 +45,7 @@ const MangaArt: FC<PropsType> = ({ styles, mangaData }) => {
           flexDirection: "row",
         }}
       >
-        <LoadingTopBar ref={load} />
+        <LoadingBar ref={load} color="#fca815" />
         {data ? (
           dataArr?.map((item: any, index: number) => (
             <Grid

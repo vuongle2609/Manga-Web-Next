@@ -2,7 +2,7 @@ import { FC, useState, useEffect, useRef } from "react";
 import { Input } from "@nextui-org/react";
 import Link from "next/link";
 import styles from "./SubNavBar.module.scss";
-import LoadingTopBar from "components/LoadingBar/LoadingBar";
+import LoadingBar from "react-top-loading-bar";
 
 const SubNavBar: FC<any> = (props) => {
   const load = useRef(null);
@@ -27,7 +27,7 @@ const SubNavBar: FC<any> = (props) => {
 
   return (
     <>
-      <LoadingTopBar ref={load} />
+      <LoadingBar ref={load} color="#fca815" />
       <div
         className={
           styles["sub-navbar"] + " " + (isSticky ? styles["isSticky"] : "")
@@ -36,8 +36,8 @@ const SubNavBar: FC<any> = (props) => {
       >
         <Input
           placeholder="Search"
-          status="default"
           underlined
+          color="primary"
           contentRight={<i className="fa-regular fa-magnifying-glass"></i>}
           aria-label="search-bar"
         />
