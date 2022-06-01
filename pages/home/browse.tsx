@@ -1,4 +1,4 @@
-import { FC, useState, useRef, useEffect, useCallback } from "react";
+import { FC, useState, useRef, useEffect } from "react";
 import SubNavBar from "components/SubNavBar/SubNavBar";
 import styles from "styles/Browse.module.scss";
 import { GetServerSideProps } from "next";
@@ -9,7 +9,6 @@ import {
   Loading,
   Pagination,
   Popover,
-  Row,
   Spacer,
   Text,
 } from "@nextui-org/react";
@@ -182,8 +181,12 @@ const Browse: FC<any> = ({
     <SubNavBar>
       <LoadingBar ref={load} color="#fca815" />
       <Grid.Container gap={1} justify="center">
-        <Grid xs={10} direction="column">
-          <Popover placement="bottom-left" isOpen={isOpen} onOpenChange={setIsOpen}>
+        <Grid sm={10} xs={12}  direction="column">
+          <Popover
+            placement="bottom-left"
+            isOpen={isOpen}
+            onOpenChange={setIsOpen}
+          >
             <Popover.Trigger>
               <div className={styles["browse-sort"]}>
                 <Text>
@@ -217,7 +220,7 @@ const Browse: FC<any> = ({
             {mangaData ? (
               mangaData.data.length !== 0 ? (
                 mangaData?.data?.map((item: any, index: number) => (
-                  <Grid lg={2} key={index}>
+                  <Grid lg={2} md={2.4} sm={2.4} xs={3} key={index}>
                     <MangaCardNormal data={item} />
                   </Grid>
                 ))
@@ -241,11 +244,14 @@ const Browse: FC<any> = ({
               total={Math.ceil(
                 (mangaData?.total > 9000 ? 9000 : mangaData?.total) / 90
               )}
-              onChange={setPageS}
+              onChange={(num: number) => {
+                setMangaData(false);
+                setPageS(num);
+              }}
             ></Pagination>
           </div>
         </Grid>
-        <Grid xs={2} direction="column">
+        <Grid sm={2} xs={0}  direction="column">
           <div className={styles["browse-content"]}>
             <Text b>Filter</Text>
             <Spacer y={0.4} />
@@ -348,7 +354,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
       query: query,
       tagQuery: tagQuery,
       keyword: keyword,
-      orderSplit: orderSplit,
+      orderSplit: orderSplit || null,
     },
   };
 };
