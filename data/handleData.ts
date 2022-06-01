@@ -243,6 +243,7 @@ export const getChapterCredit: (relationships: any[]) => any = (relationships) =
 
 export const getQueryUrl: (queryObj: any, newQuery: any, diffValue?: string) => string = ({ page, id, ...queryObj }, newQuery, diffValue) => {
     let query = "?"
+
     for (let item in queryObj) {
         if (item !== diffValue) {
             query = query + `${item}=${queryObj[item]}&`
@@ -256,10 +257,11 @@ export const getQueryUrl: (queryObj: any, newQuery: any, diffValue?: string) => 
             const newQueryArrString = newQuery.value.join(",")
             newQueryString = newQuery.key + "=" + newQueryArrString
         }
-    } else if (typeof newQuery.value === "string") {
+    } else if (typeof newQuery.value === "string" || typeof newQuery.value === "number") {
         newQueryString = newQuery.key + "=" + newQuery.value
     } else {
-        newQueryString = `${newQuery.key}=%7B%22${newQuery.value.type}%22%3A%22${newQuery.value.order}%22%7D`
+        // newQueryString = `${newQuery.key}[${newQuery.value.type}]=${newQuery.value.order}`
+        newQueryString = `${newQuery.key}=${newQuery.value.type}:${newQuery.value.order}`
     }
 
     return query + newQueryString

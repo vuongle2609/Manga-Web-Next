@@ -18,12 +18,10 @@ import { getQueryUrl } from "data/handleData";
 import LoadingBar from "react-top-loading-bar";
 
 const Browse: FC<any> = ({ tags, mangaData, page }) => {
-  // console.log("🚀 ~ file: browse.tsx ~ line 7 ~ tags", mangaData);
   const load = useRef(null);
   const [tagDrop, setTagDrop] = useState<boolean>(true);
 
   const router = useRouter();
-  console.log(page);
 
   const sortSelection = [
     {
@@ -89,11 +87,16 @@ const Browse: FC<any> = ({ tags, mangaData, page }) => {
 
   const setPage = (page: number) => {
     load.current.continuousStart();
-    const newQuery = getQueryUrl(router.query, {
-      key: "page",
-      value: page,
-    });
-    router.replace(`/home/browse${newQuery}`);
+    console.log(router.query)
+    const newQuery = getQueryUrl(
+      router.query,
+      {
+        key: "page",
+        value: page,
+      },
+      "page"
+    );
+    router.push(`/home/browse${newQuery}`);
   };
 
   const setSort = (type: string, order: string) => {
@@ -109,7 +112,7 @@ const Browse: FC<any> = ({ tags, mangaData, page }) => {
       },
       "order"
     );
-    router.replace(`/home/browse${newQuery}`);
+    router.push(`/home/browse${newQuery}`);
   };
 
   return (
@@ -203,11 +206,20 @@ const Browse: FC<any> = ({ tags, mangaData, page }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context: any) => {
-  const orderUrl = context.query.order;
   let order: any = {
     followedCount: "desc",
   };
-  if (orderUrl) order = JSON.parse(orderUrl);
+
+  if (context.query.order) {
+    const orderSplit = context.query.order.split(":");
+    order = {};
+    order[orderSplit[0]] = orderSplit[1];
+  }
+
+  console.log(
+    "🚀 ~ file: browse.tsx ~ line 213 ~ constgetServerSideProps:GetServerSideProps= ~ context.query",
+    context.query
+  );
 
   const page = Number(context.query.page) || 1;
   const tagData = await getTagsList();
