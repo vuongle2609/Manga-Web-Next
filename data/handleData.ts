@@ -245,6 +245,7 @@ export const getQueryUrl: (queryObj: any, newQuery: any, diffValue?: string) => 
     let query = "?"
 
     for (let item in queryObj) {
+        console.log(item)
         if (item !== diffValue) {
             query = query + `${item}=${queryObj[item]}&`
         }
@@ -260,8 +261,7 @@ export const getQueryUrl: (queryObj: any, newQuery: any, diffValue?: string) => 
     } else if (typeof newQuery.value === "string" || typeof newQuery.value === "number") {
         newQueryString = newQuery.key + "=" + newQuery.value
     } else {
-        // newQueryString = `${newQuery.key}[${newQuery.value.type}]=${newQuery.value.order}`
-        newQueryString = `${newQuery.key}=${newQuery.value.type}:${newQuery.value.order}`
+        newQueryString = `${newQuery.key}=${newQuery.value.type}-${newQuery.value.order}`
     }
 
     return query + newQueryString

@@ -26,6 +26,21 @@
 .browse-list {
   overflow: hidden;
   margin: 0;
+
+  & li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    cursor: pointer;
+    border-radius: 2px;
+    margin: 0;
+    transition: all ease-in-out 0.1s;
+  }
+
+  & li:hover {
+    background-color: #fef0d6;
+  }
 }
 
 .browse-content-drop {
@@ -47,7 +62,7 @@
 
 .browse-sort-list {
   margin: 0;
-  
+
   & li {
     margin: 0;
     padding: 6px 14px;
@@ -56,5 +71,19 @@
 
   & li:hover {
     background-color: #fef0d6;
+  }
+}
+
+.browse-status {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
+
+  & i {
+    font-size: 35px;
+    margin-bottom: 4px;
   }
 }

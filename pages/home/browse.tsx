@@ -1,4 +1,4 @@
-import { FC, useState, useRef, useEffect } from "react";
+import { FC, useState, useRef, useEffect, useCallback } from "react";
 import SubNavBar from "components/SubNavBar/SubNavBar";
 import styles from "styles/Browse.module.scss";
 import { GetServerSideProps } from "next";
@@ -6,6 +6,7 @@ import { getManga, getTagsList } from "data/getData";
 import {
   Grid,
   Input,
+  Loading,
   Pagination,
   Popover,
   Row,
@@ -16,12 +17,24 @@ import MangaCardNormal from "components/nomalCard/MangaCardNormal";
 import { useRouter } from "next/router";
 import { getQueryUrl } from "data/handleData";
 import LoadingBar from "react-top-loading-bar";
+import _ from "lodash";
 
-const Browse: FC<any> = ({ tags, mangaData, page }) => {
+const Browse: FC<any> = ({
+  tags,
+  fetchedData,
+  page,
+  query,
+  tagQuery,
+  keyword,
+  orderSplit,
+}) => {
   const load = useRef(null);
   const [tagDrop, setTagDrop] = useState<boolean>(true);
-
   const router = useRouter();
+  const [pageS, setPageS] = useState<number>(1);
+  const [tagS, setTagS] = useState<string[]>([...tagQuery]);
+  const [mangaData, setMangaData] = useState<any>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const sortSelection = [
     {
@@ -81,23 +94,44 @@ const Browse: FC<any> = ({ tags, mangaData, page }) => {
     },
   ];
 
+  // +)ịt c0n mẹ c0n n3xtjs |_0`n +)3'0 |_4`m m0'j qu3rij ch0 |30' m4`ij |_4`m t40 ph4j ])u`ng c4'ch n4`ij
+  useEffect(() => {
+    if (pageS !== page) {
+      load.current.continuousStart();
+      const newQuery = getQueryUrl(
+        router.query,
+        {
+          key: "page",
+          value: pageS,
+        },
+        "page"
+      );
+      router.push(`/home/browse${newQuery}`);
+    }
+  }, [pageS]);
+
+  useEffect(() => {
+    if (!_.isEqual(tagS, query.tags)) {
+      load.current.continuousStart();
+      const newQuery = getQueryUrl(
+        router.query,
+        {
+          key: "tags",
+          value: tagS,
+        },
+        "tags"
+      );
+      router.push(`/home/browse${newQuery}`);
+    }
+  }, [tagS]);
+
+  useEffect(() => {
+    setMangaData(fetchedData);
+  }, [fetchedData]);
+
   useEffect(() => {
     load.current.complete();
-  }, [mangaData]);
-
-  const setPage = (page: number) => {
-    load.current.continuousStart();
-    console.log(router.query)
-    const newQuery = getQueryUrl(
-      router.query,
-      {
-        key: "page",
-        value: page,
-      },
-      "page"
-    );
-    router.push(`/home/browse${newQuery}`);
-  };
+  }, [fetchedData]);
 
   const setSort = (type: string, order: string) => {
     load.current.continuousStart();
@@ -115,16 +149,45 @@ const Browse: FC<any> = ({ tags, mangaData, page }) => {
     router.push(`/home/browse${newQuery}`);
   };
 
+  const setKeyword = (keyword: string) => {
+    if (query?.keyword !== keyword) {
+      load.current.continuousStart();
+      const newQuery = getQueryUrl(
+        router.query,
+        {
+          key: "keyword",
+          value: keyword,
+        },
+        "keyword"
+      );
+      router.push(`/home/browse${newQuery}`);
+    }
+  };
+
+  const handleAddTags = (tag: string) => {
+    if (tagS.includes(tag)) {
+      const newArr = tagS.filter((item: any) => item !== tag);
+      setTagS(newArr);
+    } else {
+      setTagS((prev) => [...prev, tag]);
+    }
+  };
+
+  const sortByLabel = sortSelection.find(
+    (item: any) =>
+      item.type === orderSplit?.[0] && item.order === orderSplit?.[1]
+  );
+
   return (
     <SubNavBar>
       <LoadingBar ref={load} color="#fca815" />
       <Grid.Container gap={1} justify="center">
         <Grid xs={10} direction="column">
-          <Popover placement="bottom-left">
+          <Popover placement="bottom-left" isOpen={isOpen} onOpenChange={setIsOpen}>
             <Popover.Trigger>
               <div className={styles["browse-sort"]}>
                 <Text>
-                  Sort by: <Text b>Best Match</Text>
+                  Sort by: <Text b>{sortByLabel?.text || "Most Follows"}</Text>
                   <i
                     className="fa-light fa-arrow-down"
                     style={{ marginLeft: "10px" }}
@@ -137,7 +200,11 @@ const Browse: FC<any> = ({ tags, mangaData, page }) => {
                 {sortSelection.map((item: any, index: number) => (
                   <li
                     key={index}
-                    onClick={() => setSort(item.type, item.order)}
+                    onClick={() => {
+                      setIsOpen(false);
+                      setMangaData(false);
+                      setSort(item.type, item.order);
+                    }}
                   >
                     {item.text}
                   </li>
@@ -147,11 +214,26 @@ const Browse: FC<any> = ({ tags, mangaData, page }) => {
           </Popover>
 
           <Grid.Container className={styles["browse-manga"]}>
-            {mangaData?.data?.map((item: any, index: number) => (
-              <Grid lg={2} key={index}>
-                <MangaCardNormal data={item} />
-              </Grid>
-            ))}
+            {mangaData ? (
+              mangaData.data.length !== 0 ? (
+                mangaData?.data?.map((item: any, index: number) => (
+                  <Grid lg={2} key={index}>
+                    <MangaCardNormal data={item} />
+                  </Grid>
+                ))
+              ) : (
+                <div className={styles["browse-status"]}>
+                  <i className="fa-light fa-face-sad-tear"></i>
+                  <Text b size={20}>
+                    No result
+                  </Text>
+                </div>
+              )
+            ) : (
+              <div className={styles["browse-status"]}>
+                <Loading />
+              </div>
+            )}
           </Grid.Container>
           <div className={styles["browse-pagination"]}>
             <Pagination
@@ -159,7 +241,7 @@ const Browse: FC<any> = ({ tags, mangaData, page }) => {
               total={Math.ceil(
                 (mangaData?.total > 9000 ? 9000 : mangaData?.total) / 90
               )}
-              onChange={setPage}
+              onChange={setPageS}
             ></Pagination>
           </div>
         </Grid>
@@ -168,10 +250,12 @@ const Browse: FC<any> = ({ tags, mangaData, page }) => {
             <Text b>Filter</Text>
             <Spacer y={0.4} />
             <Input
+              initialValue={keyword}
               placeholder="Keywords"
               underlined
               color="primary"
               contentRight={<i className="fa-regular fa-magnifying-glass"></i>}
+              onBlur={(e: any) => setKeyword(e.target.value)}
             />
           </div>
 
@@ -180,7 +264,12 @@ const Browse: FC<any> = ({ tags, mangaData, page }) => {
               styles["browse-content"] + " " + styles["browse-content-drop"]
             }
           >
-            <div onClick={() => setTagDrop((prev) => !prev)}>
+            <div
+              onClick={() => {
+                setMangaData(false);
+                setTagDrop((prev) => !prev);
+              }}
+            >
               <Text b>Tags</Text>
               {tagDrop ? (
                 <i className="fa-light fa-arrow-up"></i>
@@ -192,9 +281,24 @@ const Browse: FC<any> = ({ tags, mangaData, page }) => {
               <>
                 <Spacer y={0.4} />
                 <ul className={styles["browse-list"]}>
-                  {tags.map((item: any, index: number) => (
-                    <li key={index}>{item?.attributes?.name?.en}</li>
-                  ))}
+                  {tags.map((item: any, index: number) => {
+                    const tagContains = tagQuery?.includes(item?.id);
+                    return (
+                      <li
+                        key={index}
+                        onClick={() => {
+                          setMangaData(false);
+                          handleAddTags(item?.id);
+                        }}
+                        style={{
+                          background: tagContains && "#fef0d6",
+                        }}
+                      >
+                        <span>{item?.attributes?.name?.en}</span>
+                        {tagContains && <i className="fa-light fa-check"></i>}
+                      </li>
+                    );
+                  })}
                 </ul>
               </>
             )}
@@ -210,16 +314,18 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
     followedCount: "desc",
   };
 
+  const tags: any = context.query.tags;
+  const tagQuery = tags?.split(",") !== undefined ? tags.split(",") : [];
+
+  const keyword = context.query.keyword || "";
+
+  const query = context.query;
+
+  const orderSplit = context.query?.order?.split?.("-");
   if (context.query.order) {
-    const orderSplit = context.query.order.split(":");
     order = {};
     order[orderSplit[0]] = orderSplit[1];
   }
-
-  console.log(
-    "🚀 ~ file: browse.tsx ~ line 213 ~ constgetServerSideProps:GetServerSideProps= ~ context.query",
-    context.query
-  );
 
   const page = Number(context.query.page) || 1;
   const tagData = await getTagsList();
@@ -230,13 +336,19 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
     contentRating: ["safe", "suggestive", "erotica"],
     includes: ["cover_art", "author", "artist"],
     order: order,
+    includedTags: tagQuery,
+    title: keyword,
   });
 
   return {
     props: {
       tags: tagData.data,
-      mangaData: mangaData.data,
+      fetchedData: mangaData.data,
       page: page,
+      query: query,
+      tagQuery: tagQuery,
+      keyword: keyword,
+      orderSplit: orderSplit,
     },
   };
 };

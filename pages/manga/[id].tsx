@@ -107,7 +107,7 @@ const Manga: FC<any> = ({ data, chapterData, langSelected }) => {
           <div className={styles["manga-tags"]}>
             {data.attributes.tags.length !== 0
               ? data.attributes.tags.map((item: any, index: number) => (
-                  <Link href={`/list?tag=${item.id}`} key={index}>
+                  <Link href={`/home/browse?tags=${item.id}`} key={index}>
                     <a>
                       <Text
                         css={{

@@ -25,7 +25,7 @@ const MangaChapterList: FC<propsType> = ({
   let prevVol: string;
 
   useEffect(() => {
-    load.current.complete();
+    if (load.current) load.current.complete();
   }, [chapterData]);
 
   const translatedLangModified: any[] = translatedLang.map((textLang) => {
