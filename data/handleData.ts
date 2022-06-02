@@ -242,10 +242,9 @@ export const getChapterCredit: (relationships: any[]) => any = (relationships) =
 }
 
 export const getQueryUrl: (queryObj: any, newQuery: any, diffValue?: string) => string = ({ page, id, ...queryObj }, newQuery, diffValue) => {
-    let query = ""
+    let query = "?"
 
     for (let item in queryObj) {
-        console.log(item)
         if (item !== diffValue) {
             query = query + `${item}=${queryObj[item]}&`
         }
@@ -259,14 +258,12 @@ export const getQueryUrl: (queryObj: any, newQuery: any, diffValue?: string) => 
             newQueryString = newQuery.key + "=" + newQueryArrString
         }
     } else if (typeof newQuery.value === "string" || typeof newQuery.value === "number") {
-        if (newQuery.value.length && newQuery.value.length !== 0) {
-            newQueryString = newQuery.key + "=" + newQuery.value
-        }
+        newQueryString = newQuery.key + "=" + newQuery.value
     } else {
         newQueryString = `${newQuery.key}=${newQuery.value.type}-${newQuery.value.order}`
     }
 
-    return query + (newQueryString.length !== 0 ? "?" : "") + newQueryString
+    return query + newQueryString
 }
 
 export const validateEmail = (email: string) => {
