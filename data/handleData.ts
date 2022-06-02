@@ -245,7 +245,6 @@ export const getQueryUrl: (queryObj: any, newQuery: any, diffValue?: string) => 
     let query = ""
 
     for (let item in queryObj) {
-        console.log(item)
         if (item !== diffValue) {
             query = query + `${item}=${queryObj[item]}&`
         }

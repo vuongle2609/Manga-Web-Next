@@ -32,8 +32,6 @@ const Browse: FC<any> = ({
   const load = useRef(null);
   const [tagDrop, setTagDrop] = useState<boolean>(true);
   const router = useRouter();
-  const [pageS, setPageS] = useState<number>(1);
-  const [tagS, setTagS] = useState<string[]>([...tagQuery]);
   const [mangaData, setMangaData] = useState<any>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -95,37 +93,6 @@ const Browse: FC<any> = ({
     },
   ];
 
-  // +)ịt c0n mẹ c0n n3xtjs |_0`n +)3'0 |_4`m m0'j qu3rij ch0 |30' m4`ij |_4`m t40 ph4j ])u`ng c4'ch n4`ij
-  useEffect(() => {
-    if (pageS !== page) {
-      load.current.continuousStart();
-      const newQuery = getQueryUrl(
-        router.query,
-        {
-          key: "page",
-          value: pageS,
-        },
-        "page"
-      );
-      router.push(`/home/browse${newQuery}`);
-    }
-  }, [pageS]);
-
-  useEffect(() => {
-    if (!_.isEqual(tagS, query.tags)) {
-      load.current.continuousStart();
-      const newQuery = getQueryUrl(
-        router.query,
-        {
-          key: "tags",
-          value: tagS,
-        },
-        "tags"
-      );
-      router.push(`/home/browse${newQuery}`);
-    }
-  }, [tagS]);
-
   useEffect(() => {
     setMangaData(fetchedData);
   }, [fetchedData]);
@@ -134,8 +101,49 @@ const Browse: FC<any> = ({
     load.current.complete();
   }, [fetchedData]);
 
+  const setTags = (newTag: string[]) => {
+    load.current.continuousStart();
+    if (window)
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    const newQuery = getQueryUrl(
+      router.query,
+      {
+        key: "tags",
+        value: newTag,
+      },
+      "tags"
+    );
+    router.push(`/home/browse${newQuery}`);
+  };
+
+  const setPage = (num: number) => {
+    load.current.continuousStart();
+    if (window)
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    const newQuery = getQueryUrl(
+      router.query,
+      {
+        key: "page",
+        value: num,
+      },
+      "page"
+    );
+    router.push(`/home/browse${newQuery}`);
+  };
+
   const setSort = (type: string, order: string) => {
     load.current.continuousStart();
+    if (window)
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     const newQuery = getQueryUrl(
       router.query,
       {
@@ -153,6 +161,11 @@ const Browse: FC<any> = ({
   const setKeyword = (keyword: string) => {
     if (query?.keyword !== keyword) {
       load.current.continuousStart();
+      if (window)
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
       const newQuery = getQueryUrl(
         router.query,
         {
@@ -166,11 +179,16 @@ const Browse: FC<any> = ({
   };
 
   const handleAddTags = (tag: string) => {
-    if (tagS.includes(tag)) {
-      const newArr = tagS.filter((item: any) => item !== tag);
-      setTagS(newArr);
+    if (window)
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    if (tagQuery.includes(tag)) {
+      const newArr = tagQuery.filter((item: any) => item !== tag);
+      setTags(newArr);
     } else {
-      setTagS((prev) => [...prev, tag]);
+      setTags([...tagQuery, tag]);
     }
   };
 
@@ -226,7 +244,7 @@ const Browse: FC<any> = ({
               auto
               css={{
                 "@sm": {
-                  display: "none"
+                  display: "none",
                 },
               }}
             >
@@ -238,9 +256,6 @@ const Browse: FC<any> = ({
             {mangaData ? (
               mangaData.data.length !== 0 ? (
                 mangaData?.data?.map((item: any, index: number) => (
-                  // <Grid xs={4} sm={2.4} md={2.4} lg={2} key={index}>
-                  //   <MangaCardNormal data={item} />
-                  // </Grid>
                   <div key={index} className={styles["grid-item"]}>
                     <MangaCardNormal data={item} />
                   </div>
@@ -267,7 +282,13 @@ const Browse: FC<any> = ({
               )}
               onChange={(num: number) => {
                 setMangaData(false);
-                setPageS(num);
+                if (window)
+                  window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                  });
+                setPage(num);
+
               }}
             ></Pagination>
           </div>
@@ -370,7 +391,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
   return {
     props: {
       tags: tagData.data,
-      fetchedData: mangaData.data,
+      fetchedData: await mangaData.data,
       page: page,
       query: query,
       tagQuery: tagQuery,
