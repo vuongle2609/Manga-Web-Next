@@ -1,9 +1,10 @@
-import { FC, useState, useRef, useEffect, useCallback } from "react";
+import { FC, useState, useRef, useEffect } from "react";
 import SubNavBar from "components/SubNavBar/SubNavBar";
 import styles from "styles/Browse.module.scss";
 import { GetServerSideProps } from "next";
 import { getManga, getTagsList } from "data/getData";
 import {
+  Button,
   Grid,
   Input,
   Loading,
@@ -31,8 +32,6 @@ const Browse: FC<any> = ({
   const load = useRef(null);
   const [tagDrop, setTagDrop] = useState<boolean>(true);
   const router = useRouter();
-  const [pageS, setPageS] = useState<number>(1);
-  const [tagS, setTagS] = useState<string[]>([...tagQuery]);
   const [mangaData, setMangaData] = useState<any>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -94,37 +93,6 @@ const Browse: FC<any> = ({
     },
   ];
 
-  // +)ịt c0n mẹ c0n n3xtjs |_0`n +)3'0 |_4`m m0'j qu3rij ch0 |30' m4`ij |_4`m t40 ph4j ])u`ng c4'ch n4`ij
-  useEffect(() => {
-    if (pageS !== page) {
-      load.current.continuousStart();
-      const newQuery = getQueryUrl(
-        router.query,
-        {
-          key: "page",
-          value: pageS,
-        },
-        "page"
-      );
-      router.push(`/home/browse${newQuery}`);
-    }
-  }, [pageS]);
-
-  useEffect(() => {
-    if (!_.isEqual(tagS, query.tags)) {
-      load.current.continuousStart();
-      const newQuery = getQueryUrl(
-        router.query,
-        {
-          key: "tags",
-          value: tagS,
-        },
-        "tags"
-      );
-      router.push(`/home/browse${newQuery}`);
-    }
-  }, [tagS]);
-
   useEffect(() => {
     setMangaData(fetchedData);
   }, [fetchedData]);
@@ -133,8 +101,49 @@ const Browse: FC<any> = ({
     load.current.complete();
   }, [fetchedData]);
 
+  const setTags = (newTag: string[]) => {
+    load.current.continuousStart();
+    if (window)
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    const newQuery = getQueryUrl(
+      router.query,
+      {
+        key: "tags",
+        value: newTag,
+      },
+      "tags"
+    );
+    router.push(`/home/browse${newQuery}`);
+  };
+
+  const setPage = (num: number) => {
+    load.current.continuousStart();
+    if (window)
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    const newQuery = getQueryUrl(
+      router.query,
+      {
+        key: "page",
+        value: num,
+      },
+      "page"
+    );
+    router.push(`/home/browse${newQuery}`);
+  };
+
   const setSort = (type: string, order: string) => {
     load.current.continuousStart();
+    if (window)
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     const newQuery = getQueryUrl(
       router.query,
       {
@@ -152,6 +161,11 @@ const Browse: FC<any> = ({
   const setKeyword = (keyword: string) => {
     if (query?.keyword !== keyword) {
       load.current.continuousStart();
+      if (window)
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
       const newQuery = getQueryUrl(
         router.query,
         {
@@ -165,11 +179,16 @@ const Browse: FC<any> = ({
   };
 
   const handleAddTags = (tag: string) => {
-    if (tagS.includes(tag)) {
-      const newArr = tagS.filter((item: any) => item !== tag);
-      setTagS(newArr);
+    if (window)
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    if (tagQuery.includes(tag)) {
+      const newArr = tagQuery.filter((item: any) => item !== tag);
+      setTags(newArr);
     } else {
-      setTagS((prev) => [...prev, tag]);
+      setTags([...tagQuery, tag]);
     }
   };
 
@@ -182,44 +201,64 @@ const Browse: FC<any> = ({
     <SubNavBar>
       <LoadingBar ref={load} color="#fca815" />
       <Grid.Container gap={1} justify="center">
-        <Grid xs={10} direction="column">
-          <Popover placement="bottom-left" isOpen={isOpen} onOpenChange={setIsOpen}>
-            <Popover.Trigger>
-              <div className={styles["browse-sort"]}>
-                <Text>
-                  Sort by: <Text b>{sortByLabel?.text || "Most Follows"}</Text>
-                  <i
-                    className="fa-light fa-arrow-down"
-                    style={{ marginLeft: "10px" }}
-                  ></i>
-                </Text>
-              </div>
-            </Popover.Trigger>
-            <Popover.Content>
-              <ul className={styles["browse-sort-list"]}>
-                {sortSelection.map((item: any, index: number) => (
-                  <li
-                    key={index}
-                    onClick={() => {
-                      setIsOpen(false);
-                      setMangaData(false);
-                      setSort(item.type, item.order);
-                    }}
-                  >
-                    {item.text}
-                  </li>
-                ))}
-              </ul>
-            </Popover.Content>
-          </Popover>
+        <Grid sm={10} xs={12} direction="column">
+          <Row align="center" justify="space-between" css={{ mb: "$3" }}>
+            <Popover
+              placement="bottom-left"
+              isOpen={isOpen}
+              onOpenChange={setIsOpen}
+            >
+              <Popover.Trigger>
+                <div className={styles["browse-sort"]}>
+                  <Text>
+                    Sort by:{" "}
+                    <Text b>{sortByLabel?.text || "Most Follows"}</Text>
+                    <i
+                      className="fa-light fa-arrow-down"
+                      style={{ marginLeft: "10px" }}
+                    ></i>
+                  </Text>
+                </div>
+              </Popover.Trigger>
+              <Popover.Content>
+                <ul className={styles["browse-sort-list"]}>
+                  {sortSelection.map((item: any, index: number) => (
+                    <li
+                      key={index}
+                      onClick={() => {
+                        setIsOpen(false);
+                        setMangaData(false);
+                        setSort(item.type, item.order);
+                      }}
+                    >
+                      {item.text}
+                    </li>
+                  ))}
+                </ul>
+              </Popover.Content>
+            </Popover>
+
+            <Button
+              light
+              color="warning"
+              auto
+              css={{
+                "@sm": {
+                  display: "none",
+                },
+              }}
+            >
+              Filter
+            </Button>
+          </Row>
 
           <Grid.Container className={styles["browse-manga"]}>
             {mangaData ? (
               mangaData.data.length !== 0 ? (
                 mangaData?.data?.map((item: any, index: number) => (
-                  <Grid lg={2} key={index}>
+                  <div key={index} className={styles["grid-item"]}>
                     <MangaCardNormal data={item} />
-                  </Grid>
+                  </div>
                 ))
               ) : (
                 <div className={styles["browse-status"]}>
@@ -241,11 +280,19 @@ const Browse: FC<any> = ({
               total={Math.ceil(
                 (mangaData?.total > 9000 ? 9000 : mangaData?.total) / 90
               )}
-              onChange={setPageS}
+              onChange={(num: number) => {
+                setMangaData(false);
+                if (window)
+                  window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                  });
+                setPage(num);
+              }}
             ></Pagination>
           </div>
         </Grid>
-        <Grid xs={2} direction="column">
+        <Grid sm={2} xs={0} direction="column">
           <div className={styles["browse-content"]}>
             <Text b>Filter</Text>
             <Spacer y={0.4} />
@@ -343,12 +390,12 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
   return {
     props: {
       tags: tagData.data,
-      fetchedData: mangaData.data,
+      fetchedData: await mangaData.data,
       page: page,
       query: query,
       tagQuery: tagQuery,
       keyword: keyword,
-      orderSplit: orderSplit,
+      orderSplit: orderSplit || null,
     },
   };
 };
