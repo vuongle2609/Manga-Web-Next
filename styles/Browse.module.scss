@@ -1,8 +1,8 @@
 @import "/styles/globals.scss";
 
 .browse-content {
-  // border-bottom: $gray-color solid 1px;
   padding: 1rem 0;
+  padding-top: 0;
   user-select: none;
 
   &:first-child {

@@ -1,10 +1,11 @@
-import { FC, useState, useRef, useEffect, useCallback } from "react";
+import { FC, useState, useRef, useEffect } from "react";
 import SubNavBar from "components/SubNavBar/SubNavBar";
 import styles from "styles/Browse.module.scss";
 import { GetServerSideProps } from "next";
 import { getManga, getTagsList } from "data/getData";
 import {
   Button,
+  Checkbox,
   Grid,
   Input,
   Loading,
@@ -16,9 +17,10 @@ import {
 } from "@nextui-org/react";
 import MangaCardNormal from "components/nomalCard/MangaCardNormal";
 import { useRouter } from "next/router";
-import { getQueryUrl } from "data/handleData";
+import { getQueryUrl, isNumeric } from "data/handleData";
 import LoadingBar from "react-top-loading-bar";
 import _ from "lodash";
+import { SORT_SELECTION } from "configs/constant";
 
 const Browse: FC<any> = ({
   tags,
@@ -27,71 +29,17 @@ const Browse: FC<any> = ({
   query,
   tagQuery,
   keyword,
+  statusQuery,
   orderSplit,
+  year,
+  // author,
+  // artist,
 }) => {
   const load = useRef(null);
   const [tagDrop, setTagDrop] = useState<boolean>(true);
   const router = useRouter();
   const [mangaData, setMangaData] = useState<any>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  const sortSelection = [
-    {
-      text: "Best Match",
-      type: "relevance",
-      order: "desc",
-    },
-    {
-      text: "Latest Upload",
-      type: "latestUploadedChapter",
-      order: "desc",
-    },
-    {
-      text: "Oldest Upload",
-      type: "latestUploadedChapter",
-      order: "asc",
-    },
-    {
-      text: "Title Ascending",
-      type: "title",
-      order: "asc",
-    },
-    {
-      text: "Title Descending",
-      type: "title",
-      order: "desc",
-    },
-    {
-      text: "Recently Added",
-      type: "createdAt",
-      order: "desc",
-    },
-    {
-      text: "Oldest Added",
-      type: "createdAt",
-      order: "asc",
-    },
-    {
-      text: "Most Follows",
-      type: "followedCount",
-      order: "desc",
-    },
-    {
-      text: "Fewest Follows",
-      type: "followedCount",
-      order: "asc",
-    },
-    {
-      text: "Year Ascending",
-      type: "year",
-      order: "asc",
-    },
-    {
-      text: "Year Descending",
-      type: "year",
-      order: "desc",
-    },
-  ];
 
   useEffect(() => {
     setMangaData(fetchedData);
@@ -101,65 +49,13 @@ const Browse: FC<any> = ({
     load.current.complete();
   }, [fetchedData]);
 
-  const setTags = (newTag: string[]) => {
-    load.current.continuousStart();
-    if (window)
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    const newQuery = getQueryUrl(
-      router.query,
-      {
-        key: "tags",
-        value: newTag,
-      },
-      "tags"
-    );
-    router.push(`/home/browse${newQuery}`);
-  };
-
-  const setPage = (num: number) => {
-    load.current.continuousStart();
-    if (window)
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    const newQuery = getQueryUrl(
-      router.query,
-      {
-        key: "page",
-        value: num,
-      },
-      "page"
-    );
-    router.push(`/home/browse${newQuery}`);
-  };
-
-  const setSort = (type: string, order: string) => {
-    load.current.continuousStart();
-    if (window)
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    const newQuery = getQueryUrl(
-      router.query,
-      {
-        key: "order",
-        value: {
-          type,
-          order,
-        },
-      },
-      "order"
-    );
-    router.push(`/home/browse${newQuery}`);
-  };
-
-  const setKeyword = (keyword: string) => {
-    if (query?.keyword !== keyword) {
+  const handleChangeRouter: ({
+    key: string,
+    value: any,
+    condition: boolean,
+  }) => void = ({ key, value, condition }) => {
+    if (condition) {
+      setMangaData(false);
       load.current.continuousStart();
       if (window)
         window.scrollTo({
@@ -169,12 +65,12 @@ const Browse: FC<any> = ({
       const newQuery = getQueryUrl(
         router.query,
         {
-          key: "keyword",
-          value: keyword,
+          key: key,
+          value: value,
         },
-        "keyword"
+        key
       );
-      router.push(`/home/browse${newQuery}`);
+      router.replace(`/home/browse${newQuery}`);
     }
   };
 
@@ -186,13 +82,21 @@ const Browse: FC<any> = ({
       });
     if (tagQuery.includes(tag)) {
       const newArr = tagQuery.filter((item: any) => item !== tag);
-      setTags(newArr);
+      handleChangeRouter({
+        key: "tags",
+        value: newArr,
+        condition: true,
+      });
     } else {
-      setTags([...tagQuery, tag]);
+      handleChangeRouter({
+        key: "tags",
+        value: [...tagQuery, tag],
+        condition: true,
+      });
     }
   };
 
-  const sortByLabel = sortSelection.find(
+  const sortByLabel = SORT_SELECTION.find(
     (item: any) =>
       item.type === orderSplit?.[0] && item.order === orderSplit?.[1]
   );
@@ -222,13 +126,19 @@ const Browse: FC<any> = ({
               </Popover.Trigger>
               <Popover.Content>
                 <ul className={styles["browse-sort-list"]}>
-                  {sortSelection.map((item: any, index: number) => (
+                  {SORT_SELECTION.map((item: any, index: number) => (
                     <li
                       key={index}
                       onClick={() => {
                         setIsOpen(false);
-                        setMangaData(false);
-                        setSort(item.type, item.order);
+                        handleChangeRouter({
+                          key: "order",
+                          value: {
+                            type: item.type,
+                            order: item.order,
+                          },
+                          condition: true,
+                        });
                       }}
                     >
                       {item.text}
@@ -280,14 +190,14 @@ const Browse: FC<any> = ({
               total={Math.ceil(
                 (mangaData?.total > 9000 ? 9000 : mangaData?.total) / 90
               )}
+              size={"md"}
+              controls={false}
               onChange={(num: number) => {
-                setMangaData(false);
-                if (window)
-                  window.scrollTo({
-                    top: 0,
-                    behavior: "smooth",
-                  });
-                setPage(num);
+                handleChangeRouter({
+                  key: "page",
+                  value: num,
+                  condition: true,
+                });
               }}
             ></Pagination>
           </div>
@@ -302,9 +212,101 @@ const Browse: FC<any> = ({
               underlined
               color="primary"
               contentRight={<i className="fa-regular fa-magnifying-glass"></i>}
-              onBlur={(e: any) => setKeyword(e.target.value)}
+              onBlur={(e: any) =>
+                handleChangeRouter({
+                  key: "keyword",
+                  value: e.target.value,
+                  condition: query?.keyword !== e.target.value,
+                })
+              }
             />
           </div>
+
+          {/* <div className={styles["browse-content"]}>
+            <Input
+              initialValue={author}
+              placeholder="Author"
+              underlined
+              color="primary"
+              contentRight={<i className="fa-regular fa-pen"></i>}
+              onBlur={(e: any) =>
+                handleChangeRouter({
+                  key: "author",
+                  value: e.target.value,
+                  condition: query?.author !== e.target.value,
+                })
+              }
+            />
+          </div> */}
+
+          {/* <div className={styles["browse-content"]}>
+            <Input
+              initialValue={artist}
+              placeholder="Artist"
+              underlined
+              color="primary"
+              contentRight={<i className="fa-regular fa-palette"></i>}
+              onBlur={(e: any) =>
+                handleChangeRouter({
+                  key: "artist",
+                  value: e.target.value,
+                  condition: query?.artist !== e.target.value,
+                })
+              }
+            />
+          </div> */}
+
+          <div className={styles["browse-content"]}>
+            <Input
+              initialValue={year}
+              placeholder="Year"
+              underlined
+              color="primary"
+              contentRight={<i className="fa-regular fa-calendar"></i>}
+              onBlur={(e: any) => {
+                handleChangeRouter({
+                  key: "year",
+                  value: e.target.value,
+                  condition:
+                    e.target.value === "" ||
+                    (query?.year !== e.target.value &&
+                      isNumeric(e.target.value) &&
+                      Number(e.target.value) >= 1945),
+                });
+              }}
+            />
+          </div>
+
+          <Checkbox.Group
+            label={<Text b>Status</Text>}
+            color="primary"
+            onChange={(statusArr: string[]) =>
+              handleChangeRouter({
+                key: "status",
+                value: statusArr,
+                condition: true,
+              })
+            }
+            defaultValue={
+              statusQuery?.length !== 0
+                ? statusQuery
+                : ["ongoing", "cancelled", "hiatus", "completed"]
+            }
+            css={{ paddingBottom: "1rem" }}
+          >
+            <Checkbox value="ongoing">
+              <Text size={16}>Ongoing</Text>
+            </Checkbox>
+            <Checkbox value="completed">
+              <Text size={16}>Completed</Text>
+            </Checkbox>
+            <Checkbox value="hiatus">
+              <Text size={16}>Hiatus</Text>
+            </Checkbox>
+            <Checkbox value="cancelled">
+              <Text size={16}>Cancelled</Text>
+            </Checkbox>
+          </Checkbox.Group>
 
           <div
             className={
@@ -313,7 +315,6 @@ const Browse: FC<any> = ({
           >
             <div
               onClick={() => {
-                setMangaData(false);
                 setTagDrop((prev) => !prev);
               }}
             >
@@ -334,14 +335,15 @@ const Browse: FC<any> = ({
                       <li
                         key={index}
                         onClick={() => {
-                          setMangaData(false);
                           handleAddTags(item?.id);
                         }}
                         style={{
                           background: tagContains && "#fef0d6",
                         }}
                       >
-                        <span>{item?.attributes?.name?.en}</span>
+                        <span>
+                          <Text size={16}>{item?.attributes?.name?.en}</Text>
+                        </span>
                         {tagContains && <i className="fa-light fa-check"></i>}
                       </li>
                     );
@@ -357,34 +359,59 @@ const Browse: FC<any> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async (context: any) => {
+  const query = context.query;
+
+  // get keyword from query
+  const keyword = context.query.keyword || "";
+
+  // default order
   let order: any = {
     followedCount: "desc",
   };
 
-  const tags: any = context.query.tags;
-  const tagQuery = tags?.split(",") !== undefined ? tags.split(",") : [];
-
-  const keyword = context.query.keyword || "";
-
-  const query = context.query;
-
-  const orderSplit = context.query?.order?.split?.("-");
+  // get order from query then convert to an array
+  const orderSplit = context.query?.order?.split?.("-") || null;
+  // change default order if query has order field
   if (context.query.order) {
     order = {};
     order[orderSplit[0]] = orderSplit[1];
   }
 
+  // get tags from query then convert to an array
+  const tags: any = context.query.tags;
+  const tagQuery = tags?.split(",") !== undefined ? tags.split(",") : [];
+
+  // get status from query then convert to an array
+  const status: any = context.query.status;
+  const statusQuery = status?.split(",") !== undefined ? status.split(",") : [];
+
+  // get page number
   const page = Number(context.query.page) || 1;
+
+  // // get author
+  // const author = context.query.author;
+
+  // // get artist
+  // const artist = context.query.artist;
+
+  // get year
+  const year = context.query.year || null;
+
+  // get list of tags for selection
   const tagData = await getTagsList();
 
   const mangaData = await getManga({
     limit: 90,
     offset: page === 1 ? 0 : (page - 1) * 90,
-    contentRating: ["safe", "suggestive", "erotica"],
+    contentRating: ["safe", "suggestive", "erotica", "pornographic"],
     includes: ["cover_art", "author", "artist"],
     order: order,
     includedTags: tagQuery,
     title: keyword,
+    status: statusQuery,
+    year: year,
+    // authors: author ? [author] : null,
+    // artists: artist ? [artist] : null,
   });
 
   return {
@@ -392,10 +419,13 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
       tags: tagData.data,
       fetchedData: await mangaData.data,
       page: page,
+      statusQuery: statusQuery,
       query: query,
       tagQuery: tagQuery,
       keyword: keyword,
       orderSplit: orderSplit,
+      // author: author || null,
+      // artist: artist || null,
     },
   };
 };
