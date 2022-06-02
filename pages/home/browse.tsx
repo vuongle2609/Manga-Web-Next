@@ -1,4 +1,4 @@
-import { FC, useState, useRef, useEffect } from "react";
+import { FC, useState, useRef, useEffect, useCallback } from "react";
 import SubNavBar from "components/SubNavBar/SubNavBar";
 import styles from "styles/Browse.module.scss";
 import { GetServerSideProps } from "next";
@@ -183,6 +183,7 @@ const Browse: FC<any> = ({
     <SubNavBar>
       <LoadingBar ref={load} color="#fca815" />
       <Grid.Container gap={1} justify="center">
+
         <Grid sm={10} xs={12} direction="column">
           <Row align="center" justify="space-between" css={{ mb: "$3" }}>
             <Popover
@@ -238,9 +239,6 @@ const Browse: FC<any> = ({
             {mangaData ? (
               mangaData.data.length !== 0 ? (
                 mangaData?.data?.map((item: any, index: number) => (
-                  // <Grid xs={4} sm={2.4} md={2.4} lg={2} key={index}>
-                  //   <MangaCardNormal data={item} />
-                  // </Grid>
                   <div key={index} className={styles["grid-item"]}>
                     <MangaCardNormal data={item} />
                   </div>
@@ -265,10 +263,7 @@ const Browse: FC<any> = ({
               total={Math.ceil(
                 (mangaData?.total > 9000 ? 9000 : mangaData?.total) / 90
               )}
-              onChange={(num: number) => {
-                setMangaData(false);
-                setPageS(num);
-              }}
+              onChange={setPageS}
             ></Pagination>
           </div>
         </Grid>
@@ -375,7 +370,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
       query: query,
       tagQuery: tagQuery,
       keyword: keyword,
-      orderSplit: orderSplit || null,
+      orderSplit: orderSplit,
     },
   };
 };
