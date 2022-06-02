@@ -15,6 +15,8 @@
   margin-bottom: 4px;
   cursor: pointer;
   width: fit-content;
+  align-items: center;
+  display: flex;
 }
 
 .browse-manga {
@@ -85,5 +87,51 @@
   & i {
     font-size: 35px;
     margin-bottom: 4px;
+  }
+}
+
+.grid-item {
+  display: inherit;
+  flex: 0 0 16.6667%;
+  max-width: 16.6667%;
+}
+
+@media (max-width: 1370px) {
+  .grid-item {
+    display: inherit;
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+}
+
+@media (max-width: 1060px) {
+  .grid-item {
+    display: inherit;
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+}
+
+@media (max-width: 721px) {
+  .grid-item {
+    display: inherit;
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+  }
+}
+
+@media (max-width: 721px) {
+  .grid-item {
+    display: inherit;
+    flex: 0 0 33.3333%;
+    max-width: 33.3333%;
+  }
+}
+
+@media (max-width: 550px) {
+  .grid-item {
+    display: inherit;
+    flex: 0 0 50%;
+    max-width: 50%;
   }
 }

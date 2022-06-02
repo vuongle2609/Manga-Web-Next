@@ -4,11 +4,13 @@ import styles from "styles/Browse.module.scss";
 import { GetServerSideProps } from "next";
 import { getManga, getTagsList } from "data/getData";
 import {
+  Button,
   Grid,
   Input,
   Loading,
   Pagination,
   Popover,
+  Row,
   Spacer,
   Text,
 } from "@nextui-org/react";
@@ -181,48 +183,67 @@ const Browse: FC<any> = ({
     <SubNavBar>
       <LoadingBar ref={load} color="#fca815" />
       <Grid.Container gap={1} justify="center">
-        <Grid sm={10} xs={12}  direction="column">
-          <Popover
-            placement="bottom-left"
-            isOpen={isOpen}
-            onOpenChange={setIsOpen}
-          >
-            <Popover.Trigger>
-              <div className={styles["browse-sort"]}>
-                <Text>
-                  Sort by: <Text b>{sortByLabel?.text || "Most Follows"}</Text>
-                  <i
-                    className="fa-light fa-arrow-down"
-                    style={{ marginLeft: "10px" }}
-                  ></i>
-                </Text>
-              </div>
-            </Popover.Trigger>
-            <Popover.Content>
-              <ul className={styles["browse-sort-list"]}>
-                {sortSelection.map((item: any, index: number) => (
-                  <li
-                    key={index}
-                    onClick={() => {
-                      setIsOpen(false);
-                      setMangaData(false);
-                      setSort(item.type, item.order);
-                    }}
-                  >
-                    {item.text}
-                  </li>
-                ))}
-              </ul>
-            </Popover.Content>
-          </Popover>
+        <Grid sm={10} xs={12} direction="column">
+          <Row align="center" justify="space-between" css={{ mb: "$3" }}>
+            <Popover
+              placement="bottom-left"
+              isOpen={isOpen}
+              onOpenChange={setIsOpen}
+            >
+              <Popover.Trigger>
+                <div className={styles["browse-sort"]}>
+                  <Text>
+                    Sort by:{" "}
+                    <Text b>{sortByLabel?.text || "Most Follows"}</Text>
+                    <i
+                      className="fa-light fa-arrow-down"
+                      style={{ marginLeft: "10px" }}
+                    ></i>
+                  </Text>
+                </div>
+              </Popover.Trigger>
+              <Popover.Content>
+                <ul className={styles["browse-sort-list"]}>
+                  {sortSelection.map((item: any, index: number) => (
+                    <li
+                      key={index}
+                      onClick={() => {
+                        setIsOpen(false);
+                        setMangaData(false);
+                        setSort(item.type, item.order);
+                      }}
+                    >
+                      {item.text}
+                    </li>
+                  ))}
+                </ul>
+              </Popover.Content>
+            </Popover>
+
+            <Button
+              light
+              color="warning"
+              auto
+              css={{
+                "@sm": {
+                  display: "none"
+                },
+              }}
+            >
+              Filter
+            </Button>
+          </Row>
 
           <Grid.Container className={styles["browse-manga"]}>
             {mangaData ? (
               mangaData.data.length !== 0 ? (
                 mangaData?.data?.map((item: any, index: number) => (
-                  <Grid lg={2} md={2.4} sm={2.4} xs={3} key={index}>
+                  // <Grid xs={4} sm={2.4} md={2.4} lg={2} key={index}>
+                  //   <MangaCardNormal data={item} />
+                  // </Grid>
+                  <div key={index} className={styles["grid-item"]}>
                     <MangaCardNormal data={item} />
-                  </Grid>
+                  </div>
                 ))
               ) : (
                 <div className={styles["browse-status"]}>
@@ -251,7 +272,7 @@ const Browse: FC<any> = ({
             ></Pagination>
           </div>
         </Grid>
-        <Grid sm={2} xs={0}  direction="column">
+        <Grid sm={2} xs={0} direction="column">
           <div className={styles["browse-content"]}>
             <Text b>Filter</Text>
             <Spacer y={0.4} />
