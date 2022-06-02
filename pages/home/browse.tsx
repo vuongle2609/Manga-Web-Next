@@ -288,6 +288,7 @@ const Browse: FC<any> = ({
                     behavior: "smooth",
                   });
                 setPage(num);
+
               }}
             ></Pagination>
           </div>
