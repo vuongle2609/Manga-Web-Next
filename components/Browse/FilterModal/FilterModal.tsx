@@ -7,7 +7,7 @@ import {
   Input,
   Checkbox,
 } from "@nextui-org/react";
-import { getQueryUrlObj, isNumeric } from "data/handleData";
+import { getQueryUrlObj } from "data/handleData";
 import { useRouter } from "next/router";
 import { FC, useRef, useState } from "react";
 import styles from "./FilterModal.module.scss";

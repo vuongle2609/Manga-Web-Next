@@ -17,7 +17,7 @@ import {
 } from "@nextui-org/react";
 import MangaCardNormal from "components/nomalCard/MangaCardNormal";
 import { useRouter } from "next/router";
-import { getQueryUrl, getQueryUrlObj, isNumeric } from "data/handleData";
+import { getQueryUrl, getQueryUrlObj } from "data/handleData";
 import LoadingBar from "react-top-loading-bar";
 import _ from "lodash";
 import { SORT_SELECTION } from "configs/constant";
@@ -83,7 +83,11 @@ const Browse: FC<any> = ({
     newKeyword,
     newYear,
   }) => {
-    if (newYear === "" || newYear === null || (isNumeric(newYear) && Number(newYear) >= 1945)) {
+    if (
+      newYear === "" ||
+      newYear === null ||
+      (_.isNumber(newYear) && Number(newYear) >= 1945)
+    ) {
       load.current.continuousStart();
       setModalFilter(false);
       const newQuery: string = getQueryUrlObj({
@@ -311,7 +315,7 @@ const Browse: FC<any> = ({
                       e.target.value !== year &&
                       year !== null) ||
                     (query?.year !== e.target.value &&
-                      isNumeric(e.target.value) &&
+                      _.isNumber(e.target.value) &&
                       Number(e.target.value) >= 1945),
                 });
               }}
