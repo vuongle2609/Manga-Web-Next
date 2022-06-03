@@ -17,7 +17,7 @@ import {
 } from "@nextui-org/react";
 import MangaCardNormal from "components/nomalCard/MangaCardNormal";
 import { useRouter } from "next/router";
-import { getQueryUrl, isNumeric } from "data/handleData";
+import { getQueryUrl, getQueryUrlObj, isNumeric } from "data/handleData";
 import LoadingBar from "react-top-loading-bar";
 import _ from "lodash";
 import { SORT_SELECTION } from "configs/constant";
@@ -72,6 +72,27 @@ const Browse: FC<any> = ({
         },
         key
       );
+      router.replace(`/home/browse${newQuery}`);
+    }
+  };
+
+  // for filter modal
+  const handleClickSave = ({
+    tagsSelected,
+    statusSelected,
+    newKeyword,
+    newYear,
+  }) => {
+    if (newYear === "" || newYear === null || (isNumeric(newYear) && Number(newYear) >= 1945)) {
+      load.current.continuousStart();
+      setModalFilter(false);
+      const newQuery: string = getQueryUrlObj({
+        tags: tagsSelected,
+        status: statusSelected,
+        keyword: newKeyword,
+        year: newYear,
+      });
+      console.log(newQuery);
       router.replace(`/home/browse${newQuery}`);
     }
   };
@@ -160,13 +181,24 @@ const Browse: FC<any> = ({
                   display: "none",
                 },
               }}
+              className={styles["button-filter"]}
             >
+              <i className="fa-regular fa-bars-filter"></i>
               Filter
             </Button>
           </Row>
+
           <FilterModal
             modalFilter={modalFilter}
             setModalFilter={setModalFilter}
+            tags={tags}
+            query={query}
+            tagQuery={tagQuery}
+            keyword={keyword}
+            statusQuery={statusQuery}
+            orderSplit={orderSplit}
+            year={year}
+            handleClickSave={handleClickSave}
           />
 
           <Grid.Container className={styles["browse-manga"]}>

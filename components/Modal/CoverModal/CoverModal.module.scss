@@ -27,8 +27,19 @@
     }
 
     .cover-container {
-      height: 90vh !important;
+      height: 90vh;
       width: fit-content;
+      background: #fff;
+      border: $gray-color solid 1px;
+      border-radius: 14px;
+      position: relative;
+
+      & .cover-loading {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        left: 50%;
+      }
 
       & div {
         height: 100%;
@@ -50,7 +61,7 @@
 @media (max-width: 821px) {
   .cover-container {
     width: 80vw !important;
-    height: fit-content;
+    height: fit-content !important;
 
     & div {
       height: auto;
@@ -62,7 +73,7 @@
 @media (max-width: 760px) {
   .cover-container {
     width: 90vw !important;
-    height: fit-content;
+    height: fit-content !important;
 
     & div {
       height: auto;

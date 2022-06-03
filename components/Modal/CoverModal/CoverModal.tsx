@@ -1,6 +1,6 @@
 import { FC, useRef } from "react";
 import useStore from "store/store";
-import { Image } from "@nextui-org/react";
+import { Image, Loading } from "@nextui-org/react";
 import styles from "./CoverModal.module.scss";
 
 const CoverModal: FC = () => {
@@ -27,12 +27,13 @@ const CoverModal: FC = () => {
       <div>
         <div className={styles["modal-background"]}></div>
 
-        <a
-          className={styles["cover-container"]}
-          href={coverLink.current}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a className={styles["cover-container"]}>
+          <Loading
+            className={styles["cover-loading"]}
+            size="lg"
+            color="primary"
+          ></Loading>
+
           <Image
             maxDelay={10000}
             src={coverLink.current}

@@ -1,0 +1,24 @@
+.modal-item {
+  padding: 5px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  transition: all ease-in-out 0.1s;
+}
+
+.modal-checkbox {
+  margin-bottom: 0 !important;
+
+  & > div {
+    flex-wrap: wrap;
+
+    & > label {
+      display: inherit;
+      flex: 0 0 50%;
+      max-width: 50%;
+      margin-right: 0 !important;
+      margin-bottom: 10px;
+    }
+  }
+}

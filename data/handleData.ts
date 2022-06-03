@@ -266,6 +266,26 @@ export const getQueryUrl: (queryObj: any, newQuery: any, diffValue?: string) => 
     return query + newQueryString
 }
 
+export const getQueryUrlObj: (queryObj: any) => string = (queryObj) => {
+    let query = "?"
+
+    for (let item in queryObj) {
+        let newQueryString = ""
+        if (Array.isArray(queryObj[item])) {
+            if (queryObj[item].length !== 0) {
+                const newQueryArrString = queryObj[item].join(",")
+                newQueryString = item + "=" + newQueryArrString + "&"
+            }
+        } else if (typeof queryObj[item] === "string" || typeof queryObj[item] === "number") {
+            newQueryString = item + "=" + queryObj[item] + "&"
+        }
+
+        query += newQueryString
+    }
+
+    return query
+}
+
 export const validateEmail = (email: string) => {
     return String(email)
         .toLowerCase()
