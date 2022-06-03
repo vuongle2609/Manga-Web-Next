@@ -21,6 +21,7 @@ import { getQueryUrl, isNumeric } from "data/handleData";
 import LoadingBar from "react-top-loading-bar";
 import _ from "lodash";
 import { SORT_SELECTION } from "configs/constant";
+import FilterModal from "components/Browse/FilterModal/FilterModal";
 
 const Browse: FC<any> = ({
   tags,
@@ -40,6 +41,7 @@ const Browse: FC<any> = ({
   const router = useRouter();
   const [mangaData, setMangaData] = useState<any>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [modalFilter, setModalFilter] = useState<boolean>(false);
 
   useEffect(() => {
     setMangaData(fetchedData);
@@ -152,6 +154,7 @@ const Browse: FC<any> = ({
               light
               color="warning"
               auto
+              onClick={() => setModalFilter((prev) => !prev)}
               css={{
                 "@sm": {
                   display: "none",
@@ -161,6 +164,10 @@ const Browse: FC<any> = ({
               Filter
             </Button>
           </Row>
+          <FilterModal
+            modalFilter={modalFilter}
+            setModalFilter={setModalFilter}
+          />
 
           <Grid.Container className={styles["browse-manga"]}>
             {mangaData ? (
@@ -268,7 +275,9 @@ const Browse: FC<any> = ({
                   key: "year",
                   value: e.target.value,
                   condition:
-                    e.target.value === "" ||
+                    (e.target.value === "" &&
+                      e.target.value !== year &&
+                      year !== null) ||
                     (query?.year !== e.target.value &&
                       isNumeric(e.target.value) &&
                       Number(e.target.value) >= 1945),
@@ -423,6 +432,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
       query: query,
       tagQuery: tagQuery,
       keyword: keyword,
+      year: year,
       orderSplit: orderSplit,
       // author: author || null,
       // artist: artist || null,
