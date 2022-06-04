@@ -27,7 +27,12 @@ const CoverModal: FC = () => {
       <div>
         <div className={styles["modal-background"]}></div>
 
-        <a className={styles["cover-container"]}>
+        <a
+          className={styles["cover-container"]}
+          href={coverLink.current}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <Loading
             className={styles["cover-loading"]}
             size="lg"

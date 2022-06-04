@@ -15,6 +15,7 @@ import LoginModal from "components/Modal/LoginModal/LoginModal";
 import useLocalStorage from "store/persist";
 import { getUser, checkToken, rereshToken } from "data/getData";
 import useStore from "store/store";
+import { Toaster } from "react-hot-toast";
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   const [token, addToken] = useLocalStorage((state: any) => [
@@ -67,6 +68,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
       </Head>
 
       <div className="container-global-class light-mode">
+        <Toaster />
         <Navbar />
         <Container lg>
           <Component {...pageProps} className="global-class" />

@@ -107,7 +107,11 @@ const Manga: FC<any> = ({ data, chapterData, langSelected }) => {
           <div className={styles["manga-tags"]}>
             {data.attributes.tags.length !== 0
               ? data.attributes.tags.map((item: any, index: number) => (
-                  <Link href={`/home/browse?tags=${item.id}`} key={index}>
+                  <Link
+                    href={`/home/browse?tags=${item.id}`}
+                    key={index}
+                    onClick={() => load.current.continuousStart()}
+                  >
                     <a>
                       <Text
                         css={{
@@ -174,6 +178,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const data = getMangaDetail({ id, option });
     return data;
   };
+  
   const getChaptersData = () => {
     const data = getMangaChapterList({
       offset: page === 1 ? 0 : (page - 1) * 50,

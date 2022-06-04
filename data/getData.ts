@@ -33,6 +33,13 @@ interface mangaPropsType {
     ids?: string[]
 }
 
+interface authorPropsType {
+    limit: number
+    offset?: number
+    order: any
+    name: string
+}
+
 // function add params base on option
 export const handleAddParams: (url: string, params: any) => string = (url, params) => {
     let apiReturn = url + "?"
@@ -122,6 +129,21 @@ export const getManga: (option: mangaPropsType) => any = async (option) => {
     } catch (err) {
         console.log(err)
     }
+}
+
+export const getAuthor: (option: authorPropsType) => any = async (option) => {
+    try {
+        const url = handleAddParams(apiUrls.author(), option)
+        const data = await axios.get(url)
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const getRandomManga: () => any = async () => {
+    const data = await axios.get("/manga/random")
+    return data
 }
 
 export const getMangaDetail: ({ id: string, option: mangaPropsType }) => any = async ({ id, option }) => {

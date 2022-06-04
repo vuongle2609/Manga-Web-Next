@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import styles from "./Navbar.module.scss";
 import {
   Avatar,
@@ -18,6 +18,7 @@ import useStore from "store/store";
 import { logoutUser } from "data/getData";
 
 const Navbar: FC = () => {
+  const [popoverList, setPopoverList] = useState<boolean>(false);
   const [token, addToken] = useLocalStorage((state: any) => [
     state.token,
     state.addToken,
@@ -47,11 +48,34 @@ const Navbar: FC = () => {
     >
       <Row justify="space-between" align="center">
         <div className={styles["Navbar-right-content"]}>
+          <div className={styles["Navbar-right-content-mobile"]}>
+            <Popover isOpen={popoverList} onOpenChange={setPopoverList}>
+              <Popover.Trigger>
+                <i className="fa-regular fa-bars"></i>
+              </Popover.Trigger>
+              <Popover.Content>
+                <div className={styles["Navbar-right-content-mobile-list"]}>
+                  <Link href="/home/discover">
+                    <a onClick={() => setPopoverList(false)}>Home</a>
+                  </Link>
+                  <Link href="/">
+                    <a onClick={() => setPopoverList(false)}>Favourite</a>
+                  </Link>
+                  <Link href="/manga/random">
+                    <a onClick={() => setPopoverList(false)}>Random</a>
+                  </Link>
+                </div>
+              </Popover.Content>
+            </Popover>
+          </div>
+
           <Link href="/home/discover">
-            <Avatar
-              src="https://media.discordapp.net/attachments/914572068123721788/924219001180127292/bot.png?width=676&height=676"
-              size="md"
-            />
+            <a className={styles["logo"]}>
+              <Avatar
+                src="https://media.discordapp.net/attachments/914572068123721788/924219001180127292/bot.png?width=676&height=676"
+                size="md"
+              />
+            </a>
           </Link>
           <Link href="/home/discover">
             <a>Home</a>
@@ -59,8 +83,8 @@ const Navbar: FC = () => {
           <Link href="/">
             <a>Favourite</a>
           </Link>
-          <Link href="/">
-            <a>Trending</a>
+          <Link href="/manga/random">
+            <a>Random</a>
           </Link>
         </div>
 
@@ -106,12 +130,21 @@ const Navbar: FC = () => {
             <Button
               onClick={() => setLoginModal(true)}
               size="sm"
-              light
+              bordered
+              css={{
+                mr: "$4",
+              }}
               disabled={userData === null}
               color="warning"
             >
               {userData === false ? (
-                "login"
+                <>
+                  <i
+                    className="fa-solid fa-user"
+                    style={{ marginRight: 6 }}
+                  ></i>
+                  login
+                </>
               ) : (
                 <Loading color="primary" size="sm" />
               )}

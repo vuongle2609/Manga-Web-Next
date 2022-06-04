@@ -22,6 +22,7 @@ import LoadingBar from "react-top-loading-bar";
 import _ from "lodash";
 import { SORT_SELECTION } from "configs/constant";
 import FilterModal from "components/Browse/FilterModal/FilterModal";
+import toast from "react-hot-toast";
 
 const Browse: FC<any> = ({
   tags,
@@ -33,8 +34,6 @@ const Browse: FC<any> = ({
   statusQuery,
   orderSplit,
   year,
-  // author,
-  // artist,
 }) => {
   const load = useRef(null);
   const [tagDrop, setTagDrop] = useState<boolean>(true);
@@ -82,6 +81,7 @@ const Browse: FC<any> = ({
     statusSelected,
     newKeyword,
     newYear,
+    callBackErr,
   }) => {
     if (
       newYear === "" ||
@@ -98,6 +98,10 @@ const Browse: FC<any> = ({
       });
       console.log(newQuery);
       router.replace(`/home/browse${newQuery}`);
+    } else {
+      callBackErr?.();
+      setModalFilter(false);
+      toast.error("Year is not valid, must be larger than 1945");
     }
   };
 
@@ -259,45 +263,13 @@ const Browse: FC<any> = ({
                 handleChangeRouter({
                   key: "keyword",
                   value: e.target.value,
-                  condition: query?.keyword !== e.target.value,
+                  condition:
+                    keyword !== e.target.value &&
+                    (keyword !== null || e.target.value !== ""),
                 })
               }
             />
           </div>
-
-          {/* <div className={styles["browse-content"]}>
-            <Input
-              initialValue={author}
-              placeholder="Author"
-              underlined
-              color="primary"
-              contentRight={<i className="fa-regular fa-pen"></i>}
-              onBlur={(e: any) =>
-                handleChangeRouter({
-                  key: "author",
-                  value: e.target.value,
-                  condition: query?.author !== e.target.value,
-                })
-              }
-            />
-          </div> */}
-
-          {/* <div className={styles["browse-content"]}>
-            <Input
-              initialValue={artist}
-              placeholder="Artist"
-              underlined
-              color="primary"
-              contentRight={<i className="fa-regular fa-palette"></i>}
-              onBlur={(e: any) =>
-                handleChangeRouter({
-                  key: "artist",
-                  value: e.target.value,
-                  condition: query?.artist !== e.target.value,
-                })
-              }
-            />
-          </div> */}
 
           <div className={styles["browse-content"]}>
             <Input
@@ -433,36 +405,44 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
   // get page number
   const page = Number(context.query.page) || 1;
 
-  // // get author
-  // const author = context.query.author;
-
-  // // get artist
-  // const artist = context.query.artist;
-
   // get year
   const year = context.query.year || null;
 
   // get list of tags for selection
-  const tagData = await getTagsList();
+  const getTags: () => any = () => {
+    return getTagsList();
+  };
 
-  const mangaData = await getManga({
-    limit: 90,
-    offset: page === 1 ? 0 : (page - 1) * 90,
-    contentRating: ["safe", "suggestive", "erotica", "pornographic"],
-    includes: ["cover_art", "author", "artist"],
-    order: order,
-    includedTags: tagQuery,
-    title: keyword,
-    status: statusQuery,
-    year: year,
-    // authors: author ? [author] : null,
-    // artists: artist ? [artist] : null,
-  });
+  const getMangas: () => any = () => {
+    return getManga({
+      limit: 90,
+      offset: page === 1 ? 0 : (page - 1) * 90,
+      contentRating: ["safe", "suggestive", "erotica", "pornographic"],
+      includes: ["cover_art", "author", "artist"],
+      order: order,
+      includedTags: tagQuery,
+      title: keyword,
+      status: statusQuery,
+      year: year,
+    });
+  };
+
+  // const getAuthors: () => any = () => {
+  //   return getAuthor({
+  //     limit: 10,
+  //     name: keyword,
+  //     order: {
+  //       name: "asc",
+  //     },
+  //   });
+  // };
+
+  const [tagData, mangaData] = await Promise.all([getTags(), getMangas()]);
 
   return {
     props: {
       tags: tagData.data,
-      fetchedData: await mangaData.data,
+      fetchedData: mangaData.data,
       page: page,
       statusQuery: statusQuery,
       query: query,
@@ -470,8 +450,6 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
       keyword: keyword,
       year: year,
       orderSplit: orderSplit,
-      // author: author || null,
-      // artist: artist || null,
     },
   };
 };

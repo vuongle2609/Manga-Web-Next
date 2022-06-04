@@ -31,3 +31,9 @@
     }
   }
 }
+
+@media (max-width: 820px) {
+  .manga-cover .manga-cover-layer {
+    display: none;
+  }
+}

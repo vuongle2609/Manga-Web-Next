@@ -41,7 +41,7 @@ const FilterModal: FC<propsType> = ({
   const [newKeyword, setNewKeyword] = useState<string>(keyword);
   const [newYear, setNewYear] = useState<any>(year);
 
-  const handleClickCancel = () => {
+  const handleResetModal = () => {
     setTagsSelected(tagQuery);
     setStatusSelected(statusQuery);
     setNewKeyword(keyword);
@@ -162,7 +162,7 @@ const FilterModal: FC<propsType> = ({
           flat
           color="error"
           onClick={() => {
-            handleClickCancel();
+            handleResetModal();
             setModalFilter(false);
           }}
         >
@@ -176,6 +176,7 @@ const FilterModal: FC<propsType> = ({
               statusSelected,
               newKeyword,
               newYear,
+              callBackErr: handleResetModal,
             });
           }}
         >
