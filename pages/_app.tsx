@@ -68,7 +68,17 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
       </Head>
 
       <div className="container-global-class light-mode">
-        <Toaster />
+        <Toaster
+          containerStyle={{
+            zIndex: 9999,
+          }}
+          toastOptions={{
+            style: {
+              border: "1px solid #8a8a8a",
+              zIndex: 999999,
+            },
+          }}
+        />
         <Navbar />
         <Container lg>
           <Component {...pageProps} className="global-class" />

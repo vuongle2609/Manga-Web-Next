@@ -1,15 +1,23 @@
 import { FC, useEffect, useState } from "react";
-import { Modal, Input, Row, Checkbox, Button, Text } from "@nextui-org/react";
+import {
+  Modal,
+  Input,
+  Row,
+  Checkbox,
+  Button,
+  Text,
+  Spacer,
+} from "@nextui-org/react";
 import useStore from "store/store";
 import useLocalStorage from "store/persist";
 import { validateEmail } from "data/handleData";
 import { getUser, loginUser } from "data/getData";
+import toast from "react-hot-toast";
 
 const LoginModal: FC = () => {
   const [password, setPassword] = useState<string>("");
   const [user, setUser] = useState<string>("");
   const [passwordWarning, setPasswordWarning] = useState<string>("");
-  const [userWarning, setUserWarning] = useState<string>("");
 
   const [loginModal, setLoginModal, setUserData] = useStore((state: any) => [
     state.loginModal,
@@ -24,35 +32,46 @@ const LoginModal: FC = () => {
   };
 
   const loginHandler = async () => {
-    if (password.length !== 0 && user.length !== 0) {
-      const fromData = {
-        password,
-      };
+    if (password.length >= 8 && user.length !== 0) {
+      try {
+        const fromData = {
+          password,
+        };
 
-      if (validateEmail(user)) {
-        fromData["email"] = user.toLowerCase();
-      } else {
-        fromData["username"] = user.toLowerCase();
+        if (validateEmail(user)) {
+          fromData["email"] = user.toLowerCase();
+        } else {
+          fromData["username"] = user.toLowerCase();
+        }
+
+        const res = await loginUser(fromData);
+
+        const { refresh, session } = res.data.token;
+
+        addToken({ refresh, session });
+
+        const resUser = await getUser(session);
+
+        setUserData(resUser.data.data);
+
+        console.log(resUser.data.data);
+
+        setLoginModal(false);
+        toast.success(`Login as ${resUser.data.data.attributes.username}`);
+      } catch (err) {
+        toast.error(err.response.data.errors[0].detail);
+      }
+    } else {
+      if (password.length < 8) {
+        toast.error("Password must be at least 8 characters long");
       }
 
-      const res = await loginUser(fromData);
-
-      const { refresh, session } = res.data.token;
-
-      addToken({ refresh, session });
-
-      const resUser = await getUser(session);
-
-      setUserData(resUser.data.data);
-
-      setLoginModal(false);
-    } else {
       if (password.length === 0) {
-        setPasswordWarning("This field is required");
+        toast.error("Password field is required");
       }
 
       if (user.length === 0) {
-        setUserWarning("This field is required");
+        toast.error("Username field is required");
       }
     }
   };
@@ -61,13 +80,12 @@ const LoginModal: FC = () => {
     setPassword("");
     setUser("");
     setPasswordWarning("");
-    setUserWarning("");
   }, [loginModal]);
 
   return (
     <Modal
       closeButton
-      blur
+      // blur
       aria-labelledby="modal-title"
       open={loginModal}
       onClose={closeHandler}
@@ -81,35 +99,33 @@ const LoginModal: FC = () => {
         </Text>
       </Modal.Header>
       <Modal.Body>
-        <Input
-          clearable
-          bordered
-          fullWidth
-          color={userWarning.length !== 0 ? "error" : "primary"}
-          size="lg"
-          placeholder={
-            userWarning.length !== 0 ? userWarning : "Email or usename"
-          }
-          onChange={(e: any) => setUser(e.target.value)}
-          value={user}
-        />
-        <Input.Password
-          clearable
-          bordered
-          fullWidth
-          color={passwordWarning.length !== 0 ? "error" : "primary"}
-          size="lg"
-          placeholder={
-            passwordWarning.length !== 0 ? passwordWarning : "Password"
-          }
-          onChange={(e: any) => setPassword(e.target.value)}
-          value={password}
-        />
-        <Row justify="space-between">
-          <Checkbox>
-            <Text size={14}>Remember me</Text>
-          </Checkbox>
-          <Text size={14}>Forgot password?</Text>
+        <form>
+          <Input
+            clearable
+            bordered
+            fullWidth
+            color="primary"
+            size="lg"
+            placeholder="Email or usename"
+            onChange={(e: any) => setUser(e.target.value)}
+            value={user}
+            css={{ mb: "$8" }}
+          />
+          <Input.Password
+            clearable
+            bordered
+            fullWidth
+            color={passwordWarning.length !== 0 ? "error" : "primary"}
+            size="lg"
+            placeholder={
+              passwordWarning.length !== 0 ? passwordWarning : "Password"
+            }
+            onChange={(e: any) => setPassword(e.target.value)}
+            value={password}
+          />
+        </form>
+        <Row justify="flex-end">
+          <Text size={14}>Create an account</Text>
         </Row>
       </Modal.Body>
       <Modal.Footer>

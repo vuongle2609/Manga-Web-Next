@@ -3,7 +3,7 @@ import { apiUrls, API_URL } from 'configs/api'
 
 axios.defaults.baseURL = API_URL;
 
-const proxy = axios.create({
+const client = axios.create({
     baseURL: '/'
 });
 
@@ -79,11 +79,11 @@ interface loginType {
 }
 
 export const loginUser: (userInfo: loginType) => any = async ({ username, email, password }) => {
-    return await proxy.post("/auth/login", { username, email, password }, { headers: { 'Content-Type': 'application/json' } })
+    return await client.post("/auth/login", { username, email, password }, { headers: { 'Content-Type': 'application/json' } })
 }
 
 export const checkToken: (token: string) => any = async (token) => {
-    const res = await proxy.get("/auth/check", {
+    const res = await client.get("/auth/check", {
         headers: {
             'authorization': `Bearer ${token}`
         }
@@ -93,7 +93,7 @@ export const checkToken: (token: string) => any = async (token) => {
 }
 
 export const rereshToken: (refreshToken: string, oldToken: string) => any = async (refreshToken, oldToken) => {
-    const res = await proxy.post("/auth/refresh", {
+    const res = await client.post("/auth/refresh", {
         "token": refreshToken
     }, {
         headers: {
@@ -105,7 +105,7 @@ export const rereshToken: (refreshToken: string, oldToken: string) => any = asyn
 }
 
 export const logoutUser: (token: string) => any = async (token) => {
-    return proxy.post("/auth/logout", {}, {
+    return client.post("/auth/logout", {}, {
         headers: {
             'authorization': `Bearer ${token}`
         }
@@ -113,7 +113,7 @@ export const logoutUser: (token: string) => any = async (token) => {
 }
 
 export const getUser: (token: string) => any = async (token) => {
-    return await proxy.get("/user/me", {
+    return await client.get("/user/me", {
         headers: {
             'authorization': `Bearer ${token}`
         }
@@ -173,6 +173,12 @@ export const getMangaChapterList: (option: mangaChapterListProps) => any = async
     } catch (error) {
         error.response.request._response
     }
+}
+
+export const getMangaChapters: (id: string) => any = async (id) => {
+    const url = apiUrls.atHome() + "/" + id
+    const data = await axios.get(url)
+    return data
 }
 
 export const getTagsList: () => any = async () => {

@@ -20,7 +20,7 @@ const ChapterItem: FC<propsType> = ({ data }) => {
   const creditLength = credit.length;
 
   return (
-    <Link href={`/read/${data.id}`}>
+    <Link href={`/manga/read/${data.id}`}>
       <a>
         <div className={styles["chapter-container"]}>
           <div>

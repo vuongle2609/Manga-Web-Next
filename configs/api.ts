@@ -5,5 +5,7 @@ export const apiUrls = {
     manga: () => '/manga',
     covers: () => '/cover',
     author: () => '/author',
-    user: () => '/user'
+    user: () => '/user',
+    chapter: () => '/chapter',
+    atHome: () => '/at-home/server'
 }

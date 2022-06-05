@@ -27,22 +27,27 @@ const SliderItem: FC<any> = ({ data }) => {
   return (
     <>
       <Link href={`/manga/${data.id}`}>
-        <div className={styles["slider-item"]}>
-          <div>
-            <img
-              height={"100%"}
-              width={"auto"}
-              ref={imageCover}
-              alt={"Cover " + title}
-            />
+        <a>
+          <div className={styles["slider-item"]}>
             <div>
-              <Text b h1>
-                {title}
-              </Text>
-              <Text ref={description} dangerouslySetInnerHTML={{ __html: "Hello" }}></Text>
+              <img
+                height={"100%"}
+                width={"auto"}
+                ref={imageCover}
+                alt={"Cover " + title}
+              />
+              <div className={styles["slider-detail"]}>
+                <Text b h1>
+                  {title}
+                </Text>
+
+                <div>
+                  <Text ref={description}></Text>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </Link>
     </>
   );

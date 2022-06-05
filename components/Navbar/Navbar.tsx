@@ -58,9 +58,9 @@ const Navbar: FC = () => {
                   <Link href="/home/discover">
                     <a onClick={() => setPopoverList(false)}>Home</a>
                   </Link>
-                  <Link href="/">
+                  {/* <Link href="/">
                     <a onClick={() => setPopoverList(false)}>Favourite</a>
-                  </Link>
+                  </Link> */}
                   <Link href="/manga/random">
                     <a onClick={() => setPopoverList(false)}>Random</a>
                   </Link>
@@ -80,16 +80,16 @@ const Navbar: FC = () => {
           <Link href="/home/discover">
             <a>Home</a>
           </Link>
-          <Link href="/">
+          {/* <Link href="/">
             <a>Favourite</a>
-          </Link>
+          </Link> */}
           <Link href="/manga/random">
             <a>Random</a>
           </Link>
         </div>
 
         <div className={styles["Navbar-left-content"]}>
-          {!!userData ? (
+          {/* {!!userData ? (
             <Popover placement={"bottom-right"}>
               <Popover.Trigger>
                 <div>
@@ -149,7 +149,7 @@ const Navbar: FC = () => {
                 <Loading color="primary" size="sm" />
               )}
             </Button>
-          )}
+          )} */}
           <LinkNext href="https://github.com/vuongle2609" target="_blank">
             <i className="fa-brands fa-github"></i>
           </LinkNext>

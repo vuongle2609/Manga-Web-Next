@@ -109,6 +109,15 @@
       }
     }
   }
+
+  & .slider-detail {
+    display: flex;
+    flex-direction: column;
+    
+    & div:first-child {
+      flex: 1;
+    }
+  }
 }
 
 .controller-slider-item-clamp,
