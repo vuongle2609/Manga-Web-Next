@@ -49,7 +49,7 @@ const Navbar: FC = () => {
       <Row justify="space-between" align="center">
         <div className={styles["Navbar-right-content"]}>
           <div className={styles["Navbar-right-content-mobile"]}>
-            <Popover isOpen={popoverList} onOpenChange={setPopoverList}>
+            <Popover isOpen={popoverList} onOpenChange={setPopoverList} placement="bottom-left">
               <Popover.Trigger>
                 <i className="fa-regular fa-bars"></i>
               </Popover.Trigger>

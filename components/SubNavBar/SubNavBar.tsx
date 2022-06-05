@@ -3,6 +3,7 @@ import { Input } from "@nextui-org/react";
 import Link from "next/link";
 import styles from "./SubNavBar.module.scss";
 import LoadingBar from "react-top-loading-bar";
+import SearchSubNavBar from "./SearchSubNavBar";
 
 const SubNavBar: FC<any> = (props) => {
   const load = useRef(null);
@@ -34,13 +35,7 @@ const SubNavBar: FC<any> = (props) => {
         }
         ref={navBar}
       >
-        <Input
-          placeholder="Search"
-          underlined
-          color="primary"
-          contentRight={<i className="fa-regular fa-magnifying-glass"></i>}
-          aria-label="search-bar"
-        />
+        <SearchSubNavBar load={load} />
         <Link href="/home/discover">
           <a onClick={() => load.current.continuousStart()}>
             <b>Discover</b>
