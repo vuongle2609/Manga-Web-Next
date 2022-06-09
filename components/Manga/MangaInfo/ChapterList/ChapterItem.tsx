@@ -11,7 +11,8 @@ interface propsType {
 }
 
 const ChapterItem: FC<propsType> = ({ data }) => {
-  const { chapter, title, publishAt, translatedLanguage } = data.attributes;
+  const { chapter, title, publishAt, translatedLanguage, externalUrl } =
+    data.attributes;
 
   const lang = language.find((item: any) => item.md === translatedLanguage);
 
@@ -19,7 +20,32 @@ const ChapterItem: FC<propsType> = ({ data }) => {
 
   const creditLength = credit.length;
 
-  return (
+  return externalUrl ? (
+    <Link href={externalUrl}>
+      <a target="_blank" rel="noopener noreferrer">
+        <div className={styles["chapter-container"]}>
+          <div>
+            <Text b>
+              Chapter {chapter}
+              {title && `:  ${title}`}
+            </Text>
+            <Text>{lang.english}</Text>
+          </div>
+          <div>
+            <Text>{moment(publishAt).fromNow()}</Text>
+            <div>
+              {credit.map((item: any, index: number) => (
+                <Text key={index}>
+                  {(index !== 0 && creditLength !== 1 ? ", " : " ") +
+                    (item.attributes.name || item.attributes.username)}
+                </Text>
+              ))}
+            </div>
+          </div>
+        </div>
+      </a>
+    </Link>
+  ) : (
     <Link href={`/manga/read/${data.id}`}>
       <a>
         <div className={styles["chapter-container"]}>

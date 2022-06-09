@@ -1,0 +1,30 @@
+@import "/styles/globals.scss";
+
+.manga-read {
+  display: flex;
+  justify-content: center;
+}
+
+.manga-read-navbutton {
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid $gray-color;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: $white-color;
+  cursor: pointer;
+  transition: all ease-in-out 0.2s;
+
+  & i {
+    font-size: 1.6rem;
+  }
+
+  &.hide {
+    display: none;
+  }
+}
