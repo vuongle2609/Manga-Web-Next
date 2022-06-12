@@ -1,40 +1,60 @@
 import { getMangaChapters } from "data/getData";
 import { GetServerSideProps } from "next/types";
-import { FC, useState } from "react";
+import { FC } from "react";
 import styles from "styles/MangaRead.module.scss";
+import ReadContent from "components/Manga/read/ReadContent/ReadContent";
+import ReadNavigation from "components/Manga/read/ReadNavigation/ReadNavigation";
+import { getImageUrl } from "data/handleData";
 
 interface propsType {
-  chapterData: any;
+  imageArray: string[];
   fullScreen: boolean;
 }
 
-const read: FC<propsType> = ({ chapterData, fullScreen }) => {
-  // console.log("🚀 ~ file: [id].tsx ~ line 10 ~ chapterData", chapterData);
-  const [showNav, setShowNav] = useState<boolean>(false);
+const read: FC<propsType> = ({ imageArray, fullScreen }) => {
   return (
     <div className={styles["manga-read"]}>
-      <div
-        onClick={() => setShowNav((prev) => !prev)}
-        className={
-          styles["manga-read-navbutton"] + " " + (showNav && styles["hide"])
-        }
-      >
-        <i className="fa-thin fa-bars"></i>
-      </div>
-
-        
+      {/* <ReadNavigation /> */}
+      <ReadContent imageArray={imageArray} />
     </div>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id: any = context.params.id;
+  const chapterId: any = context.params.id;
+  const dataSaver: any = context.query.datasave;
 
-  const chapterData = await getMangaChapters(id);
+  const getChapterData = () => getMangaChapters(chapterId);
+
+  // const getMangaData = () =>  getMangaChapterList({
+  //   id: mangaId,
+  //   order: {
+  //     volume: "desc",
+  //     chapter: "desc",
+  //   },
+  //   translatedLanguage: ,
+  //   includes: ["user", "scanlation_group"],
+  //   limit: 96,
+  //   contentRating: ["safe", "suggestive", "erotica", "pornographic"],
+  // });
+
+  const [chapterData] = await Promise.all([
+    getChapterData(),
+    // max-height: 100vh;
+    // getMangaData(),
+  ]);
+
+  const { chapter } = chapterData.data;
+  const imageArr = getImageUrl(
+    dataSaver ? chapter.dataSaver : chapter.data,
+    chapter.hash,
+    dataSaver
+  );
 
   return {
     props: {
-      chapterData: chapterData.data,
+      imageArray: imageArr,
+      // mangaData: mangaData,
       fullScreen: true,
     },
   };

@@ -54,8 +54,6 @@ const LoginModal: FC = () => {
 
         setUserData(resUser.data.data);
 
-        console.log(resUser.data.data);
-
         setLoginModal(false);
         toast.success(`Login as ${resUser.data.data.attributes.username}`);
       } catch (err) {

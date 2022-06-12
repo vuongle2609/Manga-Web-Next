@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import ChapterItem from "./ChapterItem";
 import { Text, Pagination, Spacer } from "@nextui-org/react";
 import styles from "./ChapterList.module.scss";
@@ -19,6 +19,7 @@ const MangaChapterList: FC<propsType> = ({
   translatedLang,
   langSelected,
 }) => {
+  const [datasave, setDatasave] = useState<boolean>(false);
   const load = useRef(null);
   const router = useRouter();
 
@@ -81,6 +82,10 @@ const MangaChapterList: FC<propsType> = ({
     router.replace(`/manga/${router.query.id}${newQuery}`);
   };
 
+  const handleQuality = (dataType: string) => {
+    setDatasave(dataType === "datasaver");
+  };
+
   const sortList = [
     {
       text: "Descending",
@@ -92,10 +97,28 @@ const MangaChapterList: FC<propsType> = ({
     },
   ];
 
+  const qualityList = [
+    {
+      text: "High",
+      value: "data",
+    },
+    {
+      text: "Datasave",
+      value: "datasaver",
+    },
+  ];
+
   return chapterData.data.length !== 0 ? (
     <>
       <LoadingBar color="#fca815" ref={load} />
       <div className={styles["dropdown-container"]}>
+        <Dropdown
+          onChange={handleQuality}
+          listValue={qualityList}
+          LabelDisplay={"Select quality"}
+          id={"quality"}
+        />
+        <Spacer />
         <Dropdown
           onChange={handleChangeLangQuery}
           listValue={translatedLangModified}
@@ -139,12 +162,12 @@ const MangaChapterList: FC<propsType> = ({
                   : "Volume " + item.attributes.volume}
               </Text>
               <div className={styles["volume-divider"]}></div>
-              <ChapterItem data={item} />
+              <ChapterItem data={item} datasaver={datasave} />
             </div>
           );
         } else {
           prevVol = item.attributes.volume;
-          return <ChapterItem data={item} key={index} />;
+          return <ChapterItem data={item} key={index} datasaver={datasave} />;
         }
       })}
       <div className={styles["volume-fullwidth"]}>

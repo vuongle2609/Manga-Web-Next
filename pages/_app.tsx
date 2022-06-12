@@ -18,8 +18,6 @@ import useStore from "store/store";
 import { Toaster } from "react-hot-toast";
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
-  console.log("🚀 ~ file: _app.tsx ~ line 21 ~ pageProps", pageProps);
-  console.log("🚀 ~ file: _app.tsx ~ line 21 ~ Component", Component);
   const [token, addToken] = useLocalStorage((state: any) => [
     state.token,
     state.addToken,
@@ -90,12 +88,15 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
             <Component {...pageProps} className="global-class" />
           </Container>
         )}
-        {!pageProps.fullScreen && (
+        {/* {!pageProps.fullScreen && (
           <>
             <Footer />
             <GotoTop />
           </>
-        )}
+        )} */}
+
+        <Footer />
+        <GotoTop />
       </div>
 
       <LoginModal />

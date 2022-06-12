@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect } from "react";
+import { FC } from "react";
 import { Text } from "@nextui-org/react";
 import moment from "moment";
 import styles from "./ChapterList.module.scss";
@@ -8,9 +8,10 @@ import Link from "next/link";
 
 interface propsType {
   data: any;
+  datasaver: boolean;
 }
 
-const ChapterItem: FC<propsType> = ({ data }) => {
+const ChapterItem: FC<propsType> = ({ data, datasaver }) => {
   const { chapter, title, publishAt, translatedLanguage, externalUrl } =
     data.attributes;
 
@@ -46,8 +47,9 @@ const ChapterItem: FC<propsType> = ({ data }) => {
       </a>
     </Link>
   ) : (
-    <Link href={`/manga/read/${data.id}`}>
-      <a>
+    // <Link href={`/manga/read/${data.id}?m=${id}`}>
+    <Link href={`/manga/read/${data.id}${datasaver ? "?datasave=true" : ""}`}>
+      <a target="_blank" rel="noopener noreferrer">
         <div className={styles["chapter-container"]}>
           <div>
             <Text b>

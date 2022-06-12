@@ -52,8 +52,6 @@ const SearchSubNavBar: FC<any> = ({ load }) => {
 
   const dataArr = dataFetched?.data?.data;
 
-  console.log(dataArr);
-
   return (
     <div className={styles["search-bar"]} id="search-sub-nav">
       <Input

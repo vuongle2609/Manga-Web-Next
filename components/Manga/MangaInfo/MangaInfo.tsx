@@ -12,7 +12,7 @@ interface PropsType {
   otherName: any;
   links: any;
   chapterData: any;
-  langSelected?: string[]
+  langSelected?: string[];
 }
 
 const MangaInfo: FC<PropsType> = ({
@@ -78,13 +78,9 @@ const MangaInfo: FC<PropsType> = ({
               </Text>
               {authorDetail.length !== 0 ? (
                 authorDetail.map((item: any, index: number) => (
-                  <Link href={`/author/${item.id}`} key={index}>
-                    <a>
-                      <Text css={{ color: "Orange" }}>
-                        {item.attributes.name}
-                      </Text>
-                    </a>
-                  </Link>
+                  <Text key={index} css={{ color: "Orange" }}>
+                    {item.attributes.name}
+                  </Text>
                 ))
               ) : (
                 <Text>Not update yet</Text>
@@ -97,13 +93,9 @@ const MangaInfo: FC<PropsType> = ({
               </Text>
               {artistDetail.length !== 0 ? (
                 artistDetail.map((item: any, index: number) => (
-                  <Link href={`/author/${item.id}`} key={index}>
-                    <a>
-                      <Text css={{ color: "Orange" }}>
-                        {item.attributes.name}
-                      </Text>
-                    </a>
-                  </Link>
+                  <Text key={index} css={{ color: "Orange" }}>
+                    {item.attributes.name}
+                  </Text>
                 ))
               ) : (
                 <Text>Not update yet</Text>
