@@ -70,10 +70,10 @@ const SearchSubNavBar: FC<any> = ({ load }) => {
           <SimpleBar style={{ maxHeight: 400 }}>
             {dataArr ? (
               dataArr.length !== 0 ? (
-                dataArr.map((item: any) => {
+                dataArr.map((item: any, index: number) => {
                   const title: any = Object.values(item.attributes.title)[0];
                   return (
-                    <Link href={`/manga/${item.id}`}>
+                    <Link key={index} href={`/manga/${item.id}`}>
                       <a
                         className={styles["search-link"]}
                         onClick={() => load.current.continuousStart()}
