@@ -45,6 +45,10 @@ const nextConfig = {
         source: '/mangacover',
         destination: "https://api.mangadex.org/cover",
       },
+      {
+        source: '/image/:option/:mangaid/:filename',
+        destination: "https://uploads.mangadex.org/:option/:mangaid/:filename",
+      },
     ];
   }
 }

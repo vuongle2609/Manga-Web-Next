@@ -17,7 +17,7 @@ export const getCover: (option: coverPropsType) => any = (option) => {
   if (cover_art === undefined)
     return "https://media.discordapp.net/attachments/712591859125321798/977425980211744768/unknown.png?width=545&height=676";
 
-  return `https://${IMG_URL}/covers/${option.id}/${
+  return `${IMG_URL}/covers/${option.id}/${
     cover_art?.attributes?.fileName
   }${option.max ? "" : option.quality ? ".512.jpg" : ".256.jpg"}`;
 };
@@ -32,7 +32,7 @@ interface singleCoverPropsType {
 export const getSingleCover: (option: singleCoverPropsType) => any = (
   option
 ) => {
-  return `https://${IMG_URL}/covers/${option.id}/${option.fileName}${
+  return `${IMG_URL}/covers/${option.id}/${option.fileName}${
     option.max ? "" : option.quality ? ".512.jpg" : ".256.jpg"
   }`;
 };
@@ -340,7 +340,7 @@ export const getImageUrl: (
 ) => string[] = (fileNameArray, hash, dataSaver) => {
   const imageUrlArr = fileNameArray.map(
     (fileName: string) =>
-      `https://mangadex.dvkn.link/${
+      `${IMG_URL}/${
         dataSaver ? "data-saver" : "data"
       }/${hash}/${fileName}`
   );
